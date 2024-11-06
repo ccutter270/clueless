@@ -1,0 +1,10 @@
+/* src/styles.css */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: gray;
+}
+
+/* angular:styles/global:styles */
+/*# sourceMappingURL=styles.css.map */

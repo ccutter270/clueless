@@ -1,0 +1,14 @@
+<div class = "grid">
+  @for (item of Areas; track item.name) {
+    @if (item.type == "room") {
+      <room [roomName]="item.name"></room>
+    } @else if (item.type == "hall") {
+      <hallway [hallName]="item.name"></hallway>
+    } @else if (item.type == "empty") {
+      <empty></empty>
+    }
+  }
+  
+</div>
+
+<p>{{title}}</p>
