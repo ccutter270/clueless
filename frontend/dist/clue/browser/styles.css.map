@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/styles.css"],
-  "sourcesContent": ["/* You can add global styles to this file, and also import other style files */\r\nhtml, body{height: 100%; width: 100%; background-color: gray}\r\n"],
-  "mappings": ";AACA;AAAM;AAAK,UAAQ;AAAM,SAAO;AAAM,oBAAkB;AAAI;",
-  "names": []
-}

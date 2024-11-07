@@ -1,7 +1,4 @@
-.roomBox {
-    border: 3pt solid black;
+p {
+    margin: 0px;
 }
 
-.roomTitle {
-    text-align: center;
-}

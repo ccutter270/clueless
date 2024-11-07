@@ -1,14 +1,14 @@
-<div class = "grid">
-  @for (item of Areas; track item.name) {
-    @if (item.type == "room") {
-      <room [roomName]="item.name"></room>
+<div class = "container">
+  <div class = "grid">
+    @for (item of Areas; track item.name) {
+      @if (item.type == "room") {
+        <room [roomName]="item.name" [image]="item.photo!"></room>
     } @else if (item.type == "hall") {
-      <hallway [hallName]="item.name"></hallway>
+        <hallway [hallName]="item.name" [imageURL]="item.photo!"></hallway>
     } @else if (item.type == "empty") {
-      <empty></empty>
+        <empty></empty>
     }
-  }
-  
+  } 
+  </div>
 </div>
-
 <p>{{title}}</p>
