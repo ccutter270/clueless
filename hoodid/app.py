@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from controllers.game_controller import game_bp
 from controllers.action_controller import action_bp
 from controllers.player_controller import player_bp
@@ -12,6 +12,15 @@ app.register_blueprint(player_bp, url_prefix='/player')
 @app.route('/')
 def index():
     return "App Works!"
+
+@app.route('/data')
+def get_data():
+    data = {
+        "message": "Hello, World!",
+        "status": "success",
+        "data": {"key1": "value1", "key2": "value2"}
+    }
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
