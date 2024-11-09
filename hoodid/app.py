@@ -7,7 +7,7 @@ from controllers.player_controller import player_bp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret_key'
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 app.register_blueprint(game_bp, url_prefix='/game')
 app.register_blueprint(action_bp, url_prefix='/action')
