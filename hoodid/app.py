@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
-from hoodid.controllers.game_controller import game_bp
-from hoodid.controllers.action_controller import action_bp
-from hoodid.controllers.player_controller import player_bp
+from controllers.game_controller import game_bp
+from controllers.action_controller import action_bp
+from controllers.player_controller import player_bp
 
 app = Flask(__name__)
 
