@@ -1,4 +1,7 @@
-class Weapon:
+from hoodid.models.card import Card
+
+
+class Weapon(Card):
 
     name: str
 

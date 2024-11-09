@@ -17,7 +17,10 @@ class Game:
     def __init__(self, envelope: Envelope, players: List[Player], rooms: List[Room], weapons: List[Weapon], characters: List[Character], currentTurn: Player) -> None:
         self.envelope = envelope
         self.players = players
-        self.rooms = rooms
+        self.rooms = self.setupRooms()
         self.weapons = weapons
         self.characters = characters
         self.currentTurn = currentTurn
+
+    def setupRooms(self):
+        pass

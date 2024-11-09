@@ -1,3 +1,4 @@
-class GameRespository():
+class Card:
+
     def __init__(self) -> None:
         pass
