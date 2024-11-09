@@ -4,11 +4,14 @@ import { RouterOutlet } from '@angular/router';
 import { RoomComponent } from "./room/room.component";
 import { HallwayComponent } from "./hallway/hallway.component";
 import { EmptyComponent } from './empty/empty.component';
+import { WebSocketService } from './websocket.service';
+import { WebsocketTesterComponent } from './websocket.tester/websocket.tester.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent],
+  providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
