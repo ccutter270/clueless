@@ -15,6 +15,7 @@ export class WebSocketService {
 
   // Observable for incoming messages
   onMessage(): Observable<any> {
+    console.log('Subscribed to message!')
     return new Observable((observer) => {
       this.socket.on('message', (data) => observer.next(data));
       this.socket.on('connect_error', (error) => observer.error(error));

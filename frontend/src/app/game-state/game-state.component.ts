@@ -1,17 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 import { WebSocketService } from '../websocket.service';
 import { Subscription } from 'rxjs';
 import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-websocket-tester',
+  selector: 'gameState',
   standalone: true,
-  imports: [CommonModule, NgFor],
   // providers: [WebSocketService],
-  templateUrl: './websocket.tester.component.html',
-  styleUrls: ['./websocket.tester.component.css'],
+  imports: [CommonModule, NgFor],
+  templateUrl: './game-state.component.html',
+  styleUrl: './game-state.component.css'
 })
-export class WebsocketTesterComponent {
+export class GameStateComponent implements OnInit, OnDestroy {
+
   messages: string[] = [];
   private socketSubscription!: Subscription;
 
@@ -26,12 +27,6 @@ export class WebsocketTesterComponent {
       },
       (error) => console.error('WebSocket error:', error)
     );
-  }
-
-  // Method to send a message to the server
-  sendMessage() {
-    this.webSocketService.sendMessage('Hello, Server!');
-    console.log('Sent message:');
   }
 
   ngOnDestroy() {

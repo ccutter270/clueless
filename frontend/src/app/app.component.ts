@@ -6,15 +6,18 @@ import { HallwayComponent } from "./hallway/hallway.component";
 import { EmptyComponent } from './empty/empty.component';
 import { WebSocketService } from './websocket.service';
 import { WebsocketTesterComponent } from './websocket.tester/websocket.tester.component';
+import { GameStateComponent } from './game-state/game-state.component';
+import { GameInputComponent } from './game-input/game-input.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
   title = 'Clue';
   Areas = [
