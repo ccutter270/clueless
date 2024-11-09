@@ -1,0 +1,18 @@
+{
+    "characters": [
+        {
+            "characterId": "Colonel Mustard",
+            "location": {
+                "locationId": "locationId"
+            }
+        },
+        {
+
+        }
+    ],
+    "currentTurn": "playerID",
+    "lastActionTaken": {
+        "type": "Action",
+        "message": "A moved to Kitchen."
+    }
+}
