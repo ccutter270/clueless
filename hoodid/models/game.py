@@ -35,7 +35,7 @@ class Game:
         
     def _create_game(self):
         
-        # Hallways
+        #region Hallways
         ballroom_kitchen = Location("Ballroom to Kitchen", "hallway")
         billiard_ballroom = Location("Billiard Room to Ballroom", "hallway")
         billiard_dining = Location("Billiard Room to Dining Room", "hallway")
@@ -48,8 +48,9 @@ class Game:
         lounge_dining = Location("Lounge to Dining Room", "hallway")
         study_hall = Location("Study to Hall", "hallway")
         study_library = Location("Study to Library", "hallway")
+        #endregion Hallways
 
-        # Rooms
+        #region Rooms
         ballroom = Location("Ballroom", "room")
         billiard_room = Location("Billiard Room", "room")
         conservatory = Location("Conservatory", "room")
@@ -59,10 +60,11 @@ class Game:
         library = Location("Library", "room")
         lounge = Location("Lounge", "room")
         study = Location("Study", "room")
+        #endregion Rooms
 
         # Add connections to locations:
         
-        # Hallways
+        #region Hallways Connected Locations
         ballroom_kitchen.connectedLocations = [ballroom, kitchen]
         billiard_ballroom.connectedLocations = [billiard_room, ballroom]
         billiard_dining.connectedLocations = [billiard_room, dining_room]
@@ -75,8 +77,9 @@ class Game:
         dining_kitchen.connectedLocations = [dining_room, kitchen]
         hall_billiard.connectedLocations = [hall, billiard_room]
         hall_lounge.connectedLocations = [hall, lounge]
+        #endregion Hallways Connected Locations
 
-        # Rooms
+        #region Rooms Connected Locations
         ballroom.connectedLocations = [ballroom_kitchen, billiard_ballroom, conservatory_ballroom]
         billiard_room.connectedLocations = [billiard_dining, billiard_ballroom, hall_billiard, library_billiard]
         conservatory.connectedLocations = [conservatory_ballroom, library_conservatory, lounge]
@@ -86,6 +89,7 @@ class Game:
         library.connectedLocations = [library_billiard, study_library, library_conservatory]
         lounge.connectedLocations = [hall_lounge, lounge_dining, conservatory]
         study.connectedLocations = [study_hall, study_library, kitchen]
+        #endregion Rooms Connected Locations
         
         # Create List of all Locations: 
         locations = [
@@ -108,7 +112,7 @@ class Game:
             lounge, 
             study]
 
-        
+        #region Characters
         scarlet = Character("Miss Scarlet", hall_lounge, hall_lounge)
         hall_lounge.setOccupied(True)
         mustard = Character("Colonel Mustard", lounge_dining, lounge_dining)
@@ -121,6 +125,7 @@ class Game:
         library_conservatory.setOccupied(True)
         plum = Character("Professor Plum", study_library, study_library)
         study_library.setOccupied(True)
+        #endregion Characters
 
         # Create List of all characters:
         characters = [
@@ -157,8 +162,7 @@ class Game:
         return weapons
 
     def _create_characters(self):
-
-        return characters
+        return self.characters
 
 
     # TODO: Update with actual players
@@ -183,7 +187,6 @@ class Game:
                 if not room.hasWeapon():
                     room.setWeapon(weapon) # Place the weapon in this room
                     print(f"{weapon.name} placed in {room.name}.")
-                    break
 
         
     def get_game_state(self):
