@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { Action } from '../models/action.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +11,19 @@ export class WebSocketService {
 
   constructor() {
     // Replace with your server's URL
-    this.socket = io('http://localhost:5000');
+    this.socket = io('http://localhost:5000');  // Ensure this matches your Flask server URL and port
   }
 
-  // Observable for incoming messages
+  // Observable for incoming 'game_state' events
   onMessage(): Observable<any> {
-    console.log('Subscribed to message!')
     return new Observable((observer) => {
-      this.socket.on('message', (data) => observer.next(data));
-      this.socket.on('connect_error', (error) => observer.error(error));
+      this.socket.on('game_state', (data) => observer.next(data));
     });
   }
 
   // Method to send messages to the server
-  sendMessage(message: string) {
-    this.socket.emit('message', message);
+  sendPlayerAction(action: Action) {
+    this.socket.emit('player_action', action);
   }
 
   // Method to close the socket connection

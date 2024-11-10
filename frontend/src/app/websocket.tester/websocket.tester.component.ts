@@ -7,18 +7,18 @@ import { CommonModule, NgFor } from '@angular/common';
   selector: 'app-websocket-tester',
   standalone: true,
   imports: [CommonModule, NgFor],
-  // providers: [WebSocketService],
   templateUrl: './websocket.tester.component.html',
   styleUrls: ['./websocket.tester.component.css'],
 })
-export class WebsocketTesterComponent {
+export class WebsocketTesterComponent implements OnInit, OnDestroy {
   messages: string[] = [];
   private socketSubscription!: Subscription;
+  private customEventSubscription!: Subscription;
 
-  constructor(private webSocketService: WebSocketService) {}
+  constructor(private webSocketService: WebSocketService) { }
 
   ngOnInit() {
-    // Subscribe to incoming messages
+    // Subscribe to 'game_state' events
     this.socketSubscription = this.webSocketService.onMessage().subscribe(
       (message: any) => {
         this.messages.push(message);
@@ -30,13 +30,16 @@ export class WebsocketTesterComponent {
 
   // Method to send a message to the server
   sendMessage() {
-    this.webSocketService.sendMessage('Hello, Server!');
-    console.log('Sent message:');
+    this.webSocketService.sendPlayerAction({
+      type: "Action",
+      message: "Someone moved somewhere."
+    });
   }
 
   ngOnDestroy() {
     // Unsubscribe to prevent memory leaks
     this.socketSubscription.unsubscribe();
+    this.customEventSubscription.unsubscribe();
     this.webSocketService.close();
   }
 }
