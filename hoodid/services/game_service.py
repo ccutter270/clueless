@@ -15,13 +15,13 @@ class GameService:
     players = List[Player]
 
     def __init__(self):
-        self.players = []
+        self.players: List[Player] = []
 
 
     
     def add_player(self, character):
         """ Add a player to the game """
-        if len(self.players) >= Config.MAX_PLAYERS:
+        if len(self.players) >= 6:
             return {"message": "Maximum number of players reached."}
 
         # Ensure the character is unique
@@ -41,7 +41,7 @@ class GameService:
 
     def start_game(self):
 
-        if len(self.players) < Config.MIN_PLAYERS:
+        if len(self.players) < 3:
             return {"message": "Need at least 3 players to start the game!"}
 
 

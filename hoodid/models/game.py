@@ -164,7 +164,7 @@ class Game:
     # TODO: Update with actual players
     def add_player(self, player: Player):
         """Add a player to the game."""
-        if len(self.players) < Config.MAX_PLAYERS:
+        if len(self.players) < 6:
             self.players.append(player)
         else:
             raise ValueError("Maximum number of players reached.")
