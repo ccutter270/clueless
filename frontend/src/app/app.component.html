@@ -4,12 +4,29 @@
   <div class = "grid">
     @for (item of Areas; track item.name) {
       @if (item.type == "room") {
-        <room [roomName]="item.name" [image]="item.photo!"></room>
+        <room [roomName]="item.name" [image]="item.photo!">
+
+          <!-- <ng-container *ngFor="let character of characters">
+            <div *ngIf="character.locationId === item.name" class="player-icon">
+              <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
+            </div>
+          </ng-container> -->
+
+        </room>
     } @else if (item.type == "hall") {
-        <hallway [hallName]="item.name" [imageURL]="item.photo!"></hallway>
+        <hallway [hallName]="item.name" [imageURL]="item.photo!">
+
+          <!-- <ng-container *ngFor="let character of characters">
+            <div *ngIf="character.locationId === item.name" class="player-icon">
+              <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
+            </div>
+          </ng-container> -->
+
+        </hallway>
     } @else if (item.type == "empty") {
         <empty></empty>
     }
+    
   } 
   </div>
 

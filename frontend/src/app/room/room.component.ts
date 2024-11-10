@@ -10,4 +10,6 @@ import { Component, Input } from '@angular/core';
 export class RoomComponent {
  @Input() roomName: string = "";
  @Input() image: string = "";
+//  @Input() players: string[] = [];
+
 }

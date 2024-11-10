@@ -2,13 +2,14 @@
 html, body{height: 100%; width: 100%;}
 
 .box {
-    /* width: 200px; Ensure it takes the full width of the grid cell */
     height: 150px; /* Ensure it takes the full height of the grid cell */
     background-size: cover; 
     background-position: center; /* Ensure the image is centered */
     background-repeat: no-repeat; /* Prevent image repetition */
     border: 3pt solid black;
     justify-self: stretch;
+    position: relative;
+
   }
 
 .title {   

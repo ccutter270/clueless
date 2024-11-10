@@ -49,4 +49,25 @@ export class AppComponent {
     {name: "Ball to Kitchen", type: "hall", photo: "hallway.jpg"},
     {name: "Kitchen", type: "room", photo: "kitchen.jpg"},
   ]
+
+  // coming from server
+  characters: any[] = [
+    {characterId: "Colonel Mustard", locationId: "Study"},
+    {characterId: "Professor Plum", locationId: "Conservatory to Ball"},
+  ];
+
+  getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
+
+    const playerIcons = {
+      "Colonel Mustard": "colonel-mustard.jpg",
+      "Professor Plum": "professor-plum.jpg",
+      "Miss Scarlet": "miss-scarlett.jpg",
+      "Mrs. White": "mrs-white.jpg",
+      "Mr. Green": "mr-green.jpg",
+      "Mrs. Peacock": "miss-peacock.jpg"
+    };
+
+    return playerIcons[characterId] || "pink.jpg";
+
+  }
 }
