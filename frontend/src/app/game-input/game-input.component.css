@@ -1,10 +1,11 @@
 .container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
+    width: 50%;
+    padding: 10px;
+    border: 3px solid black;
     border-radius: 8px;
     background-color: #f9f9f9;
+    margin: 10px;
+    font-family: Arial, sans-serif;
   }
 
 label {
@@ -15,14 +16,19 @@ select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
+    margin-bottom: 10px;
 }
   
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
+    padding: 10px 20px;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+h3 {
+    font-size: 18px;
 }

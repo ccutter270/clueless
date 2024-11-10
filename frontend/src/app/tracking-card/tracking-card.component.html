@@ -1,0 +1,31 @@
+<div class="trackingList">
+    <h2>Tracker</h2>
+  
+    <div class="category">
+      <h3>Characters</h3>
+      <ul>
+        <li *ngFor="let character of characters">
+          <input type="checkbox" [(ngModel)]="character.isChecked"> {{ character.name }}
+        </li>
+      </ul>
+    </div>
+  
+    <div class="category">
+      <h3>Weapons</h3>
+      <ul>
+        <li *ngFor="let weapon of weapons">
+          <input type="checkbox" [(ngModel)]="weapon.isChecked"> {{ weapon.name }}
+        </li>
+      </ul>
+    </div>
+  
+    <div class="category">
+      <h3>Rooms</h3>
+      <ul>
+        <li *ngFor="let room of rooms">
+          <input type="checkbox" [(ngModel)]="room.isChecked"> {{ room.name }}
+        </li>
+      </ul>
+    </div>
+</div>
+  

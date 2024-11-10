@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy  } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WebSocketService } from '../websocket.service';
 import { Subscription } from 'rxjs';
 import { CommonModule, NgFor } from '@angular/common';
@@ -13,7 +13,10 @@ import { CommonModule, NgFor } from '@angular/common';
 })
 export class GameStateComponent implements OnInit, OnDestroy {
 
+  // @ViewChild('messageBox') messageBox!: ElementRef;
+
   messages: string[] = [];
+
   private socketSubscription!: Subscription;
 
   constructor(private webSocketService: WebSocketService) {}
@@ -34,4 +37,14 @@ export class GameStateComponent implements OnInit, OnDestroy {
     this.socketSubscription.unsubscribe();
     this.webSocketService.close();
   }
+
+  // ngAfterViewChecked() {
+  //   // Scroll to the bottom every time the view is updated
+  //   this.scrollToBottom();
+  // }
+
+  // scrollToBottom() {
+  //   const container = this.messageBox.nativeElement;
+  //   container.scrollTop = container.scrollHeight;
+  // }
 }

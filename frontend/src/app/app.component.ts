@@ -8,11 +8,13 @@ import { WebSocketService } from './websocket.service';
 import { WebsocketTesterComponent } from './websocket.tester/websocket.tester.component';
 import { GameStateComponent } from './game-state/game-state.component';
 import { GameInputComponent } from './game-input/game-input.component';
+import { TrackingCardComponent } from './tracking-card/tracking-card.component';
+import { PlayerInputComponent } from "./player-input/player-input.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
