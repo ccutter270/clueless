@@ -42,18 +42,13 @@ def start_game():
     return jsonify({"message": "Game started!"})
 
 
-# Handle messages sent from the client
-@socketio.on('message')
-def handle_message(message):
-    game_service.start_game()
-    print('Received message:', message)
-    send('Server received: ' + message)  # Echo message back to the client
-
 # Custom event example
-@socketio.on('custom_event')
-def handle_custom_event(data):
-    print('Received custom event data:', data)
-    emit('response_event', {'data': 'Data received successfully'})
+@socketio.on('player_action')
+def handle_player_action(data):
+    print("Processing Player Action")
+    # Update game state
+    emit('game_state', {'data': game_service.get_game_state()})
+
 
 @app.route('/data')
 def get_data():
@@ -63,6 +58,7 @@ def get_data():
         "data": {"key1": "value1", "key2": "value2"}
     }
     return jsonify(data)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

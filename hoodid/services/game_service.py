@@ -56,3 +56,35 @@ class GameService:
         # Start game
         return self.game.start_game()
 
+    def get_game_state(self):
+
+        return {
+    "character": [
+        {
+            "name": "Professor Plum",
+            "location": {
+                "name": "Kitchen",
+                "locationType": "Room",
+                "connectedLocations": [],
+                "occupied": True,
+                "weapon": {
+                    "name": "Wrench"
+                }
+            },
+            "homeSquare": {
+                "name": "Kitchen",
+                "locationType": "Room",
+                "connectedLocations": [],
+                "occupied": True,
+                "weapon": {
+                    "name": "Wrench"
+                }
+            }
+        }
+    ],
+    "currentTurn": "Professor Plum",
+    "lastActionTaken": {
+        "type": "Action",
+        "message": "Someone moved somewhere."
+    }
+}
