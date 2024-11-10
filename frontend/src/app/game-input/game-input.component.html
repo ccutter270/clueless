@@ -1,1 +1,38 @@
-<p>game-input works!</p>
+<div class = "container">
+    <h3>Suggestion/Accusation Selections</h3>
+    <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="character">Character</label>
+            <select id="character" formControlName="character">
+                <option value="" disabled>Select a Character</option>
+                <option *ngFor="let character of characters" [value]="character">
+                    {{ character }}
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label for="room">Room</label>
+            <select id="room" formControlName="room">
+                <option value="" disabled>Select a Room</option>
+                <option *ngFor="let room of rooms" [value]="room">
+                {{ room }}
+                </option>
+            </select>
+        </div>
+      
+
+        <div>
+            <label for="weapon">Weapon</label>
+            <select id="weapon" formControlName="weapon">
+              <option value="" disabled>Select a Weapon</option>
+              <option *ngFor="let weapon of weapons" [value]="weapon">
+                {{ weapon }}
+              </option>
+            </select>
+        </div>
+
+        <button type="submit" [disabled]="gameForm.invalid">Submit</button>
+    </form>
+
+</div>
