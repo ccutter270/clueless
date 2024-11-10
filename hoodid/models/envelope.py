@@ -1,14 +1,13 @@
-from hoodid.models.weapon import Weapon
-from hoodid.models.location import Location
-from hoodid.models.player import Player
+from models.weapon import Weapon
+from models.location import Location
+from models.character import Character
 
 class Envelope:
 
-    location: Location
-    weapon: Weapon
-    player: Player
+    def __init__(self, weapon: Weapon, suspect: Character, room: Location) -> None:
+        self.weapon = weapon    # The weapon used in the crime
+        self.suspect = suspect  # The character who committed the crime
+        self.room = room        # The location where the crime took place
 
-    def __init__(self, location: Location, weapon: Weapon, player: Player) -> None:
-        self.location = location
-        self.weapon = weapon
-        self.player = player
+    def __repr__(self):
+        return f"Envelope({self.weapon}, {self.suspect}, {self.room})"

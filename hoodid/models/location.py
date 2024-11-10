@@ -1,16 +1,35 @@
 from typing import List
-from hoodid.models.character import Character
+from models.weapon import Weapon
 
 class Location:
 
-    label: str
+    name: str
+    locationType: str
     connectedLocations: List['Location']
-    characters: List[Character]
+    occupied: bool
+    weapon: Weapon
 
-    def __init__(self, label: str, connectedLocations: List['Location']) -> None:
-        self.label = label
-        self.connectedLocations = connectedLocations
-        self.characters = None
+    def __init__(self, name: str, locationType: str) -> None:
+        self.name = name                                    # The name of the location (e.g., "Kitchen", "Living Room")
+        self.locationType = locationType                    # Type being "room" or "hallway"
+        self.connectedLocations: List['Location'] = []      # List of connected locations (rooms)
+        self.occupied = False
+        self.weapon = None
 
-    def isEmpty(self):
-        return not self.characters or self.characters == []
+    def __repr__(self):
+        return f"Location({self.name})"
+
+    def setOccupied(self, occupied: bool):
+        """ Set occupied to true or false """
+        self.occupied = occupied
+    
+    def isOccupied(self):
+        return occupied
+
+    def hasWeapon(self):
+        return self.weapon is not None
+
+    def setWeapon(self, weapon: Weapon):
+        self.weapon = weapon
+
+    
