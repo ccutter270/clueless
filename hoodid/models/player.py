@@ -18,17 +18,6 @@ class Player:
     def __repr__(self):
         return f"Player({self.character}, {self.cardsList})"
 
-
-    def move_to(self, new_location: Location):
-        """ Move the player to a new location """
-        if new_location in self.location.connectedLocations:
-            self.location = new_location
-            print(f"{self.character.name} moved to {new_location.name}")
-        else:
-            print(f"{new_location.name} is not connected to {self.location.name}. Cannot move.")
-
-
-
     def get_player_info(self):
         return {
             "playerID": self.playerID,
