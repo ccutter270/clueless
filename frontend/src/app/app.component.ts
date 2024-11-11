@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  messages: string[] = [];
+  messages: GameState[] = [];
   private broadcastSubscription!: Subscription;
 
   constructor(private webSocketService: WebSocketService) { }

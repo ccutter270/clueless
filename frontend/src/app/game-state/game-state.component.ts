@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { WebSocketService } from '../websocket.service';
 import { Subscription } from 'rxjs';
 import { CommonModule, NgFor } from '@angular/common';
+import { GameState } from '../../models/GameState';
 
 @Component({
   selector: 'gameState',
@@ -15,7 +16,7 @@ export class GameStateComponent implements OnInit, OnDestroy {
 
   // @ViewChild('messageBox') messageBox!: ElementRef;
 
-  messages: string[] = [];
+  @Input() messages: GameState[] = [];
 
   private socketSubscription!: Subscription;
 
