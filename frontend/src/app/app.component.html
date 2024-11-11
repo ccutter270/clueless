@@ -8,12 +8,12 @@
       
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters"></room>
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters" [characters]="getCharactersForArea(item.name)"></room>
       </div>
   
       <!-- Check if the area is a hallway -->
       <div *ngIf="item.type === 'hall'">
-        <hallway [hallName]="item.name" [imageURL]="item.photo!"></hallway>
+        <hallway [hallName]="item.name" [imageURL]="item.photo!" [characters]="getCharactersForArea(item.name)"></hallway>
       </div>
   
       <!-- Handle empty areas (if any) -->
