@@ -1,40 +1,67 @@
 <h1>Clue-Less</h1>
 
 <div class = "container">
-  <div class = "grid">
-    @for (item of Areas; track item.name) {
-      @if (item.type == "room") {
-        <room [roomName]="item.name" [image]="item.photo!">
 
-          <!-- <ng-container *ngFor="let character of characters">
+  <div class="grid">
+    <!-- Loop over Areas to create room or hallway components -->
+    <div *ngFor="let item of Areas; trackBy: trackByFn">
+      
+      <!-- Check if the area is a room -->
+      <div *ngIf="item.type === 'room'">
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters">
+          
+          <!-- Loop over characters and display player icons if they match the area
+          <div *ngFor="let character of characters">
             <div *ngIf="character.locationId === item.name" class="player-icon">
+              <p>{{ character.characterId }} icon</p>
               <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
             </div>
-          </ng-container> -->
-
+            <p>{{ character.characterId }} icon</p>
+            <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
+          </div> -->
+  
         </room>
-    } @else if (item.type == "hall") {
+      </div>
+  
+      <!-- Check if the area is a hallway -->
+      <div *ngIf="item.type === 'hall'">
         <hallway [hallName]="item.name" [imageURL]="item.photo!">
-
-          <!-- <ng-container *ngFor="let character of characters">
+  
+          <!-- Loop over characters and display player icons if they match the area -->
+          <ng-container *ngFor="let character of characters">
             <div *ngIf="character.locationId === item.name" class="player-icon">
+              <p>{{ character.characterId }} icon</p>
               <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
             </div>
-          </ng-container> -->
-
+          </ng-container>
+  
         </hallway>
-    } @else if (item.type == "empty") {
+      </div>
+  
+      <!-- Handle empty areas (if any) -->
+      <div *ngIf="item.type === 'empty'">
         <empty></empty>
-    }
-    
-  } 
+      </div>
+  
+    </div>
   </div>
+  
 
   <div class = "controlpanel">
     <gameState></gameState>
     <playerInput></playerInput>
     <gameInput></gameInput>
     <trackingCard></trackingCard>
+    
+    <!-- below is for testing -->
+    <h3>Game Characters</h3>
+    <ul>
+      <li *ngFor="let character of characters">
+        <strong>{{ character.characterId }}</strong> is in the <em>{{ character.locationId }}</em>
+      </li>
+    </ul>
 
   </div>
+
+  
 </div>

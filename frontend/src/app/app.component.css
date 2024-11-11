@@ -10,27 +10,6 @@ h1 {
     display: grid; 
     gap: 1px;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    position: relative;
+    /* position: relative; */
 }
 
-.player-icon {
-    position: absolute; /* Absolutely position the icon in its area */
-    top: 50%;  /* Center the icon vertically */
-    left: 50%;  /* Center the icon horizontally */
-    transform: translate(-50%, -50%); /* Corrects for the offset when centering */
-    width: 30px; /* Size of the player icon */
-    height: 30px;
-    background-color: transparent;
-    text-align: center;
-    line-height: 30px; /* Aligns text or icons inside the div */
-  }
-  
-  .icon-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%; 
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    position: absolute;  /* Make sure the icon is positioned correctly */
-    z-index: 2;  /* Ensure it layers above the background */
-  }

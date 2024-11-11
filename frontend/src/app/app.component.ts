@@ -91,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   characters: any[] = [
     {characterId: "Colonel Mustard", locationId: "Study"},
     {characterId: "Professor Plum", locationId: "Conservatory to Ball"},
+    {characterId: "Miss Scarlet", locationId: "Library"}
   ];
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
@@ -104,9 +105,17 @@ export class AppComponent implements OnInit, OnDestroy {
       "Mrs. Peacock": "miss-peacock.jpg"
     };
 
-    return playerIcons[characterId] || "pink.jpg";
-
+    const iconURL = playerIcons[characterId] || "pink.jpg";
+    console.log('Returning icon for', characterId, iconURL);  // Debugging line
+    return iconURL
+    
   }
+
+  trackByFn(index: number, item: any) {
+    return item.name; // You can use a unique property
+  }
+
+
   ngOnInit(): void {
     this.socketSubscription = this.webSocketService.onMessage().subscribe(
       (game_state: GameState) => {
