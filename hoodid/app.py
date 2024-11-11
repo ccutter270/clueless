@@ -45,7 +45,18 @@ def start_game():
 # Custom event example
 @socketio.on('player_action')
 def handle_player_action(data):
-    print("Processing Player Action")
+    print("""
+--------------------------------------------
+          Processing Player Action
+--------------------------------------------
+        """)
+    # Update game state
+    socketio.emit('game_state', {'data': game_service.get_game_state()})
+
+
+@socketio.on('player_connected')
+def broadcast_game_state():
+    print("Broadcasting Game state for initial player connection")
     # Update game state
     emit('game_state', {'data': game_service.get_game_state()})
 
