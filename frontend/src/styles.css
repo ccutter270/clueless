@@ -9,6 +9,7 @@ html, body{height: 100%; width: 100%;}
     border: 3pt solid black;
     justify-self: stretch;
     position: relative;
+    border-radius: 10px;
   }
 
 .title {   

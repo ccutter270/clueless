@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { WebSocketService } from '../websocket.service';
 // import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -16,8 +16,10 @@ export class PlayerInputComponent {
 
     message: string = '';
     sending: boolean = false;
+    @Input() options: string[] =[];
 
     constructor(private webSocketService: WebSocketService) {}
+    
 
     sendMessage() {
       if (this.message.trim()) {

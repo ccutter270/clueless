@@ -97,11 +97,19 @@ export class AppComponent implements OnInit, OnDestroy {
   characters: any[] = [
     {characterId: "Colonel Mustard", locationId: "Study"},
     {characterId: "Professor Plum", locationId: "Study"},
-    {characterId: "Miss Scarlet", locationId: "Study"},
+    {characterId: "Miss Scarlet", locationId: "Ball to Kitchen"},
     {characterId: "Mrs. White", locationId: "Study"},
-    {characterId: "Mr. Green", locationId: "Study"},
+    {characterId: "Mr. Green", locationId: "Ball to Kitchen"},
     {characterId: "Mrs. Peacock", locationId: "Study"}
   ];
+  
+  // Get filtered characters for each area
+  getCharactersForArea(areaName: string): any[] {
+    return this.characters.filter(character => character.locationId === areaName);
+  }
+
+
+  options: string[] = ['move', 'suggest', 'accuse'];
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
 
