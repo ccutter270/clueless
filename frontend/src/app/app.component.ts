@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RoomComponent } from "./room/room.component";
 import { HallwayComponent } from "./hallway/hallway.component";
@@ -27,6 +27,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private broadcastSubscription!: Subscription;
 
   constructor(private webSocketService: WebSocketService) { }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    this.webSocketService.close();
+  }
+
+  
   title = 'Clue';
   game_state: GameState = {
     character: [

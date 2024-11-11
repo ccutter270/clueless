@@ -12,9 +12,16 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 game_service = GameService()
 
-app.register_blueprint(game_bp, url_prefix='/game')
-app.register_blueprint(action_bp, url_prefix='/action')
-app.register_blueprint(player_bp, url_prefix='/player')
+characters = [
+    "Professor Plum",
+    "Miss Scarlet",
+    "Mrs. Peacock",
+    "Mr. Green",
+    "Colonel Mustard",
+    "Mrs. White"
+]
+
+assigned_characters = {}
 
 @app.route('/')
 def index():
@@ -45,11 +52,7 @@ def start_game():
 # Custom event example
 @socketio.on('player_action')
 def handle_player_action(data):
-    print("""
---------------------------------------------
-          Processing Player Action
---------------------------------------------
-        """)
+    print("Processing player action")
     # Update game state
     socketio.emit('game_state', {'data': game_service.get_game_state()})
 
@@ -57,8 +60,28 @@ def handle_player_action(data):
 @socketio.on('player_connected')
 def broadcast_game_state():
     print("Broadcasting Game state for initial player connection")
+    if len(characters) > 0:
+        assigned_character = characters.pop(0)  # Get a character and remove it from the list
+    else:
+        assigned_character = None  # Or handle cases where no characters are available
+
+    # Store the assignment with the session ID as a unique identifier
+    assigned_characters[request.sid] = assigned_character
+
+    # Send the assigned character to the client
+    emit('character_assignment', {'character': assigned_character})
+    print(f"Assigned character {assigned_character} to client {request.sid}")
     # Update game state
     emit('game_state', {'data': game_service.get_game_state()})
+
+
+@socketio.on('disconnect')
+def on_disconnect():
+    # Release the character back to the list on client disconnect
+    character = assigned_characters.pop(request.sid, None)
+    if character:
+        characters.append(character)
+    print(f"Client {request.sid} disconnected and released character {character}")
 
 
 @app.route('/data')
