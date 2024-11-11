@@ -11,19 +11,24 @@ export class WebSocketService {
 
   constructor() {
     // Replace with your server's URL
-    this.socket = io('http://localhost:5000');  // Ensure this matches your Flask server URL and port
+    this.socket = io('http://localhost:5000'); // Update to match your Flask server URL and port
   }
 
-  // Observable for incoming 'game_state' events
-  onMessage(): Observable<any> {
+  // Method to emit a ping event to the server
+  pingForBroadcast() {
+    this.socket.emit('player_connected');
+  }
+
+  // Observable for listening to broadcasts from the server
+  onBroadcast(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('game_state', (data) => observer.next(data));
     });
   }
 
-  // Method to send messages to the server
   sendPlayerAction(action: Action) {
-    this.socket.emit('player_action', action);
+    console.log("sending player action")
+    this.socket.emit("player_action", action)
   }
 
   // Method to close the socket connection

@@ -12,34 +12,28 @@ import { CommonModule, NgFor } from '@angular/common';
 })
 export class WebsocketTesterComponent implements OnInit, OnDestroy {
   messages: string[] = [];
-  private socketSubscription!: Subscription;
-  private customEventSubscription!: Subscription;
+  private broadcastSubscription!: Subscription;
 
-  constructor(private webSocketService: WebSocketService) { }
+  constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit() {
-    // Subscribe to 'game_state' events
-    this.socketSubscription = this.webSocketService.onMessage().subscribe(
-      (message: any) => {
-        this.messages.push(message);
-        console.log('Received message:', message);
-      },
-      (error) => console.error('WebSocket error:', error)
-    );
-  }
+    // Send initial ping to server to start broadcasts
+    this.webSocketService.pingForBroadcast();
+    console.log('Sent broadcast request to server');
 
-  // Method to send a message to the server
-  sendMessage() {
-    this.webSocketService.sendPlayerAction({
-      type: "Action",
-      message: "Someone moved somewhere."
-    });
+    // Subscribe to broadcast messages from the server
+    this.broadcastSubscription = this.webSocketService.onBroadcast().subscribe(
+      (broadcast: any) => {
+        this.messages.push(broadcast.data); // Assuming broadcast contains a 'data' property
+        console.log('Received broadcast:', broadcast);
+      },
+      (error) => console.error('Broadcast error:', error)
+    );
   }
 
   ngOnDestroy() {
     // Unsubscribe to prevent memory leaks
-    this.socketSubscription.unsubscribe();
-    this.customEventSubscription.unsubscribe();
+    this.broadcastSubscription.unsubscribe();
     this.webSocketService.close();
   }
 }

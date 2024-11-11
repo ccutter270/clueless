@@ -22,14 +22,6 @@ export class GameStateComponent implements OnInit, OnDestroy {
   constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit() {
-    // Subscribe to incoming messages
-    this.socketSubscription = this.webSocketService.onMessage().subscribe(
-      (message: any) => {
-        this.messages.push(message);
-        console.log('Received message:', message);
-      },
-      (error) => console.error('WebSocket error:', error)
-    );
   }
 
   ngOnDestroy() {

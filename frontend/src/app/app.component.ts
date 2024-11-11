@@ -24,8 +24,7 @@ import { Subscription } from 'rxjs';
 
 export class AppComponent implements OnInit, OnDestroy {
   messages: string[] = [];
-  private socketSubscription!: Subscription;
-  private customEventSubscription!: Subscription;
+  private broadcastSubscription!: Subscription;
 
   constructor(private webSocketService: WebSocketService) { }
   title = 'Clue';
@@ -106,9 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
 
     const iconURL = playerIcons[characterId] || "pink.jpg";
-    console.log('Returning icon for', characterId, iconURL);  // Debugging line
-    return iconURL
-    
+    return iconURL    
   }
 
   trackByFn(index: number, item: any) {
@@ -116,31 +113,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnInit(): void {
-    this.socketSubscription = this.webSocketService.onMessage().subscribe(
-      (game_state: GameState) => {
-        this.game_state = game_state
-        console.log('Received game state:', game_state);
-      },
-      (error) => console.error('WebSocket error:', error)
-    );
-    this.webSocketService.sendPlayerAction({
-      type: "Action",
-      message: "Someone moved somewhere."
-    });
-  }
+  ngOnInit() {
+    // Send initial ping to server to start broadcasts
+    this.webSocketService.pingForBroadcast();
+    console.log('Sent broadcast request to server');
 
-  sendMessage() {
-    this.webSocketService.sendPlayerAction({
-      type: "Action",
-      message: "Someone moved somewhere."
-    });
+    // Subscribe to broadcast messages from the server
+    this.broadcastSubscription = this.webSocketService.onBroadcast().subscribe(
+      (broadcast: any) => {
+        this.messages.push(broadcast.data); // Assuming broadcast contains a 'data' property
+        console.log('Received broadcast:', broadcast);
+      },
+      (error) => console.error('Broadcast error:', error)
+    );
   }
 
   ngOnDestroy() {
     // Unsubscribe to prevent memory leaks
-    this.socketSubscription.unsubscribe();
-    this.customEventSubscription.unsubscribe();
     this.webSocketService.close();
   }
 }

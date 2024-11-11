@@ -23,10 +23,12 @@ export class PlayerInputComponent {
       if (this.message.trim()) {
         this.sending = true; // Indicate message is being sent
         // Send message to the server
-        // this.webSocketService.sendMessage(this.message);
+        this.webSocketService.sendPlayerAction({
+          type: "Action",
+          message: this.message
+        });
         this.message = ''; // Clear the input field after sending
         this.sending = false; // Reset the sending status
       }
     }
-
 }
