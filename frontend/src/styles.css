@@ -18,5 +18,5 @@ html, body{height: 100%; width: 100%;}
     text-align: center;
     justify-self: center;
     border-radius: 5px;
-    transform: translateY(250%);
+    /* transform: translateY(250%); */
 }

@@ -2,26 +2,15 @@ p {
     margin: 0px;
 }
 
-.player-icon {
-  position: absolute; /* Absolutely position the icon in its area */
-  top: 50%;  /* Center the icon vertically */
-  left: 50%;  /* Center the icon horizontally */
-  transform: translate(-50%, -50%); /* Corrects for the offset when centering */
-  width: 30px; /* Size of the player icon */
-  height: 30px;
-  background-color: transparent;
-  text-align: center;
-  line-height: 30px; /* Aligns text or icons inside the div */
-  z-index: 10;  /* Ensures the icon is on top of the room */
+.image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .icon-img {
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 16%;
+  height: 16%;
   border-radius: 50%; 
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  /* z-index: 10;  Ensure it layers above the background */
+  object-fit: cover; /* Ensures the image covers the area without distortion */  
 }

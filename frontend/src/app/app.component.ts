@@ -90,8 +90,11 @@ export class AppComponent implements OnInit, OnDestroy {
   // coming from server
   characters: any[] = [
     {characterId: "Colonel Mustard", locationId: "Study"},
-    {characterId: "Professor Plum", locationId: "Conservatory to Ball"},
-    {characterId: "Miss Scarlet", locationId: "Library"}
+    {characterId: "Professor Plum", locationId: "Study"},
+    {characterId: "Miss Scarlet", locationId: "Study"},
+    {characterId: "Mrs. White", locationId: "Study"},
+    {characterId: "Mr. Green", locationId: "Study"},
+    {characterId: "Mrs. Peacock", locationId: "Study"}
   ];
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
