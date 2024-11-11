@@ -2,7 +2,7 @@ import { Action } from "./action.model";
 import { Character } from "./character.model";
 
 export interface GameState {
-    character: Character[],
+    characters: Character[],
     currentTurn: string,
     lastActionTaken: Action
 }
