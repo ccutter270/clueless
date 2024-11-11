@@ -96,6 +96,8 @@ export class AppComponent implements OnInit, OnDestroy {
     {characterId: "Mrs. Peacock", locationId: "Study"}
   ];
 
+  options: string[] = ['move', 'suggest', 'accuse'];
+
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
 
     const playerIcons = {
