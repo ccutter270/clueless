@@ -82,9 +82,9 @@ class GameService:
             }
         }
     ],
-    "currentTurn": "Professor Plum",
+    "currentTurn": "Mrs. White",
     "lastActionTaken": {
         "type": "Action",
-        "message": "Someone moved somewhere."
+        "message": "Someone moved somewhere. This is a Test Message."
     }
 }

@@ -4,6 +4,7 @@ from flask_socketio import SocketIO, send, emit
 from controllers.game_controller import game_bp
 from controllers.action_controller import action_bp
 from controllers.player_controller import player_bp
+from models.action import Action
 from services.game_service import GameService
 
 app = Flask(__name__)
@@ -51,8 +52,9 @@ def start_game():
 
 # Custom event example
 @socketio.on('player_action')
-def handle_player_action(data):
+def handle_player_action(action: Action):
     print("Processing player action")
+    print(action)
     # Update game state
     socketio.emit('game_state', {'data': game_service.get_game_state()})
 
