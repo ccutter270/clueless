@@ -1,4 +1,5 @@
-<h1>Clue-Less</h1>
+<h1>Playing Clue-Less as {{userService.assignedCharacter()}}</h1>
+
 
 <div class="container">
 
@@ -8,12 +9,14 @@
 
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters" [characters]="getCharactersForArea(item.name)"></room>
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters"
+          [characters]="getCharactersForArea(item.name)"></room>
       </div>
 
       <!-- Check if the area is a hallway -->
       <div *ngIf="item.type === 'hall'">
-        <hallway [hallName]="item.name" [imageURL]="item.photo!" [characters]="getCharactersForArea(item.name)"></hallway>
+        <hallway [hallName]="item.name" [imageURL]="item.photo!" [characters]="getCharactersForArea(item.name)">
+        </hallway>
       </div>
 
       <!-- Handle empty areas (if any) -->
@@ -26,7 +29,7 @@
 
 
   <div class="controlpanel">
-    <gameState [messages]="messages"></gameState>
+    <gameState [states]="states"></gameState>
     <playerInput [options]="options"></playerInput>
     <gameInput></gameInput>
     <trackingCard></trackingCard>

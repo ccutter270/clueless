@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RoomComponent } from "./room/room.component";
 import { HallwayComponent } from "./hallway/hallway.component";
@@ -10,8 +10,10 @@ import { GameStateComponent } from './game-state/game-state.component';
 import { GameInputComponent } from './game-input/game-input.component';
 import { TrackingCardComponent } from './tracking-card/tracking-card.component';
 import { PlayerInputComponent } from "./player-input/player-input.component";
-import { GameState } from '../models/GameState';
+import { GameState } from '../models/game.state.model';
 import { Subscription } from 'rxjs';
+import { GameStateService } from './game.state.service';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +25,15 @@ import { Subscription } from 'rxjs';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  messages: GameState[] = [];
-  private broadcastSubscription!: Subscription;
 
-  constructor(private webSocketService: WebSocketService) { }
+  webSocketService = inject(WebSocketService)
+  gameStateService = inject(GameStateService)
+  userService = inject(UserService)
+
+  states: GameState[] = [];
+  private broadcastSubscription!: Subscription;
+  private userAssignmentSubscription!: Subscription;
+
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent): void {
@@ -35,36 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   
   title = 'Clue';
-  game_state: GameState = {
-    character: [
-      {
-        name: "Professor Plum",
-        location: {
-          name: "Kitchen",
-          locationType: "Room",
-          connectedLocations: [],
-          occupied: true,
-          weapon: {
-            name: "Wrench"
-          }
-        },
-        homeSquare: {
-          name: "Kitchen",
-          locationType: "Room",
-          connectedLocations: [],
-          occupied: true,
-          weapon: {
-            name: "Wrench"
-          }
-        }
-      }
-    ],
-    currentTurn: "Professor Plum",
-    lastActionTaken: {
-      type: "Action",
-      message: "Professor Plum moved to Kitchen."
-    }
-  }
+  
   Areas = [
     { name: "Study", type: "room", photo: "study.jpg" },
     { name: "Study to Hall", type: "hall", photo: "hallway.jpg" },
@@ -136,14 +114,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.webSocketService.pingForBroadcast();
     console.log('Sent broadcast request to server');
 
-    // Subscribe to broadcast messages from the server
+    // Subscribe to broadcast states from the server
     this.broadcastSubscription = this.webSocketService.onBroadcast().subscribe(
       (broadcast: any) => {
-        this.messages.push(broadcast.data); // Assuming broadcast contains a 'data' property
+        this.gameStateService.gameState.set(broadcast.data);
+        this.states.push(broadcast.data); // Assuming broadcast contains a 'data' property
         console.log('Received broadcast:', broadcast);
       },
       (error) => console.error('Broadcast error:', error)
     );
+
+    this.userAssignmentSubscription = this.webSocketService.onPlayerAssignment().subscribe(
+      (playerAssignment: any) => {
+        console.log("Received Player Assignment", playerAssignment)
+        this.userService.assignedCharacter.set(playerAssignment.character);
+      },
+      (error) => console.error("Player Assignment error")
+    )
   }
 
   ngOnDestroy() {

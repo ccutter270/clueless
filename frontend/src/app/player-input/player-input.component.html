@@ -1,17 +1,10 @@
 <div class="messageSender">
-    <h3>Enter your move:</h3>
-    
-    <!-- Text area for typing message -->
-    <!-- <textarea [(ngModel)]="message" placeholder="Type your message..." rows="3"></textarea> -->
-  
-    <!-- Button to send message -->
-    <!-- <button (click)="sendMessage()" [disabled]="sending">Send</button> -->
+  <h3>Enter your move:</h3>
 
-    <div class="'button-list">
-      <!-- Loop through the buttonLabels array and create a button for each -->
-      <button *ngFor="let label of options" (click)="sendMessage()">
-        {{ label }}
-      </button>
-    </div>
-
+  <div class="'button-list">
+    <!-- Loop through the buttonLabels array and create a button for each -->
+    <button [disabled]="gameState.currentTurn !== userService.assignedCharacter()" *ngFor="let label of options" (click)="sendMessage(label)">
+      {{ label }}
+    </button>
   </div>
+</div>

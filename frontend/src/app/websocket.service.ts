@@ -26,6 +26,12 @@ export class WebSocketService {
     });
   }
 
+  onPlayerAssignment(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('character_assignment', (data) => observer.next(data))
+    })
+  }
+
   sendPlayerAction(action: Action) {
     console.log("sending player action")
     this.socket.emit("player_action", action)
