@@ -22,7 +22,7 @@ export class PlayerInputComponent {
   sending: boolean = false;
   @Input() options: string[] = [];
 
-  gameState = this.gameStateService.gameState();
+  gameState = this.gameStateService.gameState;
 
   sendMessage(message: string) {
     if (message.trim()) {
@@ -30,9 +30,9 @@ export class PlayerInputComponent {
       // Send message to the server
       this.webSocketService.sendPlayerAction({
         type: "Action",
-        character: "Professor Plum",
+        character: this.userService.assignedCharacter(),
         location: "Library",
-        message: "Hello"
+        message: message
       });
       message = ''; // Clear the input field after sending
       this.sending = false; // Reset the sending status
