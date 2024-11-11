@@ -8,34 +8,12 @@
       
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters">
-          
-          <!-- Loop over characters and display player icons if they match the area
-          <div *ngFor="let character of characters">
-            <div *ngIf="character.locationId === item.name" class="player-icon">
-              <p>{{ character.characterId }} icon</p>
-              <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
-            </div>
-            <p>{{ character.characterId }} icon</p>
-            <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
-          </div> -->
-  
-        </room>
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters"></room>
       </div>
   
       <!-- Check if the area is a hallway -->
       <div *ngIf="item.type === 'hall'">
-        <hallway [hallName]="item.name" [imageURL]="item.photo!">
-  
-          <!-- Loop over characters and display player icons if they match the area -->
-          <ng-container *ngFor="let character of characters">
-            <div *ngIf="character.locationId === item.name" class="player-icon">
-              <p>{{ character.characterId }} icon</p>
-              <img [src]="getPlayerIcon(character.characterId)" class="icon-img">
-            </div>
-          </ng-container>
-  
-        </hallway>
+        <hallway [hallName]="item.name" [imageURL]="item.photo!"></hallway>
       </div>
   
       <!-- Handle empty areas (if any) -->

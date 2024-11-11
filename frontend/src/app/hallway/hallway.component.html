@@ -2,6 +2,10 @@
     <div class = "title">
         <p>{{ hallName }}</p>
     </div>
+
+    <div class="image-container">
+        <img *ngFor="let character of characters" [src]="getPlayerIcon(character.characterId)" class="icon-img">
+    </div>
 </div>
 
 

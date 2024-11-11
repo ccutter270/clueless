@@ -9,11 +9,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './room.component.css'
 })
 export class RoomComponent {
-  @Input() roomName: string = "";
-  @Input() image: string = "";
-  @Input() characters: any[] = [];
-  //  @Input() players: string[] = [];
-
+ @Input() roomName: string = "";
+ @Input() image: string = "";
+ @Input() characters: any[] = [];
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
 
