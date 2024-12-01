@@ -1,7 +1,8 @@
 from models.player import Player
+from models.character import Character
 from models.game import Game
-from config import Config
 from typing import List
+import json
 
 class GameService:
 
@@ -19,23 +20,12 @@ class GameService:
 
 
     
-    def add_player(self, character):
+    def add_player(self, player: Player):
         """ Add a player to the game """
         if len(self.players) >= 6:
             return {"message": "Maximum number of players reached."}
 
-        # Ensure the character is unique
-        if any(player.character == character for player in self.players):
-            return {"message": f"Character {character} is already taken."}
-
-        # Assign a unique player ID
-        player_id = len(self.players) + 1
-        player = Player(player_id, character)
         self.players.append(player)
-        print({"message": f"Player {player_id} added as {character}!", "player": player.get_player_info()})
-        print(self.players)
-        return {"message": f"Player {player_id} added as {character}!", "player": player.get_player_info()}
-
 
 
 
@@ -44,7 +34,6 @@ class GameService:
         if len(self.players) < 3:
             return {"message": "Need at least 3 players to start the game!"}
 
-
         # When starting game, deal cards to players
         hands = self.game.cards.deal_cards(num_players=len(self.players))
         for i, player in enumerate(self.players):
@@ -52,39 +41,66 @@ class GameService:
         
         # Then add players to the Game class
         self.game.players = self.players
+        self.game.assign_player()
 
         # Start game
         return self.game.start_game()
 
     def get_game_state(self):
 
-        return {
-    "character": [
-        {
-            "name": "Professor Plum",
-            "location": {
-                "name": "Kitchen",
-                "locationType": "Room",
-                "connectedLocations": [],
-                "occupied": True,
-                "weapon": {
-                    "name": "Wrench"
-                }
-            },
-            "homeSquare": {
-                "name": "Kitchen",
-                "locationType": "Room",
-                "connectedLocations": [],
-                "occupied": True,
-                "weapon": {
-                    "name": "Wrench"
+        
+        if self.game.started:
+
+            game_state = {
+                "started": True,
+                "characters": {},
+                "current_player": self.game.current_player.character.name,
+                "lastActionTaken": {    # TODO: Update with real action
+                    "type": "Action",
+                    "message": "Someone moved somewhere. This is a Test Message."
                 }
             }
-        }
-    ],
-    "currentTurn": "Mrs. White",
-    "lastActionTaken": {
-        "type": "Action",
-        "message": "Someone moved somewhere. This is a Test Message."
-    }
-}
+
+            # Fill out current game state
+            for character in self.game.characters:
+                game_state["characters"][character.name] = character.jsonify()
+
+
+        # TODO: make a game not started state
+        else:
+            game_state = {
+                "character": [
+                    {
+                        "name": "Professor Plum",
+                        "location": {
+                            "name": "Kitchen",
+                            "locationType": "Room",
+                            "connectedLocations": [],
+                            "occupied": True,
+                            "weapon": {
+                                "name": "Wrench"
+                            }
+                        },
+                        "homeSquare": {
+                            "name": "Kitchen",
+                            "locationType": "Room",
+                            "connectedLocations": [],
+                            "occupied": True,
+                            "weapon": {
+                                "name": "Wrench"
+                            }
+                        }
+                    }
+                ],
+                "current_player": "Mrs. White",
+                "lastActionTaken": {
+                    "type": "Action",
+                    "message": "Someone moved somewhere. This is a Test Message."
+                }
+            }
+
+
+        # TODO: delete for debug
+        print(f"Game State: {json.dumps(game_state, indent=4)}")
+
+        return game_state

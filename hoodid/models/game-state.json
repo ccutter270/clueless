@@ -10,7 +10,7 @@
 
         }
     ],
-    "currentTurn": "playerID",
+    "current_player": "playerID",
     "lastActionTaken": {
         "type": "Action",
         "message": "A moved to Kitchen."

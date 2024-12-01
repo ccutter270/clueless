@@ -6,6 +6,7 @@ from models.player import Player
 from models.envelope import Envelope
 from models.location import Location
 from models.card import CardDeck
+import json
 
 class Game:
 
@@ -13,7 +14,7 @@ class Game:
     Game instance, starts game & initializes all variables
 
     """
-
+    started: bool
     locations: List[Location]
     rooms: List[Location]
     weapons: List[Weapon]
@@ -21,15 +22,19 @@ class Game:
     cards = CardDeck
     envelope: Envelope
     players = List[Player]
-    currentTurn: Player
+    currentTurn: int
+    current_player: Player
     
     def __init__(self):
+        self.started = False
         self.locations, self.rooms, self.characters = self._create_game()
         self.weapons = self._create_weapons()
         self.cards = CardDeck(self.characters, self.weapons, self.rooms)
         self.envelope = Envelope(random.choice(self.weapons), random.choice(self.characters), random.choice(self.rooms))
         self.players: List[Player] = []
         self.set_weapon_locations()
+        self.currentTurn = 0
+        self.current_player = None
 
 
         
@@ -165,13 +170,11 @@ class Game:
         return self.characters
 
 
-    # TODO: Update with actual players
-    def add_player(self, player: Player):
+    # Updates the players to point to character
+    def assign_player(self):
         """Add a player to the game."""
-        if len(self.players) < 6:
-            self.players.append(player)
-        else:
-            raise ValueError("Maximum number of players reached.")
+        for player in self.players:
+            player.character = next((obj for obj in self.characters if obj.name == player.character), None)
 
     
     def set_weapon_locations(self):
@@ -187,19 +190,158 @@ class Game:
                 if not room.hasWeapon():
                     room.setWeapon(weapon) # Place the weapon in this room
                     print(f"{weapon.name} placed in {room.name}.")
+                    break
 
+
+    def next_turn(self):
+        # Move to the next player's turn
+        self.currentTurn = (self.currentTurn + 1) % len(self.players)
+
+    
+    def get_room_options(self, player: Player):
+
+        room_options = []
+        for location in player.character.location.connectedLocations:
+            if location.locationType == "room":
+                room_options.append(location)
+            else:
+                if not loction.isOccupied():
+                    room_options.append(location)
+
+        return room_options
+
+
+    # TODO: if we move character, player moves as well? check this. Pointer to the object
+    def move_player(self, character: Character, new_location: Location):
+
+        # If in hallway currently, make sure to "unoccupy it"
+        if character.location.locationType == "hallway":
+            character.location.setOccupied(False)
         
-    def get_game_state(self):
-        # TODO: Fill in game state JSON
-        return 0
+        character.location = new_location
+        
+        if character.location.locationType == hallway:
+            haracter.location.setOccupied(True)
+
+
+    # def prompt_player_action(self):
+    #     # Prompt player to choose an option: Accuse, Move, Suggest
+    #     print("Asking for action")
+    #     yield {"event": "player_action", "message": "Choose an action: 'accuse', 'move', or 'suggest'."}
+    #     action = yield  # Wait for player's action from frontend
+
+    #     return action
+
+    def prompt_player_action(self):
+        return {
+            "actions": ["Accuse", "Move", "Suggest"]
+        }
+
+
+    def accuse(self, player: Player, suspect: str, accused_weapon: str, accused_location: str):
+        
+        # Check if the accusation matches the solution
+        if (suspect == self.envelope.suspect.name and
+            accused_weapon == self.envelope.weapon.name and
+            accused_location == self.solution.location):
+                result = f"Player {player.character.name} wins! The solution was correct."
+                return {"result": result, "correct": True}
+                return True
+        else:
+            result = f"Player {player.character.name} lost! The solution was incorrect."
+            return {"result": result, "correct": False}
+
+    def prompt_player_accuse(self):
+        print("Asking for accusation")
+        yield {"event": "accuse_prompt", "message": "Make your accusation!"}
+        accusation = yield  # Wait for the accusation details
+        return accusation
+       
+        
+    # def get_game_state(self):
+    #     # TODO: Fill in game state JSON
+    #     return 0
 
 
     def start_game(self):
         """Start the game loop (this can be expanded with turns and gameplay mechanics)."""
-
-        # TODO: Exampnd this to have game play mechanics
+        self.started = True
         print("Welcome to the Clue game!")
+        
+        # TODO: delete, for testing
         print(f"The solution to the crime is: {self.envelope}")
+        print(f"Players {self.players}")
+        
+        game_won = False
+        # while not game_won:
+        if True:
+
+            self.current_player = self.players[self.currentTurn]
+            print(f"\n--- {self.current_player.character}'s turn ---")
+
+            action = self.prompt_player_action()
+
+            if action == "move":
+                
+                move_options = []
+                if player.character.location.locationType == "hallway":
+                    hallway_options = self.current_player.location.connectedLocations
+                    print(f"Hallway Options: {hallway_options}")
+
+                if player.character.location.locationType == "room":
+                    room_options = self.get_room_options(self.current_player)
+                    print(f"Room Options: {room_options}")
+
+
+                else:
+                    print("Error: This should be a room or a hallway but it is neither")
+
+                
+                move_choice = self.prompt_player_move(move_options)
+
+                # TODO: verify this returns the object
+                new_location = next((obj for obj in self.locations if obj.name == move_choice), None)
+                move_player(new_location)
+
+                # Now suggest
+
+                
+            if action == "suggest":
+                print("suggest")
+
+
+            if action == "accuse":
+
+                accusation = self.prompt_player_accuse()
+                accuse(accusation)  # TODO: make this take the JSON in? 
+                
+                print("accuse")
+            
+            
+
+
+            # Handle Suggestions
+
+
+            # Display 
+
+            # # Simulate or get input for player's guess (for now, we randomly choose)
+            # guess = self.make_player_guess(self.self.current_player)
+
+            # # Display the guess (character, weapon, and location)
+            # print(f"{self.self.current_player.character_name} guesses: {guess['character']} with the {guess['weapon']} in the {guess['location']}.")
+
+            # # Check if the guess is correct
+            # if self.make_guess(self.self.current_player, guess['character'], guess['weapon'], guess['location']):
+            #     print(f"Correct! {self.self.current_player.character_name} wins!")
+            #     return  # Game over, someone won.
+
+
+            # print(f"Incorrect guess. Moving to the next player.")
+
+            # Move to the next player's turn
+            self.next_turn()
+
 
     def __repr__(self):
         return f"Game(Players: {self.players}, Crime Envelope: {self.envelope})"

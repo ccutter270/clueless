@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { Component, Input, inject } from '@angular/core';
 import { WebSocketService } from '../websocket.service';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,7 @@ export class PlayerInputComponent {
   gameStateService = inject(GameStateService);
   webSocketService = inject(WebSocketService);
   userService = inject(UserService);
+  cdr = inject(ChangeDetectorRef)
 
   sending: boolean = false;
   @Input() options: string[] = [];
@@ -36,6 +38,7 @@ export class PlayerInputComponent {
       });
       message = ''; // Clear the input field after sending
       this.sending = false; // Reset the sending status
+      this.cdr.detectChanges();
     }
   }
 }

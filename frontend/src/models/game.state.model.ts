@@ -2,7 +2,8 @@ import { Action } from "./action.model";
 import { Character } from "./character.model";
 
 export interface GameState {
+    started: Boolean,
     characters: Character[],
-    currentTurn: string,
+    current_player: string,
     lastActionTaken: Action
 }

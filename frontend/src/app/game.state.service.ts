@@ -10,7 +10,7 @@ export class GameStateService {
 
   gameState = signal<GameState>({
     characters: [],
-    currentTurn: "",
+    current_player: "",
     lastActionTaken: {
       type: "",
       character: "",

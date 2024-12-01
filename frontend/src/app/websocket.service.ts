@@ -37,6 +37,11 @@ export class WebSocketService {
     this.socket.emit("player_action", action)
   }
 
+  // promptPlayerAction() {
+  //   console.log("TODO: Testing prompt player action")
+  //   this.socket.emit('prompt_player_action');  // Request prompt from backend
+  // }
+
   // Method to close the socket connection
   close() {
     if (this.socket) {

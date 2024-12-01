@@ -32,4 +32,16 @@ class Location:
     def setWeapon(self, weapon: Weapon):
         self.weapon = weapon
 
+    def jsonify(self):
+        """
+        Convert the Location object to a dictionary that can be serialized to JSON.
+        """
+        return {
+            'name': self.name,
+            'locationType': self.locationType,
+            'connectedLocations': [location.name for location in self.connectedLocations],  # Serialize each connected Location
+            'occupied': self.occupied,
+            'weapon': self.weapon.jsonify() if self.weapon else None,  # Serialize weapon if it exists
+        }
+
     

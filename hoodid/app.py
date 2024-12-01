@@ -6,10 +6,14 @@ from controllers.action_controller import action_bp
 from controllers.player_controller import player_bp
 from models.action import Action
 from services.game_service import GameService
+from models.player import Player
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 app.config['SECRET_KEY'] = 'my_secret_key'
-socketio = SocketIO(app, cors_allowed_origins='*')
+
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 game_service = GameService()
 
@@ -21,6 +25,7 @@ characters = [
     "Colonel Mustard",
     "Mrs. White"
 ]
+
 
 assigned_characters = {}
 
@@ -39,13 +44,14 @@ def add_player():
 
     # Add player using the GameService
     game_service.add_player(character)
+    print("here")
     return jsonify({"message": f"{character} added to the game!"})
 
 
 @app.route('/start_game', methods=['GET'])
 def start_game():
     # Logic to start the game goes here
-    game_service.start_game()
+    game_flow = game_service.start_game()
 
     return jsonify({"message": "Game started!"})
 
@@ -58,6 +64,16 @@ def handle_player_action(action: Action):
     # Update game state
     socketio.emit('game_state', {'data': game_service.get_game_state()})
 
+    return jsonify({"action: {action}"})
+
+# @socketio.on('player_action')
+# def handle_player_action(data):
+#     global game
+#     action = data.get('action')
+
+#     # Send the action to the game loop and get the next event
+#     game_event = next(game.play_game())  # Resume game after receiving the player's action
+#     emit('game_event', game_event)
 
 @socketio.on('player_connected')
 def broadcast_game_state():
@@ -73,18 +89,54 @@ def broadcast_game_state():
     # Send the assigned character to the client
     emit('character_assignment', {'character': assigned_character})
     print(f"Assigned character {assigned_character} to client {request.sid}")
+
+    # Add player using the GameService
+
+    # 
+    new_player = Player(request.sid, assigned_character)
+    game_service.add_player(new_player)
+
+    # TODO: delete - for testing
+    print(len(characters))
+    if len(characters) == 3:
+        print("STARITNG GAMESSSSS")
+        start_game()
+    
     # Update game state
-    emit('game_state', {'data': game_service.get_game_state()})
+    emit('game_state', {'data': game_service.get_game_state()}, broadcast=True)
+
+
+# Function to handle the accusation
+@socketio.on('get_accusation')
+def get_accusation(data):
+    global game
+    accusation = data.get('accusation')
+    
+    if accusation:
+        guessed_character = accusation.get('character')
+        guessed_weapon = accusation.get('weapon')
+        guessed_location = accusation.get('location')
+        
+        # Verify the accusation against the solution
+        result = game.accuse(game.current_player, guessed_character, guessed_weapon, guessed_location)
+        
+        # Send the result back to the frontend
+        emit('accuse_result', result)
 
 
 @socketio.on('disconnect')
 def on_disconnect():
-    # Release the character back to the list on client disconnect
     character = assigned_characters.pop(request.sid, None)
     if character:
         characters.append(character)
     print(f"Client {request.sid} disconnected and released character {character}")
 
+
+@socketio.on('prompt_player_action')
+def prompt_action():
+    # Emit the prompt for the player's next action (Accuse, Move, Suggest)
+    action_prompt = game.prompt_player_action()
+    emit('player_action_prompt', action_prompt)  # Send options to frontend
 
 @app.route('/data')
 def get_data():

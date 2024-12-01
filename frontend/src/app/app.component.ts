@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   webSocketService = inject(WebSocketService)
   gameStateService = inject(GameStateService)
   userService = inject(UserService)
+  cdr = inject(ChangeDetectorRef)
 
   states: GameState[] = [];
   private broadcastSubscription!: Subscription;
@@ -86,7 +88,6 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.characters.filter(character => character.locationId === areaName);
   }
 
-
   options: string[] = ['move', 'suggest', 'accuse'];
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
@@ -120,6 +121,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.gameStateService.gameState.set(broadcast.data);
         this.states.push(broadcast.data); // Assuming broadcast contains a 'data' property
         console.log('Received broadcast:', broadcast);
+
+        // Manually trigger change detection
+        this.cdr.detectChanges();
       },
       (error) => console.error('Broadcast error:', error)
     );
@@ -128,9 +132,27 @@ export class AppComponent implements OnInit, OnDestroy {
       (playerAssignment: any) => {
         console.log("Received Player Assignment", playerAssignment)
         this.userService.assignedCharacter.set(playerAssignment.character);
+         // Manually trigger change detection
+         this.cdr.detectChanges();
       },
       (error) => console.error("Player Assignment error")
     )
+
+
+    // // Update board if states changes
+    // this.gameStateService.states.subscribe((updatedStates) => {
+    //   this.states = updatedStates; // Update local copy
+    //   console.log('States updated:', this.states);
+    // });
+
+    // TODO
+    // // Listen for player action prompts from backend
+    // this.gameService.listenForPlayerActionPrompt().subscribe(action => {
+    //   this.promptMessage = "Choose your action:";
+    //   this.promptOptions = action.actions;  // ["Accuse", "Move", "Suggest"]
+    // });
+
+    
   }
 
   ngOnDestroy() {
