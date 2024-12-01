@@ -1,9 +1,9 @@
-<div class="messageSender">
+<div *ngIf="gameState().flow === 'move'" class="messageSender">
   <h3>Enter your move:</h3>
 
   <div class="'button-list">
     <!-- Loop through the buttonLabels array and create a button for each -->
-    <button [disabled]="gameState().current_player !== userService.assignedCharacter()" *ngFor="let label of options" (click)="sendMessage(label)">
+    <button *ngFor="let label of move_options" (click)="SendLocation(label)">
       {{ label }}
     </button>
   </div>

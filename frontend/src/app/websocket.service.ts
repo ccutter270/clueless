@@ -32,15 +32,22 @@ export class WebSocketService {
     })
   }
 
+  onMoveOptions(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('move_options', (data) => observer.next(data))
+    })
+  }
+
   sendPlayerAction(action: Action) {
     console.log("sending player action")
     this.socket.emit("player_action", action)
   }
 
-  // promptPlayerAction() {
-  //   console.log("TODO: Testing prompt player action")
-  //   this.socket.emit('prompt_player_action');  // Request prompt from backend
-  // }
+  sendMoveLocation(location: string) {
+    console.log("sending move location")
+    this.socket.emit("player_move_location", location)
+  }
+
 
   // Method to close the socket connection
   close() {

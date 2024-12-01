@@ -33,47 +33,12 @@ assigned_characters = {}
 def index():
     return render_template('index.html')  # HTML page with the client-side WebSocket code
 
-
-@app.route('/add_player', methods=['POST'])
-def add_player():
-    data = request.json
-    character = data.get('character')
-
-    if not character or any(player.character == character for player in game_service.players):
-        return jsonify({"error": "Missing required fields"}), 400
-
-    # Add player using the GameService
-    game_service.add_player(character)
-    print("here")
-    return jsonify({"message": f"{character} added to the game!"})
-
-
 @app.route('/start_game', methods=['GET'])
 def start_game():
     # Logic to start the game goes here
     game_flow = game_service.start_game()
 
     return jsonify({"message": "Game started!"})
-
-
-# Custom event example
-@socketio.on('player_action')
-def handle_player_action(action: Action):
-    print("Processing player action")
-    print(action)
-    # Update game state
-    socketio.emit('game_state', {'data': game_service.get_game_state()})
-
-    return jsonify({"action: {action}"})
-
-# @socketio.on('player_action')
-# def handle_player_action(data):
-#     global game
-#     action = data.get('action')
-
-#     # Send the action to the game loop and get the next event
-#     game_event = next(game.play_game())  # Resume game after receiving the player's action
-#     emit('game_event', game_event)
 
 @socketio.on('player_connected')
 def broadcast_game_state():
@@ -91,19 +56,50 @@ def broadcast_game_state():
     print(f"Assigned character {assigned_character} to client {request.sid}")
 
     # Add player using the GameService
-
-    # 
     new_player = Player(request.sid, assigned_character)
     game_service.add_player(new_player)
 
-    # TODO: delete - for testing
-    print(len(characters))
+    # TODO: add start game button?s
     if len(characters) == 3:
-        print("STARITNG GAMESSSSS")
         start_game()
     
     # Update game state
-    emit('game_state', {'data': game_service.get_game_state()}, broadcast=True)
+    emit('game_state', {'data': game_service.game.get_game_state()}, broadcast=True)
+
+
+# TODO: Here is where we can 
+
+# @socketio.on('move_options')
+# def get_move_options():
+#     emit('move_options', {self.game_service.game.move_options})
+
+
+# Get player action (move, suggest, accuse)
+@socketio.on('player_action')
+def handle_player_action(action: Action):
+    print("Processing player action")
+    print(action)
+
+    game_service.game.action = action["message"]
+    # Update game state
+    socketio.emit('game_state', {'data': game_service.game.get_game_state()})
+
+    # return jsonify({"action: {action}"})
+
+
+# Get player move location (to connecting location)
+@socketio.on('player_move_location')
+def handle_player_move_location(location: str):
+    print("Processing Move Location")
+    print(location)
+
+    # TODO: location
+
+    game_service.game.action = action["message"]
+    # Update game state
+    socketio.emit('game_state', {'data': game_service.game.get_game_state()})
+
+    # return jsonify({"action: {action}"})
 
 
 # Function to handle the accusation

@@ -11,15 +11,19 @@ import { GameStateComponent } from './game-state/game-state.component';
 import { GameInputComponent } from './game-input/game-input.component';
 import { TrackingCardComponent } from './tracking-card/tracking-card.component';
 import { PlayerInputComponent } from "./player-input/player-input.component";
+import { MoveToComponent } from "./move-to/move-to.component";
 import { GameState } from '../models/game.state.model';
 import { Subscription } from 'rxjs';
 import { GameStateService } from './game.state.service';
 import { UserService } from './user.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent, MoveToComponent],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -35,6 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
   states: GameState[] = [];
   private broadcastSubscription!: Subscription;
   private userAssignmentSubscription!: Subscription;
+  private moveOptionSubscription!: Subscription;
 
 
   @HostListener('window:beforeunload', ['$event'])
@@ -90,6 +95,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   options: string[] = ['move', 'suggest', 'accuse'];
 
+  move_options: string [] = []
+
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
 
     const playerIcons = {
@@ -109,7 +116,6 @@ export class AppComponent implements OnInit, OnDestroy {
     return item.name; // You can use a unique property
   }
 
-
   ngOnInit() {
     // Send initial ping to server to start broadcasts
     this.webSocketService.pingForBroadcast();
@@ -121,9 +127,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.gameStateService.gameState.set(broadcast.data);
         this.states.push(broadcast.data); // Assuming broadcast contains a 'data' property
         console.log('Received broadcast:', broadcast);
-
-        // Manually trigger change detection
-        this.cdr.detectChanges();
       },
       (error) => console.error('Broadcast error:', error)
     );
@@ -132,25 +135,18 @@ export class AppComponent implements OnInit, OnDestroy {
       (playerAssignment: any) => {
         console.log("Received Player Assignment", playerAssignment)
         this.userService.assignedCharacter.set(playerAssignment.character);
-         // Manually trigger change detection
-         this.cdr.detectChanges();
       },
       (error) => console.error("Player Assignment error")
     )
 
-
-    // // Update board if states changes
-    // this.gameStateService.states.subscribe((updatedStates) => {
-    //   this.states = updatedStates; // Update local copy
-    //   console.log('States updated:', this.states);
-    // });
-
-    // TODO
-    // // Listen for player action prompts from backend
-    // this.gameService.listenForPlayerActionPrompt().subscribe(action => {
-    //   this.promptMessage = "Choose your action:";
-    //   this.promptOptions = action.actions;  // ["Accuse", "Move", "Suggest"]
-    // });
+    this.moveOptionSubscription = this.webSocketService.onMoveOptions().subscribe(
+      (moveOptions: any) => {
+        console.log("Received Move Options", moveOptions)
+        console.log("Options", this.options)
+        this.move_options = moveOptions;
+      },
+      (error) => console.error("Move Option error")
+    )
 
     
   }

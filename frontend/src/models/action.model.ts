@@ -8,4 +8,4 @@ export interface Action {
 
 
 // {ACTION} {CHARACTER} to {LOCATION}
-//Move Prof. Plum to Kitceh
+//Move Prof. Plum to Kitchen

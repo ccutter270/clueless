@@ -8,39 +8,31 @@ import { UserService } from '../user.service';
 
 
 @Component({
-  selector: 'playerInput',
+  selector: 'moveTo',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './player-input.component.html',
-  styleUrl: './player-input.component.css'
+  templateUrl: './move-to.component.html',
+  styleUrl: './move-to.component.css'
 })
-export class PlayerInputComponent {
+export class MoveToComponent {
 
   gameStateService = inject(GameStateService);
   webSocketService = inject(WebSocketService);
   userService = inject(UserService);
-  cdr = inject(ChangeDetectorRef)
 
   sending: boolean = false;
-  @Input() options: string[] = [];
+  @Input() move_options: string[] = [];
 
   gameState = this.gameStateService.gameState;
 
-  sendMessage(message: string) {
+  SendLocation(message: string) {
     if (message.trim()) {
       this.sending = true; // Indicate message is being sent
 
-      console.log("DEBUGGING< ACTION CHOSEN IS ")
       // Send message to the server
-      this.webSocketService.sendPlayerAction({
-        type: "Action",
-        character: this.userService.assignedCharacter(),
-        location: "Library",
-        message: message
-      });
+      this.webSocketService.sendMoveLocation(message);
       message = ''; // Clear the input field after sending
       this.sending = false; // Reset the sending status
-      this.cdr.detectChanges();
     }
   }
 }

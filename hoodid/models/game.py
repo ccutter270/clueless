@@ -7,6 +7,8 @@ from models.envelope import Envelope
 from models.location import Location
 from models.card import CardDeck
 import json
+from flask_socketio import SocketIO, emit
+import time
 
 class Game:
 
@@ -24,7 +26,10 @@ class Game:
     players = List[Player]
     currentTurn: int
     current_player: Player
-    
+    flow: str
+    last_action_taken: str
+
+
     def __init__(self):
         self.started = False
         self.locations, self.rooms, self.characters = self._create_game()
@@ -34,7 +39,15 @@ class Game:
         self.players: List[Player] = []
         self.set_weapon_locations()
         self.currentTurn = 0
+        self.flow = "Starting"
         self.current_player = None
+        self.last_action_taken = "Initializing game"
+        self.socketio = SocketIO  # Inject SocketIO instance
+        
+        # Play game variables that control the game flow
+        self.action = None          # move, accuse, suggest
+        self.move_to = None         # location to move to
+        self.move_options = []      # Location options to move to
 
 
         
@@ -203,10 +216,10 @@ class Game:
         room_options = []
         for location in player.character.location.connectedLocations:
             if location.locationType == "room":
-                room_options.append(location)
+                room_options.append(location.name)
             else:
                 if not loction.isOccupied():
-                    room_options.append(location)
+                    room_options.append(location.location.name)
 
         return room_options
 
@@ -224,18 +237,6 @@ class Game:
             haracter.location.setOccupied(True)
 
 
-    # def prompt_player_action(self):
-    #     # Prompt player to choose an option: Accuse, Move, Suggest
-    #     print("Asking for action")
-    #     yield {"event": "player_action", "message": "Choose an action: 'accuse', 'move', or 'suggest'."}
-    #     action = yield  # Wait for player's action from frontend
-
-    #     return action
-
-    def prompt_player_action(self):
-        return {
-            "actions": ["Accuse", "Move", "Suggest"]
-        }
 
 
     def accuse(self, player: Player, suspect: str, accused_weapon: str, accused_location: str):
@@ -251,13 +252,68 @@ class Game:
             result = f"Player {player.character.name} lost! The solution was incorrect."
             return {"result": result, "correct": False}
 
-    def prompt_player_accuse(self):
-        print("Asking for accusation")
-        yield {"event": "accuse_prompt", "message": "Make your accusation!"}
-        accusation = yield  # Wait for the accusation details
-        return accusation
-       
-        
+
+
+    def get_game_state(self):
+
+        if self.started:
+
+            game_state = {
+                "started": True,
+                "flow": self.flow,
+                "characters": {},
+                "current_player": self.current_player.character.name,
+                "lastActionTaken": {    # TODO: Update with real action
+                    "message": self.last_action_taken
+                }
+            }
+
+            # Fill out current game state
+            for character in self.characters:
+                game_state["characters"][character.name] = character.jsonify()
+
+
+        # TODO: make a game not started state
+        else:
+            game_state = {
+                "started": False,
+                "flow": "Not Started",
+                "character": [
+                    {
+                        "name": "Professor Plum",
+                        "location": {
+                            "name": "Kitchen",
+                            "locationType": "Room",
+                            "connectedLocations": [],
+                            "occupied": True,
+                            "weapon": {
+                                "name": "Wrench"
+                            }
+                        },
+                        "homeSquare": {
+                            "name": "Kitchen",
+                            "locationType": "Room",
+                            "connectedLocations": [],
+                            "occupied": True,
+                            "weapon": {
+                                "name": "Wrench"
+                            }
+                        }
+                    }
+                ],
+                "current_player": "Mrs. White",
+                "lastActionTaken": {
+                    "type": "Action",
+                    "message": "Someone moved somewhere. This is a Test Message."
+                }
+            }
+
+
+        # TODO: delete for debug
+        # print(f"Game State: {json.dumps(game_state, indent=4)}")
+
+        return game_state
+  
     # def get_game_state(self):
     #     # TODO: Fill in game state JSON
     #     return 0
@@ -266,8 +322,9 @@ class Game:
     def start_game(self):
         """Start the game loop (this can be expanded with turns and gameplay mechanics)."""
         self.started = True
+
         print("Welcome to the Clue game!")
-        
+
         # TODO: delete, for testing
         print(f"The solution to the crime is: {self.envelope}")
         print(f"Players {self.players}")
@@ -276,41 +333,63 @@ class Game:
         # while not game_won:
         if True:
 
+            # Set Current Player
             self.current_player = self.players[self.currentTurn]
-            print(f"\n--- {self.current_player.character}'s turn ---")
 
-            action = self.prompt_player_action()
+            # Broadcast that its that Players Turn
+            self.last_action_taken = self.current_player.character.name + "'s turn, choose your action"
+            emit('game_state', {'data': self.get_game_state()}, broadcast=True)
 
-            if action == "move":
+            # Wait for player to choose action
+            while self.action is None:
+                time.sleep(.5)
+
+
+            if self.action == "move":
+
+                self.action = None
+                self.flow = "move"
+                self.last_action_taken = self.current_player.character.name + "chose to move"
+                emit('game_state', {'data': self.get_game_state()}, broadcast=True)
+
                 
-                move_options = []
-                if player.character.location.locationType == "hallway":
-                    hallway_options = self.current_player.location.connectedLocations
-                    print(f"Hallway Options: {hallway_options}")
+                # Get options that the player can move to
+                if self.current_player.character.location.locationType == "hallway":
+                    for location in self.current_player.character.location.connectedLocations:
+                        self.move_options.append(location.name)
+                    print(f"Hallway Options: {self.move_options}")
 
-                if player.character.location.locationType == "room":
-                    room_options = self.get_room_options(self.current_player)
-                    print(f"Room Options: {room_options}")
+                elif self.current_player.character.location.locationType == "room":
+                    self.move_options = self.get_room_options(self.current_player)
+                    print(f"Room Options: {self.move_options}")
 
-
+                
                 else:
                     print("Error: This should be a room or a hallway but it is neither")
 
                 
-                move_choice = self.prompt_player_move(move_options)
+                # Broadcast move options for player
+                emit('move_options', self.move_options, broadcast=True)
+                
+                # Wait for player to choose where to move to
+                while self.move_to is None:
+                    time.sleep(.5)
 
-                # TODO: verify this returns the object
-                new_location = next((obj for obj in self.locations if obj.name == move_choice), None)
-                move_player(new_location)
+                # Reset move options
+                self.move_options = None
 
-                # Now suggest
+                # MOVE THEN SUGGEST
 
                 
-            if action == "suggest":
+            if self.action == "suggest":
+                self.action = None
+
                 print("suggest")
 
 
-            if action == "accuse":
+            if self.action == "accuse":
+                
+                self.action = None
 
                 accusation = self.prompt_player_accuse()
                 accuse(accusation)  # TODO: make this take the JSON in? 

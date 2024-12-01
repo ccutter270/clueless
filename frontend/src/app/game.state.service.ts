@@ -9,6 +9,8 @@ export class GameStateService {
   constructor() { }
 
   gameState = signal<GameState>({
+    started: false,
+    flow: "",
     characters: [],
     current_player: "",
     lastActionTaken: {
