@@ -48,6 +48,11 @@ export class WebSocketService {
     this.socket.emit("player_move_location", location)
   }
 
+  sendSuggestion(suggestion: object) {  // TODO: figure out what type of suggestion is
+    console.log("sending player suggestion")
+    this.socket.emit("player_suggestion", suggestion)
+  }
+
 
   // Method to close the socket connection
   close() {

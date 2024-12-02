@@ -231,11 +231,10 @@ class Game:
         if character.location.locationType == "hallway":
             character.location.setOccupied(False)
         
-        character.location = new_location
-        
-        if character.location.locationType == hallway:
-            haracter.location.setOccupied(True)
+        character.location = new_location           # Move character to new location
+        new_location.setOccupied(True)              # Set Room to Occupied
 
+        
 
 
 
@@ -318,6 +317,8 @@ class Game:
     #     # TODO: Fill in game state JSON
     #     return 0
 
+    def send_game_state(self):
+        emit('game_state', {'data': self.get_game_state()}, broadcast=True)
 
     def start_game(self):
         """Start the game loop (this can be expanded with turns and gameplay mechanics)."""
@@ -349,7 +350,7 @@ class Game:
 
                 self.action = None
                 self.flow = "move"
-                self.last_action_taken = self.current_player.character.name + "chose to move"
+                self.last_action_taken = self.current_player.character.name + " chose to move"
                 emit('game_state', {'data': self.get_game_state()}, broadcast=True)
 
                 
@@ -375,14 +376,36 @@ class Game:
                 while self.move_to is None:
                     time.sleep(.5)
 
-                # Reset move options
-                self.move_options = None
+                # Get location instance
+                location = next((location for location in self.locations if location.name == self.move_to), None)
 
-                # MOVE THEN SUGGEST
+                self.move_player(self.current_player.character, location)
+
+                # Reset move options
+                self.last_action_taken = self.current_player.character.name + " moved to " + self.current_player.character.location.name
+                self.move_to = None
+                self.move_options = []
+               
+
+                # If move to room, make a suggestion
+                if self.current_player.character.location.locationType == "room":
+                    self.action = "suggest"
+                    self.flow = "suggest"
+                
+                self.send_game_state()
+
+                # TODO: Make function that logs something without the game state being changed. Look where the logging happens
 
                 
             if self.action == "suggest":
+
                 self.action = None
+
+
+                # Wait for Suggestion - TODO start here with the form button
+                while self.move_to is None:
+                    time.sleep(.5)
+
 
                 print("suggest")
 

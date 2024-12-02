@@ -81,10 +81,7 @@ def handle_player_action(action: Action):
     print(action)
 
     game_service.game.action = action["message"]
-    # Update game state
-    socketio.emit('game_state', {'data': game_service.game.get_game_state()})
 
-    # return jsonify({"action: {action}"})
 
 
 # Get player move location (to connecting location)
@@ -94,12 +91,20 @@ def handle_player_move_location(location: str):
     print(location)
 
     # TODO: location
+    game_service.game.move_to = location
 
-    game_service.game.action = action["message"]
-    # Update game state
-    socketio.emit('game_state', {'data': game_service.game.get_game_state()})
 
-    # return jsonify({"action: {action}"})
+# Get player move location (to connecting location)
+@socketio.on('player_suggestion')
+def handle_player_suggestion(suggestion: object):
+    print("Processing Player Suggestion")
+
+#     TODO: Fill out suggestion with these types
+# {'character': 'Miss Scarlet', 'room': 'Study', 'weapon': 'Candlestick'}
+    print(suggestion)
+
+    # TODO:  HERE - set suggestion values
+
 
 
 # Function to handle the accusation

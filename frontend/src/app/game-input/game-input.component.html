@@ -1,4 +1,4 @@
-<div class = "container">
+<div *ngIf="gameState().flow === 'suggest'" class="container">
     <h3>Suggestion/Accusation Selections</h3>
     <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
         <div>
