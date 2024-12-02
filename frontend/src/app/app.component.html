@@ -9,7 +9,7 @@
 
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters"
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="gameStateService.getGameState().characters"
           [characters]="getCharactersForArea(item.name)"></room>
       </div>
 
@@ -35,13 +35,6 @@
     <gameInput></gameInput>
     <trackingCard></trackingCard>
 
-    <!-- below is for testing -->
-    <h3>Game Characters</h3>
-    <ul>
-      <li *ngFor="let character of characters">
-        <strong>{{ character.characterId }}</strong> is in the <em>{{ character.locationId }}</em>
-      </li>
-    </ul>
 
   </div>
 
