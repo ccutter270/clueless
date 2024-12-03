@@ -1,5 +1,4 @@
-<div id="messageBox">
-    <h3>Game Feed</h3>
+<div id="messageBox" #messageBox class="message-box">
     <p *ngFor="let state of states">
         {{ state.lastActionTaken.message }}
     </p>  

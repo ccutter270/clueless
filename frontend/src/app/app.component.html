@@ -27,23 +27,54 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="column">  <h2>Game Data</h2> </div>
+    <div class="column">  <h2>Player Data</h2> </div>
+  </div>
 
-  <div class="controlpanel">
-    <gameState [states]="states"></gameState>
-    <playerInput [options]="options"></playerInput>
-    <moveTo [move_options]="move_options"></moveTo> 
-    <gameInput></gameInput>
-    <trackingCard></trackingCard>
+  <div class="row">
+    <div class="column">  <h2>Game Feed</h2> <gameState [states]="states"></gameState> </div>
+    <div class="column">
+      <h2> Your Cards </h2> 
+      <DisplayCard [cards]="cards"></DisplayCard>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column"> 
+      <h2>TODO: [Character]'s Turn</h2> 
+      <p>Option's will appear when it is your turn</p>
+      <playerInput [options]="options"></playerInput>
+      <moveTo [move_options]="move_options"></moveTo> 
+      <gameInput></gameInput>
+    </div>
+    <div class="column"> 
+      <h2>Your Game Tracker</h2>
+      <trackingCard></trackingCard> 
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="column">
+     
+      
+      
+      
+      
 
     <!-- below is for testing -->
-    <h3>Game Characters</h3>
-    <ul>
-      <li *ngFor="let character of characters">
-        <strong>{{ character.characterId }}</strong> is in the <em>{{ character.locationId }}</em>
-      </li>
-    </ul>
+    <div class="list">
+      <h3>Game Characters</h3>
+      <ul class="character-list">
+        <li *ngFor="let character of characters" class="character-item">
+          <strong class="character-id">{{ character.characterId }}</strong> is in the 
+          <em class="character-location">{{ character.locationId }}</em>
+        </li>
+      </ul>
+    </div>
 
-  </div>
 
 
 </div>

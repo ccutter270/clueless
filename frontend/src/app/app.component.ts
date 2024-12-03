@@ -12,6 +12,7 @@ import { GameInputComponent } from './game-input/game-input.component';
 import { TrackingCardComponent } from './tracking-card/tracking-card.component';
 import { PlayerInputComponent } from "./player-input/player-input.component";
 import { MoveToComponent } from "./move-to/move-to.component";
+import { DisplayCardComponent } from "./display-cards/display-cards.component";
 import { GameState } from '../models/game.state.model';
 import { Subscription } from 'rxjs';
 import { GameStateService } from './game.state.service';
@@ -23,7 +24,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent, MoveToComponent],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent, MoveToComponent, DisplayCardComponent],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -97,6 +98,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   move_options: string [] = []
 
+  // TODO: Create a "Start Game" button, and on this signal, we can get
+  // initial game state & set number of players, assign cards and then fill these
+  // out for each of the players based on their character
+  cards: string [] = ["Test", "Test", "Test", "Test", "Test", "Test", "Test"]
+
+
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
 
     const playerIcons = {
@@ -139,6 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
       (error) => console.error("Player Assignment error")
     )
 
+
     this.moveOptionSubscription = this.webSocketService.onMoveOptions().subscribe(
       (moveOptions: any) => {
         console.log("Received Move Options", moveOptions)
@@ -147,8 +155,6 @@ export class AppComponent implements OnInit, OnDestroy {
       },
       (error) => console.error("Move Option error")
     )
-
-    
   }
 
   ngOnDestroy() {

@@ -1,0 +1,32 @@
+/* src/app/app.component.css */
+
+/* Center the grid container */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+  grid-template-rows: repeat(2, auto); /* 2 rows */
+  gap: 5px; /* Reduced space between cards */
+  justify-items: center; /* Center items in their grid cells */
+  align-content: center; /* Center the entire grid vertically */
+  padding: 20px;
+}
+
+/* Individual card styling */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px; /* Rounded corners */
+  width: 10.5rem; /* Width similar to a playing card */
+  height: 15rem; /* Height similar to a playing card */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}

@@ -9,18 +9,7 @@
                     {{ character }}
                 </option>
             </select>
-        </div>
-
-        <div>
-            <label for="room">Room</label>
-            <select id="room" formControlName="room">
-                <option value="" disabled>Select a Room</option>
-                <option *ngFor="let room of rooms" [value]="room">
-                {{ room }}
-                </option>
-            </select>
-        </div>
-      
+        </div>     
 
         <div>
             <label for="weapon">Weapon</label>

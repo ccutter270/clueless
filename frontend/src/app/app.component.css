@@ -1,6 +1,7 @@
 h1 {
     text-align: center;
 }
+
 .container {
     width: 80%;
     margin: auto;
@@ -12,3 +13,45 @@ h1 {
     grid-template-columns: repeat(5, 1fr);
 }
 
+.row {
+    display: flex;
+  }
+  
+
+/* Styling for individual columns */
+
+/* Styling for columns */
+.column {
+    flex: 1; /* Make each column take up an equal portion of available space */
+    padding: 20px; /* Inner spacing */
+    text-align: center; /* Center text in each column */
+    border: 1px solid #ccc; /* Optional border for visibility */
+    box-sizing: border-box; /* Include padding in the width */
+  }
+  
+
+  /* Add spacing between columns (optional) */
+  .column:not(:last-child) {
+    margin-right: 10px; /* Adds spacing between columns */
+  }
+
+
+  .list {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    margin: 30px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;  /* Align content to the right */
+  }
+
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }

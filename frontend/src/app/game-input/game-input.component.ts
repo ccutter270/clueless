@@ -21,8 +21,7 @@ export class GameInputComponent implements OnInit{
   gameStateService = inject(GameStateService);
   webSocketService = inject(WebSocketService);
 
-  characters = ['Miss Scarlet', 'Col. Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Prof. Plum'];
-  rooms = ['Study', 'Hall', 'Lounge', 'Library', 'Billiard Room', 'Dining Room', 'Conservatory', 'Ball-Room', 'Kitchen'];
+  characters = ['Miss Scarlet', 'Colonel Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Professor Plum'];
   weapons = ['Candlestick', 'Dagger', 'Revolver', 'Lead Pipe', 'Wrench', 'Rope'];
 
   constructor(private fb: FormBuilder) {}
@@ -30,7 +29,6 @@ export class GameInputComponent implements OnInit{
   ngOnInit(): void {
     this.gameForm = this.fb.group({
       character: ['', Validators.required],
-      room: ['', Validators.required],
       weapon: ['', Validators.required]
     });
   }

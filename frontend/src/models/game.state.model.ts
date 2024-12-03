@@ -5,6 +5,6 @@ export interface GameState {
     started: boolean,
     flow: string,
     characters: Character[],
-    current_player: string,
+    current_player: Character,
     lastActionTaken: Action
 }

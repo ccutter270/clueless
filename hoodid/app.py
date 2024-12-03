@@ -67,11 +67,6 @@ def broadcast_game_state():
     emit('game_state', {'data': game_service.game.get_game_state()}, broadcast=True)
 
 
-# TODO: Here is where we can 
-
-# @socketio.on('move_options')
-# def get_move_options():
-#     emit('move_options', {self.game_service.game.move_options})
 
 
 # Get player action (move, suggest, accuse)
@@ -90,7 +85,7 @@ def handle_player_move_location(location: str):
     print("Processing Move Location")
     print(location)
 
-    # TODO: location
+    # Update players move locations
     game_service.game.move_to = location
 
 
@@ -99,11 +94,8 @@ def handle_player_move_location(location: str):
 def handle_player_suggestion(suggestion: object):
     print("Processing Player Suggestion")
 
-#     TODO: Fill out suggestion with these types
-# {'character': 'Miss Scarlet', 'room': 'Study', 'weapon': 'Candlestick'}
-    print(suggestion)
-
-    # TODO:  HERE - set suggestion values
+    # Update current suggestion
+    game_service.game.suggestion = suggestion
 
 
 

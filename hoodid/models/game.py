@@ -48,6 +48,7 @@ class Game:
         self.action = None          # move, accuse, suggest
         self.move_to = None         # location to move to
         self.move_options = []      # Location options to move to
+        self.suggestion = None      # Current suggestion
 
 
         
@@ -160,7 +161,7 @@ class Game:
     def _create_weapons(self):
         """Create weapons used in the game"""
 
-        candle_stick = Weapon("Candle Stick")
+        candle_stick = Weapon("Candlestick")
         dagger = Weapon("Dagger")
         lead_pipe = Weapon("Lead Pipe")
         revolver = Weapon("Revolver")
@@ -261,7 +262,7 @@ class Game:
                 "started": True,
                 "flow": self.flow,
                 "characters": {},
-                "current_player": self.current_player.character.name,
+                "current_player": self.current_player.character.jsonify(),
                 "lastActionTaken": {    # TODO: Update with real action
                     "message": self.last_action_taken
                 }
@@ -330,6 +331,7 @@ class Game:
         print(f"The solution to the crime is: {self.envelope}")
         print(f"Players {self.players}")
         
+        # TODO: make a boolean for players turn and move to next player when one of the players is done
         game_won = False
         # while not game_won:
         if True:
@@ -400,15 +402,30 @@ class Game:
             if self.action == "suggest":
 
                 self.action = None
-
+                self.flow = "suggest"
+                self.last_action_taken = self.current_player.character.name + " chose to suggest"
+                self.send_game_state()
+                
+              
 
                 # Wait for Suggestion - TODO start here with the form button
-                while self.move_to is None:
+                while self.suggestion is None:
                     time.sleep(.5)
 
+                # Move the character of the suggestion to the room & display
+                character = next((character for character in self.characters if character.name == self.suggestion["character"]), None)
+                print(self.current_player.character.location)
+                print(character)
+                self.move_player(character, self.current_player.character.location)
+                self.last_action_taken = self.current_player.character.name + " suggested it was " + self.suggestion["character"] + " with the " + self.suggestion["weapon"] + " in the " + self.current_player.character.location.name
+                self.send_game_state()
 
-                print("suggest")
+                # Check Sug
+                print(f"Suggested.....")
 
+                self.suggestion = None
+                while self.suggestion is None:
+                    time.sleep(.5)
 
             if self.action == "accuse":
                 
