@@ -40,9 +40,8 @@ export class GameInputComponent implements OnInit{
       const formData = this.gameForm.value;
       console.log('Form Data:', formData);
 
-      this.webSocketService.sendSuggestion(formData); // sendMoveLocation(message);
-      // TODO: Take formData and use it in the "Suggestion" form
-      // process form data and send to server
+      this.webSocketService.sendSuggestion(formData);   // Send data to game
+      
     } else {
       console.log('Form is invalid');
     }

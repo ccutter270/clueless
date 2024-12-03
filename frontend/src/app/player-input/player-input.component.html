@@ -1,4 +1,4 @@
-<div *ngIf="gameState().current_player.name === userService.assignedCharacter()" class="messageSender">
+<div *ngIf="gameState().current_player.name === userService.assignedCharacter() && gameState().flow === 'get_action'" class="messageSender">
   <h3>Enter your move:</h3>
 
   <div class="'button-list">

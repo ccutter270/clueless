@@ -39,6 +39,20 @@ export class WebSocketService {
     })
   }
 
+  // Observable looking for signal of suggestion
+  onSuggestion(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('suggestion_made', (data) => observer.next(data))
+    })
+  }
+
+  // Observable looking for signal of disproves to display
+  onDisproves(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('show_disproves', (data) => observer.next(data))
+    })
+  }
+
   // Observable looking for move options for user
   onMoveOptions(): Observable<any> {
     return new Observable((observer) => {
@@ -56,9 +70,15 @@ export class WebSocketService {
     this.socket.emit("player_move_location", location)
   }
 
-  sendSuggestion(suggestion: object) {  // TODO: figure out what type of suggestion is
+  // Send suggestion from UI once form is submitted
+  sendSuggestion(suggestion: object) {
     console.log("sending player suggestion")
     this.socket.emit("player_suggestion", suggestion)
+  }
+
+  sendDisprove(disprove: string) {
+    console.log("sending disprove")
+    this.socket.emit('disprove', disprove);
   }
 
 

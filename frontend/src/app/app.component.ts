@@ -1,3 +1,4 @@
+import { NgModule}  from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
@@ -13,6 +14,9 @@ import { TrackingCardComponent } from './tracking-card/tracking-card.component';
 import { PlayerInputComponent } from "./player-input/player-input.component";
 import { MoveToComponent } from "./move-to/move-to.component";
 import { DisplayCardComponent } from "./display-cards/display-cards.component";
+import { DisproveSuggestionComponent, Suggestion} from './disprove-suggestion/disprove-suggestion.component';
+import { GeneralMessagePopupComponent} from './message-popup/message-popup.component';
+
 import { GameState } from '../models/game.state.model';
 import { Subscription } from 'rxjs';
 import { GameStateService } from './game.state.service';
@@ -20,11 +24,12 @@ import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent, MoveToComponent, DisplayCardComponent],
+  imports: [RouterOutlet, RoomComponent, HallwayComponent, EmptyComponent, CommonModule, WebsocketTesterComponent, GameStateComponent, GameInputComponent, TrackingCardComponent, PlayerInputComponent, MoveToComponent, DisplayCardComponent, DisproveSuggestionComponent, GeneralMessagePopupComponent],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -42,6 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private userAssignmentSubscription!: Subscription;
   private displayCardsSubscription!: Subscription;
   private moveOptionSubscription!: Subscription;
+  private suggestionSubscription!: Subscription;
+  private disproveSubscription!: Subscription;
 
 
   @HostListener('window:beforeunload', ['$event'])
@@ -49,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.webSocketService.close();
   }
 
+  
   
   title = 'Clue';
   
@@ -79,17 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
     { name: "Ballroom to Kitchen", type: "hall", photo: "hallway.jpg" },
     { name: "Kitchen", type: "room", photo: "kitchen.jpg" },
   ]
-
-
-  // DELETE, for testing
-  // test_characters: any[] = [
-  //   {characterId: "Colonel Mustard", locationId: "Study"},
-  //   {characterId: "Professor Plum", locationId: "Study"},
-  //   {characterId: "Miss Scarlet", locationId: "Ball to Kitchen"},
-  //   {characterId: "Mrs. White", locationId: "Study"},
-  //   {characterId: "Mr. Green", locationId: "Ball to Kitchen"},
-  //   {characterId: "Mrs. Peacock", locationId: "Study"}
-  // ];
   
   // Get filtered characters for each area
   getCharactersForArea(areaName: string): any[] {
@@ -105,17 +102,53 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     return matchingCharacters;
-    // return this.gameStateService.getGameState().characters.filter(character => character.location.name === areaName);  
   }
+
+  num_players = 0;
 
   options: string[] = ['move', 'suggest', 'accuse'];
 
   move_options: string [] = []
+  cards: string [] = []
 
-  // TODO: Create a "Start Game" button, and on this signal, we can get
-  // initial game state & set number of players, assign cards and then fill these
-  // out for each of the players based on their character
-  cards: string [] = ["Test", "Test", "Test", "Test", "Test", "Test", "Test"]
+  // Disprove Suggestion Variables 
+  showDisproveModal = false;
+  total_disproves = 0;
+
+  // Disprove Popup
+  popupMessage: string = '';
+  isPopupOpen: boolean = false;
+
+
+  currentSuggestion: Suggestion = {
+    character: '',
+    location: '',
+    weapon: ''
+  };
+
+
+  onDisproveCard(card: string) {
+    console.log(`Player disproved with card: ${card}`);
+    this.webSocketService.sendDisprove(card);
+  }
+
+  onClose() {
+    console.log(`Player is done disproving.`);
+    
+  }
+
+  showMessage(message: string) {
+    // Set the popup message and show the popup
+    this.popupMessage = message;
+    this.isPopupOpen = true;
+  }
+
+  closePopup() {
+    // Close the popup
+    this.isPopupOpen = false;
+  }
+
+  
 
 
   getPlayerIcon(characterId: "Professor Plum" | "Miss Scarlet" | "Colonel Mustard" | "Mrs. Peacock" | "Mr. Green" | "Mrs. White"): string {
@@ -156,6 +189,7 @@ export class AppComponent implements OnInit, OnDestroy {
       (playerAssignment: any) => {
         console.log("Received Player Assignment", playerAssignment)
         this.userService.assignedCharacter.set(playerAssignment.character);
+        this.num_players += 1;
       },
       (error) => console.error("Player Assignment error")
     )
@@ -180,8 +214,61 @@ export class AppComponent implements OnInit, OnDestroy {
       (error) => console.error("Display Cards Error")
     )
 
+    // Subscribe to Suggestion Made
+    this.suggestionSubscription = this.webSocketService.onSuggestion().subscribe(
+      (suggestion: any) => {
+        console.log("Received Suggestion", suggestion)
+        this.currentSuggestion = suggestion.data;
+
+        // If it is not your turn, show Modal popup  // TODO: what if player whos turn it wasn't made suggestion (i.e character moved there?)
+        if (this.gameStateService.gameState().current_player.name !== this.userService.assignedCharacter())
+        {
+          this.showDisproveModal = true;
+        }
+
+        // if 
+        // (
+        //   None
+        // )
+
+        
+        // TODO: add logic here once complete
+        
+
+        // TODO: Once all closed disproval, send game state
+      },
+      (error) => console.error("Suggestion error")
+    )
+
+    // Show disproves ONLY to player who's turn it is
+    // Subscribe to Suggestion Made
+    this.disproveSubscription = this.webSocketService.onDisproves().subscribe(
+      (disproves: any) => {
+        console.log("Received Disproves", disproves)
+
+        disproves.data = disproves.data.filter((item: string) => item.trim() !== "");
+        
+        // Show popup only to person whose turn it is
+        if (this.gameStateService.gameState().current_player.name === this.userService.assignedCharacter())
+        {
+          if (disproves.data.length > 0)
+          {
+            const message = "The following items were disproved: \n" + disproves.data.join("\n")
+            this.showMessage(message)
+          }
+          else
+          {
+            const message = "None of your guesses were disproved!"
+            this.showMessage(message)
+          }
+        }
+
+      },
+      (error) => console.error("Suggestion error")
+    )
 
 
+    // Subscribe to get move options when player chooses to move
     this.moveOptionSubscription = this.webSocketService.onMoveOptions().subscribe(
       (moveOptions: any) => {
         console.log("Received Move Options", moveOptions)
