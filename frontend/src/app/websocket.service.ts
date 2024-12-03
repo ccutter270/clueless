@@ -32,6 +32,14 @@ export class WebSocketService {
     })
   }
 
+  // Observable looking for signal to display cards
+  onDisplayCards(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('display_cards', (data) => observer.next(data))
+    })
+  }
+
+  // Observable looking for move options for user
   onMoveOptions(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('move_options', (data) => observer.next(data))

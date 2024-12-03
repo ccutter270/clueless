@@ -3,6 +3,7 @@ from models.card import Card
 from models.character import Character
 from models.location import Location
 from models.weapon import Weapon
+import json
 
 class Player:
 
@@ -23,3 +24,7 @@ class Player:
             "playerID": self.playerID,
             "character": self.character
         }
+
+    def jsonify_cards_list(self):
+        # Convert cardsList to a JSON string
+        return json.dumps([card for card in self.cardsList])

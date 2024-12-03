@@ -59,15 +59,14 @@ def broadcast_game_state():
     new_player = Player(request.sid, assigned_character)
     game_service.add_player(new_player)
 
-    # TODO: add start game button?s
-    if len(characters) == 3:
-        start_game()
-    
     # Update game state
+    game_service.game.last_action_taken = f"Player {request.sid} joined as character {assigned_character}"
     emit('game_state', {'data': game_service.game.get_game_state()}, broadcast=True)
 
-
-
+    if len(characters) == 3:
+        # TODO: Enable start game button
+        start_game()
+    
 
 # Get player action (move, suggest, accuse)
 @socketio.on('player_action')
@@ -76,7 +75,6 @@ def handle_player_action(action: Action):
     print(action)
 
     game_service.game.action = action["message"]
-
 
 
 # Get player move location (to connecting location)

@@ -3,6 +3,7 @@ from models.character import Character
 from models.location import Location
 from typing import List
 import random
+import json
 
 
 class Card:
@@ -40,8 +41,9 @@ class CardDeck:
         # Distribute the cards to players
         for i, card in enumerate(self.deck):
             player_index = i % num_players
-            hands[player_index].append(card)
+            # Create Card object
+            card_object = card.name
+            hands[player_index].append(card_object)
         
         return hands
-        
 

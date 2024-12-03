@@ -257,13 +257,12 @@ class Game:
     def get_game_state(self):
 
         if self.started:
-
             game_state = {
                 "started": True,
                 "flow": self.flow,
                 "characters": {},
                 "current_player": self.current_player.character.jsonify(),
-                "lastActionTaken": {    # TODO: Update with real action
+                "lastActionTaken": {
                     "message": self.last_action_taken
                 }
             }
@@ -273,38 +272,14 @@ class Game:
                 game_state["characters"][character.name] = character.jsonify()
 
 
-        # TODO: make a game not started state
+        # Not started game state
         else:
             game_state = {
                 "started": False,
                 "flow": "Not Started",
-                "character": [
-                    {
-                        "name": "Professor Plum",
-                        "location": {
-                            "name": "Kitchen",
-                            "locationType": "Room",
-                            "connectedLocations": [],
-                            "occupied": True,
-                            "weapon": {
-                                "name": "Wrench"
-                            }
-                        },
-                        "homeSquare": {
-                            "name": "Kitchen",
-                            "locationType": "Room",
-                            "connectedLocations": [],
-                            "occupied": True,
-                            "weapon": {
-                                "name": "Wrench"
-                            }
-                        }
-                    }
-                ],
-                "current_player": "Mrs. White",
+                "current_player": "",
                 "lastActionTaken": {
-                    "type": "Action",
-                    "message": "Someone moved somewhere. This is a Test Message."
+                    "message": self.last_action_taken
                 }
             }
 
@@ -314,23 +289,21 @@ class Game:
 
         return game_state
   
-    # def get_game_state(self):
-    #     # TODO: Fill in game state JSON
-    #     return 0
 
     def send_game_state(self):
         emit('game_state', {'data': self.get_game_state()}, broadcast=True)
 
     def start_game(self):
         """Start the game loop (this can be expanded with turns and gameplay mechanics)."""
+
         self.started = True
 
-        print("Welcome to the Clue game!")
-
         # TODO: delete, for testing
+        print("Welcome to the Clue game!")
         print(f"The solution to the crime is: {self.envelope}")
         print(f"Players {self.players}")
-        
+
+
         # TODO: make a boolean for players turn and move to next player when one of the players is done
         game_won = False
         # while not game_won:

@@ -40,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
   states: GameState[] = [];
   private broadcastSubscription!: Subscription;
   private userAssignmentSubscription!: Subscription;
+  private displayCardsSubscription!: Subscription;
   private moveOptionSubscription!: Subscription;
 
 
@@ -158,6 +159,27 @@ export class AppComponent implements OnInit, OnDestroy {
       },
       (error) => console.error("Player Assignment error")
     )
+
+    // Subscribe to broadcast of when to display cards
+    this.displayCardsSubscription= this.webSocketService.onDisplayCards().subscribe(
+      (playerCards: any) => {
+        console.log("Received Display Card Broadcast", playerCards)
+
+        // Get the character assigned to the user
+        const assignedCharacter = this.userService.assignedCharacter();
+
+        // Find the matching character and their cards in the received data
+        const matchedData = playerCards.data.find(
+          (entry: [string, string[]]) => entry[0] === assignedCharacter
+        );
+
+        // Set this.cards to the cards of the assigned character, or an empty array if not found
+        this.cards = matchedData ? matchedData[1] : [];
+
+      },
+      (error) => console.error("Display Cards Error")
+    )
+
 
 
     this.moveOptionSubscription = this.webSocketService.onMoveOptions().subscribe(
