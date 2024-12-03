@@ -9,7 +9,7 @@
 
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="characters"
+        <room [roomName]="item.name" [image]="item.photo!" [characters]="gameStateService.getGameState().characters"
           [characters]="getCharactersForArea(item.name)"></room>
       </div>
 

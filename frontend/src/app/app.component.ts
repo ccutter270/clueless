@@ -79,19 +79,19 @@ export class AppComponent implements OnInit, OnDestroy {
     { name: "Kitchen", type: "room", photo: "kitchen.jpg" },
   ]
 
-  // coming from server
-  characters: any[] = [
-    {characterId: "Colonel Mustard", locationId: "Study"},
-    {characterId: "Professor Plum", locationId: "Study"},
-    {characterId: "Miss Scarlet", locationId: "Ball to Kitchen"},
-    {characterId: "Mrs. White", locationId: "Study"},
-    {characterId: "Mr. Green", locationId: "Ball to Kitchen"},
-    {characterId: "Mrs. Peacock", locationId: "Study"}
-  ];
+  // DELETE, for testing
+  // characters: any[] = [
+  //   {characterId: "Colonel Mustard", locationId: "Study"},
+  //   {characterId: "Professor Plum", locationId: "Study"},
+  //   {characterId: "Miss Scarlet", locationId: "Ball to Kitchen"},
+  //   {characterId: "Mrs. White", locationId: "Study"},
+  //   {characterId: "Mr. Green", locationId: "Ball to Kitchen"},
+  //   {characterId: "Mrs. Peacock", locationId: "Study"}
+  // ];
   
   // Get filtered characters for each area
   getCharactersForArea(areaName: string): any[] {
-    return this.characters.filter(character => character.locationId === areaName);
+    return this.gameStateService.getGameState().characters.filter(character => character.location.name === areaName);
   }
 
   options: string[] = ['move', 'suggest', 'accuse'];

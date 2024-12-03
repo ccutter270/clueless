@@ -24,4 +24,8 @@ export class GameStateService {
       message: ""
     }
   })
+
+  getGameState(): GameState {
+    return this.gameState();
+  }
 }
