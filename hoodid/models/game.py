@@ -56,15 +56,15 @@ class Game:
         
         #region Hallways
         ballroom_kitchen = Location("Ballroom to Kitchen", "hallway")
-        billiard_ballroom = Location("Billiard Room to Ballroom", "hallway")
-        billiard_dining = Location("Billiard Room to Dining Room", "hallway")
+        billiard_ballroom = Location("Billiard to Ballroom", "hallway")
+        billiard_dining = Location("Billiard to Dining", "hallway")
         conservatory_ballroom = Location("Conservatory to Ballroom", "hallway")
-        dining_kitchen = Location("Dining Room to Kitchen", "hallway")
-        hall_billiard = Location("Hall to Billiard Room", "hallway")
+        dining_kitchen = Location("Dining to Kitchen", "hallway")
+        hall_billiard = Location("Hall to Billiard", "hallway")
         hall_lounge = Location("Hall to Lounge", "hallway")
-        library_billiard = Location("Library to Billiard Room", "hallway")
+        library_billiard = Location("Library to Billiard", "hallway")
         library_conservatory = Location("Library to Conservatory", "hallway")
-        lounge_dining = Location("Lounge to Dining Room", "hallway")
+        lounge_dining = Location("Lounge to Dining", "hallway")
         study_hall = Location("Study to Hall", "hallway")
         study_library = Location("Study to Library", "hallway")
         #endregion Hallways
@@ -342,6 +342,8 @@ class Game:
             # Broadcast that its that Players Turn
             self.last_action_taken = self.current_player.character.name + "'s turn, choose your action"
             emit('game_state', {'data': self.get_game_state()}, broadcast=True)
+
+            print("Made it here")
 
             # Wait for player to choose action
             while self.action is None:

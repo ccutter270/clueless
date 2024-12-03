@@ -69,18 +69,19 @@ export class AppComponent implements OnInit, OnDestroy {
     { name: "Dining Room", type: "room", photo: "dining.jpg" },
     { name: "Library to Conservatory", type: "hall", photo: "hallway.jpg" },
     { name: "bottom left", type: "empty" },
-    { name: "Billiard to Ball", type: "hall", photo: "hallway.jpg" },
+    { name: "Billiard to Ballroom", type: "hall", photo: "hallway.jpg" },
     { name: "bottom right", type: "empty" },
     { name: "Dining to Kitchen", type: "hall", photo: "hallway.jpg" },
     { name: "Conservatory", type: "room", photo: "conservatory.jpg" },
-    { name: "Conservatory to Ball", type: "hall", photo: "hallway.jpg" },
-    { name: "Ball-Room", type: "room", photo: "ball.jpg" },
-    { name: "Ball to Kitchen", type: "hall", photo: "hallway.jpg" },
+    { name: "Conservatory to Ballroom", type: "hall", photo: "hallway.jpg" },
+    { name: "Ballroom", type: "room", photo: "ball.jpg" },
+    { name: "Ballroom to Kitchen", type: "hall", photo: "hallway.jpg" },
     { name: "Kitchen", type: "room", photo: "kitchen.jpg" },
   ]
 
+
   // DELETE, for testing
-  // characters: any[] = [
+  // test_characters: any[] = [
   //   {characterId: "Colonel Mustard", locationId: "Study"},
   //   {characterId: "Professor Plum", locationId: "Study"},
   //   {characterId: "Miss Scarlet", locationId: "Ball to Kitchen"},
@@ -91,7 +92,19 @@ export class AppComponent implements OnInit, OnDestroy {
   
   // Get filtered characters for each area
   getCharactersForArea(areaName: string): any[] {
-    return this.gameStateService.getGameState().characters.filter(character => character.location.name === areaName);
+
+    // If characters not set, return none
+    if (this.gameStateService.getGameState().characters == undefined)
+    {
+      return [];
+    }
+
+    const matchingCharacters = Object.values(this.gameStateService.getGameState().characters).filter(character => {
+      return character.location.name === areaName;
+    });
+
+    return matchingCharacters;
+    // return this.gameStateService.getGameState().characters.filter(character => character.location.name === areaName);  
   }
 
   options: string[] = ['move', 'suggest', 'accuse'];
