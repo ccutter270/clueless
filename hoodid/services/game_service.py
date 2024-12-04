@@ -15,12 +15,14 @@ class GameService:
 
     """
 
-    game = Game()
-    players = List[Player]
+    game: Game
+    players: List[Player]
+    started: bool
 
     def __init__(self):
-        self.players: List[Player] = []
+        self.players = []
         self.game = Game()
+        self.started = False
 
     def add_player(self, player: Player):
         """ Add a player to the game """
@@ -28,6 +30,19 @@ class GameService:
             return {"message": "Maximum number of players reached."}
 
         self.players.append(player)
+
+    def remove_player(self, character: str):
+        """ Remove a player from the game """
+        if (len(self.players) > 0):
+            
+            # Remove player from game_service if game has not started
+            if (self.started == False):
+                self.players = [p for p in self.players if p.character != character]
+
+            # Remove players from game & game service if game has started
+            else:
+                self.players = [p for p in self.players if p.character.name != character]
+                self.game.remove_player(character)
 
     def get_player_cards(self):
 
@@ -50,15 +65,6 @@ class GameService:
         if len(self.players) < 3:
             return {"message": "Need at least 3 players to start the game!"}
 
-        # Get Solution
-        # solution = self.game.envelope
-        # print(f"Solution {solution}")
-        # print(f"Deck cards size {self.game.cards.size}")
-
-        # print(f"Deck cards size {self.game.cards.size}")
-
-        # Take out solution cards from deck
-
         # When starting game, deal cards to players
         hands = self.game.cards.deal_cards(num_players=len(self.players))
         for i, player in enumerate(self.players):
@@ -79,4 +85,5 @@ class GameService:
              'data': self.game.get_game_state()}, broadcast=True)
 
         # Start game
+        self.started = True
         return self.game.start_game()

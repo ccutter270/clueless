@@ -76,6 +76,12 @@ Ongoing list of thing that still need to be done as we find them
   - if correct, use message-popup to display they won
   - if wrong, remove them as "player" so they can't have a turn, but allow them to disprove?
 
+- Once the game has started (i.e after start game button is pressed) don't allow new players to join
+    - started implementing in @socketio.on('player_connected')... need to add popup to persons screen
+
+
+
+
 ### Known Bugs
 
 - On startup, seems to "start" the game 3x (aka things are assigned 3 different times, look at output on python terminal when starting)

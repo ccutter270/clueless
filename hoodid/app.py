@@ -27,9 +27,6 @@ characters = [
     "Mrs. White"
 ]
 
-# global num_players
-# global num_disproves
-
 num_players = 0
 num_disproves = 0
 disproves = []
@@ -55,6 +52,13 @@ def start_game():
 @socketio.on('player_connected')
 def broadcast_game_state():
     print("Broadcasting Game state for initial player connection")
+
+    # TODO: 
+    if game_service.started:
+        print("Can't play, game already started! ")
+        # TODO: broadcast a message to display popup on users screen saying can't play
+        return
+    
     if len(characters) > 0:
         # Get a character and remove it from the list
         assigned_character = characters.pop(0)
@@ -120,8 +124,6 @@ def handle_disprove(disprove: str):
     global num_disproves
     global disproves
 
-    print(f"RECEIVED DISPROVE {disprove} \n\n\n")
-
     disproves.append(disprove)
 
     num_disproves += 1
@@ -155,12 +157,17 @@ def get_accusation(data):
 
 @socketio.on('disconnect')
 def on_disconnect():
+    
+    # Remove character form the game
     character = assigned_characters.pop(request.sid, None)
-    if character:
+    print(f"CHARACTER: {character}")
+    game_service.remove_player(character)
+    
+    # Make character available again
+    if character and (character not in characters):
         characters.append(character)
     print(
         f"Client {request.sid} disconnected and released character {character}")
-
 
 @socketio.on('prompt_player_action')
 def prompt_action():
