@@ -83,5 +83,3 @@ Ongoing list of thing that still need to be done as we find them
 
 
 ### Known Bugs
-
-- On startup, seems to "start" the game 3x (aka things are assigned 3 different times, look at output on python terminal when starting)
