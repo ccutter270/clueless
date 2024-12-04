@@ -28,6 +28,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
+import { StartButtonComponent } from "./start-button/start-button.component";
 import { MaterialDialogComponent } from './material-dialog/material-dialog.component'
 
 @Component({
@@ -48,7 +49,8 @@ import { MaterialDialogComponent } from './material-dialog/material-dialog.compo
     DisplayCardComponent,
     DisproveSuggestionComponent,
     GeneralMessagePopupComponent,
-  ],
+    StartButtonComponent
+],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -66,6 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private moveOptionSubscription!: Subscription
   private suggestionSubscription!: Subscription
   private disproveSubscription!: Subscription
+  private startButtonSubscription!: Subscription
   showSpinnerDialog: boolean = false;
 
   @HostListener('window:beforeunload', ['$event'])
@@ -133,6 +136,10 @@ export class AppComponent implements OnInit, OnDestroy {
   // Disprove Popup
   popupMessage: string = ''
   isPopupOpen: boolean = false
+
+  // hide show start button
+  showStartButton: boolean = false
+  startButtonMessage: string = ''
 
   currentSuggestion: Suggestion = {
     character: '',
@@ -220,9 +227,18 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log('Received Player Assignment', playerAssignment)
         this.userService.assignedCharacter.set(playerAssignment.character)
         this.num_players += 1
+        console.log(`${this.num_players} is num players`)
+        this.showStartButton = this.num_players >= 3
+        this.startButtonMessage = `${this.num_players} joined. Click to start the game.`
       },
       error => console.error('Player Assignment error'),
     )
+
+    this.startButtonSubscription = this.webSocketService.onShowStartButton().subscribe((data: any) => {
+      console.log(data.message)
+      this.startButtonMessage = data.message
+      this.showStartButton = true;
+    })
 
     // Subscribe to broadcast of when to display cards
     this.displayCardsSubscription = this.webSocketService.onDisplayCards().subscribe(

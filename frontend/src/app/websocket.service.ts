@@ -32,6 +32,11 @@ export class WebSocketService {
     })
   }
 
+  onShowStartButton(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('show_start_button', data => observer.next(data))
+    })
+  }
   // Observable looking for signal to display cards
   onDisplayCards(): Observable<any> {
     return new Observable(observer => {
@@ -58,6 +63,11 @@ export class WebSocketService {
     return new Observable(observer => {
       this.socket.on('move_options', data => observer.next(data))
     })
+  }
+
+  sendStartGame() {
+    console.log('starting game')
+    this.socket.emit('start_game')
   }
 
   sendPlayerAction(action: Action) {

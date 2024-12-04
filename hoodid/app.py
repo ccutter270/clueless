@@ -41,7 +41,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/start_game', methods=['GET'])
+# @app.route('/start_game', methods=['GET'])
+@socketio.on('start_game')
 def start_game():
     # Logic to start the game goes here
     game_flow = game_service.start_game()
@@ -57,6 +58,7 @@ def broadcast_game_state():
     if game_service.started:
         print("Can't play, game already started! ")
         # TODO: broadcast a message to display popup on users screen saying can't play
+        emit('game_error', {'message': "The game has already started."})
         return
     
     if len(characters) > 0:
@@ -84,10 +86,10 @@ def broadcast_game_state():
     emit('game_state', {
          'data': game_service.game.get_game_state()}, broadcast=True)
 
-    if len(characters) == 3:
+    if len(characters) <= 3:
         # TODO: Enable start game button
-        start_game()
-
+        emit('show_start_button', {'message': f"{num_players} joined. Click to start the game!"}, broadcast=True)
+        
 
 # Get player action (move, suggest, accuse)
 @socketio.on('player_action')
