@@ -88,7 +88,8 @@ def broadcast_game_state():
 
     if len(characters) <= 3:
         # TODO: Enable start game button
-        emit('show_start_button', {'message': f"{num_players} joined. Click to start the game!"}, broadcast=True)
+        # emit('show_start_button', {'message': f"{num_players} joined. Click to start the game!"}, broadcast=True)
+        start_game()
         
 
 # Get player action (move, suggest, accuse)
