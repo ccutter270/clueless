@@ -234,7 +234,8 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log('Received Suggestion', suggestion)
         this.currentSuggestion = suggestion.data
 
-        // If it is not your turn, show Modal popup  // TODO: what if player whos turn it wasn't made suggestion (i.e character moved there?)
+        // If it is not your turn, show Modal popup  // TODO: what if player whos turn it wasn't made suggestion (i.e character moved there?) (Response below)
+        // I don't think players are able to make suggestions outside of their turns right?
         if (
           this.gameStateService.gameState().current_player.name !==
           this.userService.assignedCharacter()
