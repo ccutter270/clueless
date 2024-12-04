@@ -9,7 +9,6 @@
         <room
           [roomName]="item.name"
           [image]="item.photo!"
-          [characters]="gameStateService.getGameState().characters"
           [characters]="getCharactersForArea(item.name)"
         ></room>
       </div>
@@ -72,9 +71,9 @@
         >{{ gameStateService.getGameState().current_player.name }}'s Turn</h2
       >
       <p>Options will appear when it is your turn</p>
-      <playerInput [options]="options"></playerInput>
+      <playerInput (showSpinnerDialog)="openDialog()" [options]="options"></playerInput>
       <moveTo [move_options]="move_options"></moveTo>
-      <gameInput></gameInput>
+      <gameInput (showSpinnerDialog)="openDialog()"></gameInput>
     </div>
     <div class="column">
       <h2>Your Game Tracker</h2>

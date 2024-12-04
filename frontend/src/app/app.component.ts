@@ -28,6 +28,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
+import { MaterialDialogComponent } from './material-dialog/material-dialog.component'
 
 @Component({
   selector: 'app-root',
@@ -65,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private moveOptionSubscription!: Subscription
   private suggestionSubscription!: Subscription
   private disproveSubscription!: Subscription
+  showSpinnerDialog: boolean = false;
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent): void {
@@ -185,6 +187,19 @@ export class AppComponent implements OnInit, OnDestroy {
     return item.name // You can use a unique property
   }
 
+  readonly dialog = inject(MatDialog);
+
+  openDialog(): void {
+    this.dialog.open(MaterialDialogComponent, {
+      width: '250px',
+      disableClose: true,
+      data: {
+        message: "Awaiting input from other players",
+        showSpinner: true
+      }
+    });
+  }
+
   ngOnInit() {
     // Send initial ping to server to start broadcasts
     this.webSocketService.pingForBroadcast()
@@ -269,9 +284,11 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userService.assignedCharacter()
         ) {
           if (disproves.data.length > 0) {
+            this.dialog.closeAll()
             const message = 'The following items were disproved: \n' + disproves.data.join('\n')
             this.showMessage(message)
           } else {
+            this.dialog.closeAll()
             const message = 'None of your guesses were disproved!'
             this.showMessage(message)
           }
