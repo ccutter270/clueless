@@ -1,8 +1,10 @@
-from models.location import Location
 import json
 
+from models.location import Location
+
+
 class Character:
-    
+
     name: str
     location: Location
     homeSquare: Location
@@ -25,8 +27,8 @@ class Character:
             self.set_location(new_location)
             print(f"{self.name} moved to {new_location.name}")
         else:
-            print(f"{new_location.name} is not connected to {self.location.name}. Cannot move.")
-
+            print(
+                f"{new_location.name} is not connected to {self.location.name}. Cannot move.")
 
     def jsonify(self):
         """
@@ -35,5 +37,6 @@ class Character:
         return {
             'name': self.name,
             'location': self.location.jsonify(),  # Serialize the location to a dict
-            'homeSquare': self.homeSquare.jsonify(),  # Serialize home square location to a dict
+            # Serialize home square location to a dict
+            'homeSquare': self.homeSquare.jsonify(),
         }

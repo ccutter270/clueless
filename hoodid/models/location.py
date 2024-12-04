@@ -1,5 +1,7 @@
 from typing import List
+
 from models.weapon import Weapon
+
 
 class Location:
 
@@ -10,9 +12,12 @@ class Location:
     weapon: Weapon
 
     def __init__(self, name: str, locationType: str) -> None:
-        self.name = name                                    # The name of the location (e.g., "Kitchen", "Living Room")
-        self.locationType = locationType                    # Type being "room" or "hallway"
-        self.connectedLocations: List['Location'] = []      # List of connected locations (rooms)
+        # The name of the location (e.g., "Kitchen", "Living Room")
+        self.name = name
+        # Type being "room" or "hallway"
+        self.locationType = locationType
+        # List of connected locations (rooms)
+        self.connectedLocations: List['Location'] = []
         self.occupied = False
         self.weapon = None
 
@@ -22,9 +27,9 @@ class Location:
     def setOccupied(self, occupied: bool):
         """ Set occupied to true or false """
         self.occupied = occupied
-    
+
     def isOccupied(self):
-        return occupied
+        return self.occupied
 
     def hasWeapon(self):
         return self.weapon is not None
@@ -39,9 +44,9 @@ class Location:
         return {
             'name': self.name,
             'locationType': self.locationType,
-            'connectedLocations': [location.name for location in self.connectedLocations],  # Serialize each connected Location
+            # Serialize each connected Location
+            'connectedLocations': [location.name for location in self.connectedLocations],
             'occupied': self.occupied,
-            'weapon': self.weapon.jsonify() if self.weapon else None,  # Serialize weapon if it exists
+            # Serialize weapon if it exists
+            'weapon': self.weapon.jsonify() if self.weapon else None,
         }
-
-    
