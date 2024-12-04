@@ -1,0 +1,12 @@
+# Environment and config files
+.env
+*.config.js
+hoodid/templates/index.html
+
+# Specific generated files
+package-lock.json
+yarn.lock
+
+# Logs and temporary files
+*.log
+*.tmp
