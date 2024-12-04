@@ -65,7 +65,6 @@ class Game:
         self.cards.remove_card(self.envelope.weapon)
         self.cards.remove_card(self.envelope.room)
 
-
     def _create_game(self):
 
         # region Hallways

@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { PlayerInputComponent } from './player-input.component';
+import { PlayerInputComponent } from './player-input.component'
 
 describe('PlayerInputComponent', () => {
-  let component: PlayerInputComponent;
-  let fixture: ComponentFixture<PlayerInputComponent>;
+  let component: PlayerInputComponent
+  let fixture: ComponentFixture<PlayerInputComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlayerInputComponent]
-    })
-    .compileComponents();
+      imports: [PlayerInputComponent],
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(PlayerInputComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(PlayerInputComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

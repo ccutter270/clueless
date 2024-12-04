@@ -1,27 +1,26 @@
 <div *ngIf="gameState().flow === 'suggest'" class="container">
-    <h3>Suggestion/Accusation Selections</h3>
-    <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
-        <div>
-            <label for="character">Character</label>
-            <select id="character" formControlName="character">
-                <option value="" disabled>Select a Character</option>
-                <option *ngFor="let character of characters" [value]="character">
-                    {{ character }}
-                </option>
-            </select>
-        </div>     
+  <h3>Suggestion/Accusation Selections</h3>
+  <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="character">Character</label>
+      <select id="character" formControlName="character">
+        <option value="" disabled>Select a Character</option>
+        <option *ngFor="let character of characters" [value]="character">
+          {{ character }}
+        </option>
+      </select>
+    </div>
 
-        <div>
-            <label for="weapon">Weapon</label>
-            <select id="weapon" formControlName="weapon">
-              <option value="" disabled>Select a Weapon</option>
-              <option *ngFor="let weapon of weapons" [value]="weapon">
-                {{ weapon }}
-              </option>
-            </select>
-        </div>
+    <div>
+      <label for="weapon">Weapon</label>
+      <select id="weapon" formControlName="weapon">
+        <option value="" disabled>Select a Weapon</option>
+        <option *ngFor="let weapon of weapons" [value]="weapon">
+          {{ weapon }}
+        </option>
+      </select>
+    </div>
 
-        <button type="submit" [disabled]="gameForm.invalid">Submit</button>
-    </form>
-
+    <button type="submit" [disabled]="gameForm.invalid">Submit</button>
+  </form>
 </div>

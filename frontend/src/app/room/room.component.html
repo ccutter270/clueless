@@ -1,9 +1,13 @@
-<div class="box" style="background-image: url({{image}})">
-    <div class="title">
-        <p>{{roomName}}</p>
-    </div>
+<div class="box" style="background-image: url({{ image }})">
+  <div class="title">
+    <p>{{ roomName }}</p>
+  </div>
 
-    <div class="image-container">
-        <img *ngFor="let character of characters" [src]="getPlayerIcon(character.name)" class="icon-img">
-    </div>
-</div> 
+  <div class="image-container">
+    <img
+      *ngFor="let character of characters"
+      [src]="getPlayerIcon(character.name)"
+      class="icon-img"
+    />
+  </div>
+</div>

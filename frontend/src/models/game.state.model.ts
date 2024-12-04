@@ -1,10 +1,10 @@
-import { Action } from "./action.model";
-import { Character } from "./character.model";
+import { Action } from './action.model'
+import { Character } from './character.model'
 
 export interface GameState {
-    started: boolean,
-    flow: string,
-    characters: Character[],
-    current_player: Character,
-    lastActionTaken: Action
+  started: boolean
+  flow: string
+  characters: Character[]
+  current_player: Character
+  lastActionTaken: Action
 }

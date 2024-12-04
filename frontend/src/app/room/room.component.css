@@ -1,5 +1,5 @@
 p {
-    margin: 0px;
+  margin: 0px;
 }
 
 .image-container {
@@ -11,6 +11,6 @@ p {
 .icon-img {
   width: 16%;
   height: 16%;
-  border-radius: 50%; 
-  object-fit: cover; /* Ensures the image covers the area without distortion */  
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
 }

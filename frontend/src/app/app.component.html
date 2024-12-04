@@ -1,21 +1,26 @@
-<h1>Playing Clue-Less as {{userService.assignedCharacter()}}</h1>
-
+<h1>Playing Clue-Less as {{ userService.assignedCharacter() }}</h1>
 
 <div class="container">
-
   <div class="grid">
     <!-- Loop over Areas to create room or hallway components -->
     <div *ngFor="let item of Areas; trackBy: trackByFn">
-
       <!-- Check if the area is a room -->
       <div *ngIf="item.type === 'room'">
-        <room [roomName]="item.name" [image]="item.photo!" [characters]="gameStateService.getGameState().characters"
-          [characters]="getCharactersForArea(item.name)"></room>
+        <room
+          [roomName]="item.name"
+          [image]="item.photo!"
+          [characters]="gameStateService.getGameState().characters"
+          [characters]="getCharactersForArea(item.name)"
+        ></room>
       </div>
 
       <!-- Check if the area is a hallway -->
       <div *ngIf="item.type === 'hall'">
-        <hallway [hallName]="item.name" [imageURL]="item.photo!" [characters]="getCharactersForArea(item.name)">
+        <hallway
+          [hallName]="item.name"
+          [imageURL]="item.photo!"
+          [characters]="getCharactersForArea(item.name)"
+        >
         </hallway>
       </div>
 
@@ -23,7 +28,6 @@
       <div *ngIf="item.type === 'empty'">
         <empty></empty>
       </div>
-
     </div>
   </div>
 
@@ -34,7 +38,8 @@
       [suggestion]="currentSuggestion"
       [playerCards]="cards"
       (disproveCard)="onDisproveCard($event)"
-      (closed)="onDisproveCard('')">
+      (closed)="onDisproveCard('')"
+    >
       Testing
     </DisproveSuggestion>
   </div>
@@ -47,39 +52,35 @@
       (closePopup)="closePopup()"
     ></GeneralMessagePopup>
   </div>
-  
 
   <div class="row">
-    <div class="column">  <h2>Game Data</h2> </div>
-    <div class="column">  <h2>Player Data</h2> </div>
+    <div class="column"> <h2>Game Data</h2> </div>
+    <div class="column"> <h2>Player Data</h2> </div>
   </div>
 
   <div class="row">
-    <div class="column">  <h2>Game Feed</h2> <gameState [states]="states"></gameState> </div>
+    <div class="column"> <h2>Game Feed</h2> <gameState [states]="states"></gameState> </div>
     <div class="column">
-      <h2> Your Cards </h2> 
+      <h2> Your Cards </h2>
       <DisplayCard [cards]="cards"></DisplayCard>
     </div>
   </div>
 
   <div class="row">
-    <div class="column"> 
-      <h2 *ngIf="gameStateService.getGameState().current_player?.name">{{ gameStateService.getGameState().current_player.name }}'s Turn</h2>
+    <div class="column">
+      <h2 *ngIf="gameStateService.getGameState().current_player?.name"
+        >{{ gameStateService.getGameState().current_player.name }}'s Turn</h2
+      >
       <p>Options will appear when it is your turn</p>
       <playerInput [options]="options"></playerInput>
-      <moveTo [move_options]="move_options"></moveTo> 
+      <moveTo [move_options]="move_options"></moveTo>
       <gameInput></gameInput>
     </div>
-    <div class="column"> 
+    <div class="column">
       <h2>Your Game Tracker</h2>
-      <trackingCard></trackingCard> 
+      <trackingCard></trackingCard>
     </div>
   </div>
 
-
-
-  <div class="row">
-    <div class="column">
-
-
-</div>
+  <div class="row"> <div class="column"> </div></div
+></div>

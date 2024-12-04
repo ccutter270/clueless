@@ -1,23 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
-html, body{height: 100%; width: 100%;}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
 
 .box {
-    height: 150px; /* Ensure it takes the full height of the grid cell */
-    background-size: cover; 
-    background-position: center; /* Ensure the image is centered */
-    background-repeat: no-repeat; /* Prevent image repetition */
-    border: 3pt solid black;
-    justify-self: stretch;
-    position: relative;
-    border-radius: 10px;
-  }
+  height: 150px; /* Ensure it takes the full height of the grid cell */
+  background-size: cover;
+  background-position: center; /* Ensure the image is centered */
+  background-repeat: no-repeat; /* Prevent image repetition */
+  border: 3pt solid black;
+  justify-self: stretch;
+  position: relative;
+  border-radius: 10px;
+}
 
-.title {   
-    background-color: white;
-    padding: 1px;
-    width: fit-content;
-    text-align: center;
-    justify-self: center;
-    border-radius: 5px;
-    /* transform: translateY(250%); */
+.title {
+  background-color: white;
+  padding: 1px;
+  width: fit-content;
+  text-align: center;
+  justify-self: center;
+  border-radius: 5px;
+  /* transform: translateY(250%); */
 }

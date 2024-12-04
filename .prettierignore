@@ -10,3 +10,7 @@ yarn.lock
 # Logs and temporary files
 *.log
 *.tmp
+
+# Virtual Environment
+venv/
+node_modules/

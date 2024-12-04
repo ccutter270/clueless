@@ -1,16 +1,21 @@
-<div *ngIf="gameState().current_player.name === userService.assignedCharacter() && gameState().flow === 'get_action'" class="messageSender">
+<div
+  *ngIf="
+    gameState().current_player.name === userService.assignedCharacter() &&
+    gameState().flow === 'get_action'
+  "
+  class="messageSender"
+>
   <h3>Enter your move:</h3>
 
   <div class="'button-list">
     <!-- Loop through the buttonLabels array and create a button for each -->
-    <button (click)="sendMessage('move')">
-      move
-    </button>
-    <button [disabled]="gameState().current_player.location.locationType !== 'room'" (click)="sendMessage('suggest')">
+    <button (click)="sendMessage('move')"> move </button>
+    <button
+      [disabled]="gameState().current_player.location.locationType !== 'room'"
+      (click)="sendMessage('suggest')"
+    >
       suggest
     </button>
-    <button (click)="sendMessage('accuse')">
-      accuse
-    </button>
+    <button (click)="sendMessage('accuse')"> accuse </button>
   </div>
 </div>

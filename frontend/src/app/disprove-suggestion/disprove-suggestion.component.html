@@ -1,28 +1,30 @@
 <div class="modal" *ngIf="isOpen" (click)="onDisprove('')">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <h2>Disprove Suggestion</h2>
-      <p><strong>Suggestion: </strong>{{suggestion.character}}, {{suggestion.location}}, {{suggestion.weapon}}</p>
-  
-      <div *ngIf="cardsToDisprove.length > 0">
-        <p>Select a card to disprove:</p>
-        
-        <!-- Card grid container -->
-        <div class="card-grid">
-          <!-- Iterate over the cardsToDisprove array and display each card as a button -->
-          <div *ngFor="let card of cardsToDisprove" class="card">
-            <button class="card" (click)="onDisprove(card)">
-              <span class="card-name">{{card}}</span>
-            </button>
-          </div>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Disprove Suggestion</h2>
+    <p
+      ><strong>Suggestion: </strong>{{ suggestion.character }}, {{ suggestion.location }},
+      {{ suggestion.weapon }}</p
+    >
+
+    <div *ngIf="cardsToDisprove.length > 0">
+      <p>Select a card to disprove:</p>
+
+      <!-- Card grid container -->
+      <div class="card-grid">
+        <!-- Iterate over the cardsToDisprove array and display each card as a button -->
+        <div *ngFor="let card of cardsToDisprove" class="card">
+          <button class="card" (click)="onDisprove(card)">
+            <span class="card-name">{{ card }}</span>
+          </button>
         </div>
       </div>
-  
-      <div *ngIf="cardsToDisprove.length === 0">
-        <p>You don't have any cards to disprove this suggestion.</p>
-      </div>
-  
-      <!-- Close button -->
-      <button class="close" (click)="onDisprove('')">Close</button>
     </div>
+
+    <div *ngIf="cardsToDisprove.length === 0">
+      <p>You don't have any cards to disprove this suggestion.</p>
+    </div>
+
+    <!-- Close button -->
+    <button class="close" (click)="onDisprove('')">Close</button>
   </div>
-  
+</div>

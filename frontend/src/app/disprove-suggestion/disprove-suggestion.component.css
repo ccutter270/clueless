@@ -1,119 +1,120 @@
 /* Modal background */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Modal content box */
-  .modal-content {
-    background-color: #fff; /* White background */
-    padding: 60px; /* Increased padding for larger content */
-    border-radius: 10px; /* Slightly larger border radius */
-    max-width: 600px; /* Increased max width */
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Deeper shadow for added depth */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Evenly space content */
-    gap: 25px; /* Increased gap between elements */
-  }
-  
-  /* Heading */
-  h2 {
-    font-size: 30px; /* Larger font size for heading */
-    font-weight: bold;
-    margin: 0;
-    color: #333; /* Darker color for text */
-  }
-  
-  /* Paragraphs */
-  p {
-    font-size: 20px; /* Larger font size for paragraphs */
-    color: #555; /* Lighter gray text */
-    line-height: 1.5;
-    margin: 0;
-  }
-  
-  /* Card grid layout for 1x3 grid */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
-    grid-template-rows: 1fr; /* 1 row for cards */
-    gap: 10px; /* Adjusted space between cards */
-    justify-items: center; /* Center items in their grid cells */
-    align-content: center; /* Center the entire grid vertically */
-    padding: 20px;
-    width: 100%; /* Full width */
-    max-width: 900px; /* Ensure grid is not too wide */
-    margin: 0 auto; /* Center the grid horizontally */
-  }
-  
-  /* Individual light card styling */
-  .card {
-    background-color: #f9f9f9; /* Light background for the card */
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 10px; /* Rounded corners */
-    width: 10rem; /* Increased width for bigger cards */
-    height: 14rem; /* Increased height for bigger cards */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the light card */
-    text-align: center;
-    font-size: 20px; /* Increased font size for larger text */
-    color: #333; /* Dark text for contrast */
-  }
-  
-  /* Remove hover effect for cards */
-  .card:hover {
-    transform: none; /* No change in position */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* No hover shadow change */
-  }
-  
-  /* Button styling */
-  button {
-    padding: 16px 40px; /* Larger button padding */
-    background-color: #333; /* Dark button background */
-    color: white;
-    border: 2px solid #ccc; /* Light outline */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 20px; /* Larger font size */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
-    width: 100%; /* Make buttons take up the full width of the modal */
-    max-width: 260px; /* Wider buttons */
-    margin: 8px auto; /* Reduced vertical margin for closer buttons */
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
-  }
-  
-  /* Hover effect for buttons */
-  button:hover {
-    background-color: #555; /* Lighter gray on hover */
-    transform: translateY(-2px); /* Small lift effect on hover */
-  }
-  
-  button:focus {
-    outline: none; /* Remove focus outline */
-  }
-  
-  /* Close button style (darker) */
-  button.close {
-    background-color: #444; /* Darker background for the close button */
-    margin-top: 20px; /* Margin on top of the close button */
-    max-width: 100%; /* Make the Close button span the full width */
-    padding: 20px 40px; /* Increase the padding to make it visually larger */
-  }
-  
-  button.close:hover {
-    background-color: #333; /* Even darker gray on hover */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #fff; /* White background */
+  padding: 60px; /* Increased padding for larger content */
+  border-radius: 10px; /* Slightly larger border radius */
+  max-width: 600px; /* Increased max width */
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Deeper shadow for added depth */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Evenly space content */
+  gap: 25px; /* Increased gap between elements */
+}
+
+/* Heading */
+h2 {
+  font-size: 30px; /* Larger font size for heading */
+  font-weight: bold;
+  margin: 0;
+  color: #333; /* Darker color for text */
+}
+
+/* Paragraphs */
+p {
+  font-size: 20px; /* Larger font size for paragraphs */
+  color: #555; /* Lighter gray text */
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Card grid layout for 1x3 grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+  grid-template-rows: 1fr; /* 1 row for cards */
+  gap: 10px; /* Adjusted space between cards */
+  justify-items: center; /* Center items in their grid cells */
+  align-content: center; /* Center the entire grid vertically */
+  padding: 20px;
+  width: 100%; /* Full width */
+  max-width: 900px; /* Ensure grid is not too wide */
+  margin: 0 auto; /* Center the grid horizontally */
+}
+
+/* Individual light card styling */
+.card {
+  background-color: #f9f9f9; /* Light background for the card */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 10px; /* Rounded corners */
+  width: 10rem; /* Increased width for bigger cards */
+  height: 14rem; /* Increased height for bigger cards */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the light card */
+  text-align: center;
+  font-size: 20px; /* Increased font size for larger text */
+  color: #333; /* Dark text for contrast */
+}
+
+/* Remove hover effect for cards */
+.card:hover {
+  transform: none; /* No change in position */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* No hover shadow change */
+}
+
+/* Button styling */
+button {
+  padding: 16px 40px; /* Larger button padding */
+  background-color: #333; /* Dark button background */
+  color: white;
+  border: 2px solid #ccc; /* Light outline */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 20px; /* Larger font size */
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease; /* Smooth hover effects */
+  width: 100%; /* Make buttons take up the full width of the modal */
+  max-width: 260px; /* Wider buttons */
+  margin: 8px auto; /* Reduced vertical margin for closer buttons */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+/* Hover effect for buttons */
+button:hover {
+  background-color: #555; /* Lighter gray on hover */
+  transform: translateY(-2px); /* Small lift effect on hover */
+}
+
+button:focus {
+  outline: none; /* Remove focus outline */
+}
+
+/* Close button style (darker) */
+button.close {
+  background-color: #444; /* Darker background for the close button */
+  margin-top: 20px; /* Margin on top of the close button */
+  max-width: 100%; /* Make the Close button span the full width */
+  padding: 20px 40px; /* Increase the padding to make it visually larger */
+}
+
+button.close:hover {
+  background-color: #333; /* Even darker gray on hover */
+}

@@ -1,8 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core'
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  assignedCharacter = signal<string>("Unassigned");
+  assignedCharacter = signal<string>('Unassigned')
 }

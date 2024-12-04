@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { WebsocketTesterComponent } from './websocket.tester.component';
+import { WebsocketTesterComponent } from './websocket.tester.component'
 
 describe('WebsocketTesterComponent', () => {
-  let component: WebsocketTesterComponent;
-  let fixture: ComponentFixture<WebsocketTesterComponent>;
+  let component: WebsocketTesterComponent
+  let fixture: ComponentFixture<WebsocketTesterComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WebsocketTesterComponent]
-    })
-    .compileComponents();
+      imports: [WebsocketTesterComponent],
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(WebsocketTesterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(WebsocketTesterComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
