@@ -130,6 +130,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onDisproveCard(card: string) {
     console.log(`Player disproved with card: ${card}`);
     this.webSocketService.sendDisprove(card);
+    this.showDisproveModal = false;
   }
 
   onClose() {
