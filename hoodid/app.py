@@ -41,13 +41,12 @@ def index():
     return render_template('index.html')
 
 
-# @app.route('/start_game', methods=['GET'])
 @socketio.on('start_game')
 def start_game():
-    # Logic to start the game goes here
-    game_flow = game_service.start_game()
+    emit('show_start_button', {'show': False, 'message': ""}, broadcast=True)
+    game_service.start_game()
 
-    return jsonify({"message": "Game started!"})
+    # return jsonify({"message": "Game started!"})
 
 
 @socketio.on('player_connected')
