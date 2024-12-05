@@ -54,10 +54,13 @@
 
   <!-- Start Game Button -->
   <div class="column">
+    <h2></h2>
     <StartButton [showStartButton]="showStartButton" [startButtonMessage]="startButtonMessage">
     </StartButton>
   </div>
 
+  <!-- Game Logic once started -->
+<div *ngIf="gameStateService.getGameState().started">
   <div class="row">
     <div class="column"> <h2>Game Data</h2> </div>
     <div class="column"> <h2>Player Data</h2> </div>
@@ -86,6 +89,7 @@
       <trackingCard></trackingCard>
     </div>
   </div>
+</div>
 
-  <div class="row"> <div class="column"> </div></div
-></div>
+  <!-- <div class="row"> <div class="column"> </div></div
+></div> -->
