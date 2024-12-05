@@ -28,7 +28,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
-import { StartButtonComponent } from "./start-button/start-button.component";
+import { StartButtonComponent } from './start-button/start-button.component'
 import { MaterialDialogComponent } from './material-dialog/material-dialog.component'
 
 @Component({
@@ -49,8 +49,8 @@ import { MaterialDialogComponent } from './material-dialog/material-dialog.compo
     DisplayCardComponent,
     DisproveSuggestionComponent,
     GeneralMessagePopupComponent,
-    StartButtonComponent
-],
+    StartButtonComponent,
+  ],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private suggestionSubscription!: Subscription
   private disproveSubscription!: Subscription
   private startButtonSubscription!: Subscription
-  showSpinnerDialog: boolean = false;
+  showSpinnerDialog: boolean = false
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent): void {
@@ -194,17 +194,17 @@ export class AppComponent implements OnInit, OnDestroy {
     return item.name // You can use a unique property
   }
 
-  readonly dialog = inject(MatDialog);
+  readonly dialog = inject(MatDialog)
 
   openDialog(): void {
     this.dialog.open(MaterialDialogComponent, {
       width: '250px',
       disableClose: true,
       data: {
-        message: "Awaiting input from other players",
-        showSpinner: true
-      }
-    });
+        message: 'Awaiting input from other players',
+        showSpinner: true,
+      },
+    })
   }
 
   ngOnInit() {
@@ -234,11 +234,12 @@ export class AppComponent implements OnInit, OnDestroy {
       error => console.error('Player Assignment error'),
     )
 
-    this.startButtonSubscription = this.webSocketService.onShowStartButton().subscribe((data: any) => {
-      console.log(data.message)
-      this.startButtonMessage = data.message
-      this.showStartButton = true;
-    })
+    this.startButtonSubscription = this.webSocketService
+      .onShowStartButton()
+      .subscribe((data: any) => {
+        this.startButtonMessage = data.message
+        this.showStartButton = data.show
+      })
 
     // Subscribe to broadcast of when to display cards
     this.displayCardsSubscription = this.webSocketService.onDisplayCards().subscribe(
@@ -273,15 +274,6 @@ export class AppComponent implements OnInit, OnDestroy {
         ) {
           this.showDisproveModal = true
         }
-
-        // if
-        // (
-        //   None
-        // )
-
-        // TODO: add logic here once complete
-
-        // TODO: Once all closed disproval, send game state
       },
       error => console.error('Suggestion error'),
     )

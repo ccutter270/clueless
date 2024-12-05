@@ -211,8 +211,8 @@ class Game:
 
     def remove_player(self, character: str):
         """Remove a player from the game."""
-        self.players = [p for p in self.players if p.character.name != character]
-        
+        self.players = [
+            p for p in self.players if p.character.name != character]
 
     def set_weapon_locations(self):
         """Place each weapon in a random room that does not already have a weapon"""

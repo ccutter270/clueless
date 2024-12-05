@@ -34,14 +34,16 @@ class GameService:
     def remove_player(self, character: str):
         """ Remove a player from the game """
         if (len(self.players) > 0):
-            
+
             # Remove player from game_service if game has not started
             if (self.started == False):
-                self.players = [p for p in self.players if p.character != character]
+                self.players = [
+                    p for p in self.players if p.character != character]
 
             # Remove players from game & game service if game has started
             else:
-                self.players = [p for p in self.players if p.character.name != character]
+                self.players = [
+                    p for p in self.players if p.character.name != character]
                 self.game.remove_player(character)
 
     def get_player_cards(self):

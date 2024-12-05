@@ -1,4 +1,7 @@
-<button *ngIf='showStartButton' (click)="onStartGame()">
-    {{ startButtonMessage }}
-</button>
-
+<div class="button-wrapper" *ngIf="showStartButton">
+  <div class="button-container">
+    <button (click)="onStartGame()" class="start-button">
+      {{ startButtonMessage }}
+    </button>
+  </div>
+</div>

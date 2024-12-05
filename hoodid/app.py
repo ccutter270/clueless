@@ -54,13 +54,18 @@ def start_game():
 def broadcast_game_state():
     print("Broadcasting Game state for initial player connection")
 
-    # TODO: 
+    # TODO:
     if game_service.started:
         print("Can't play, game already started! ")
         # TODO: broadcast a message to display popup on users screen saying can't play
         emit('game_error', {'message': "The game has already started."})
         return
-    
+
+    if len(game_service.players) >= 6:
+        print("Can't play, too many players! ")
+        emit('game_error', {'message': "Maximum players already reached."})
+        return
+
     if len(characters) > 0:
         # Get a character and remove it from the list
         assigned_character = characters.pop(0)
@@ -88,9 +93,10 @@ def broadcast_game_state():
 
     if len(characters) <= 3:
         # TODO: Enable start game button
-        # emit('show_start_button', {'message': f"{num_players} joined. Click to start the game!"}, broadcast=True)
-        start_game()
-        
+        emit('show_start_button', {
+             'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
+        # start_game()
+
 
 # Get player action (move, suggest, accuse)
 @socketio.on('player_action')
@@ -160,17 +166,27 @@ def get_accusation(data):
 
 @socketio.on('disconnect')
 def on_disconnect():
-    
+    global num_players
+
     # Remove character form the game
     character = assigned_characters.pop(request.sid, None)
-    print(f"CHARACTER: {character}")
     game_service.remove_player(character)
-    
+
+    if character:
+        num_players -= 1
+        if (num_players >= 3):
+            emit('show_start_button', {
+                 'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
+        else:
+            emit('show_start_button', {
+                 'show': False, 'message': f"Not Enough Players to Start the Game"}, broadcast=True)
+
     # Make character available again
     if character and (character not in characters):
         characters.append(character)
     print(
         f"Client {request.sid} disconnected and released character {character}")
+
 
 @socketio.on('prompt_player_action')
 def prompt_action():

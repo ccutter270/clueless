@@ -13,7 +13,7 @@ import { WebSocketService } from '../websocket.service'
   styleUrl: './game-input.component.css',
 })
 export class GameInputComponent implements OnInit {
-  @Output() showSpinnerDialog = new EventEmitter<boolean>(false);
+  @Output() showSpinnerDialog = new EventEmitter<boolean>(false)
 
   gameForm!: FormGroup
 
@@ -45,7 +45,7 @@ export class GameInputComponent implements OnInit {
     if (this.gameForm.valid) {
       const formData = this.gameForm.value
       console.log('Form Data:', formData)
-      this.showSpinnerDialog.emit(true);
+      this.showSpinnerDialog.emit(true)
       this.webSocketService.sendSuggestion(formData) // Send data to game
     } else {
       console.log('Form is invalid')

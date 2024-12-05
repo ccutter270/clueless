@@ -21,10 +21,9 @@ export class PlayerInputComponent {
 
   sending: boolean = false
   @Input() options: string[] = []
-  @Output() showSpinnerDialog = new EventEmitter<boolean>();
+  @Output() showSpinnerDialog = new EventEmitter<boolean>()
 
   gameState = this.gameStateService.gameState
-
 
   //TODO: Fix Suggestion logic here
   sendMessage(message: string) {
@@ -42,7 +41,7 @@ export class PlayerInputComponent {
       })
 
       if (message === 'suggest') {
-        this.showSpinnerDialog.emit(true);
+        this.showSpinnerDialog.emit(true)
       }
 
       message = '' // Clear the input field after sending
