@@ -429,10 +429,6 @@ class Game:
                 while self.action == None:
                     time.sleep(.5)
 
-
-
-
-
             if self.action == "accuse":
 
                 self.action = None
@@ -445,23 +441,26 @@ class Game:
                     time.sleep(.5)
 
                 # Check the accusation
-                accusation_correct = self.accuse(self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
+                accusation_correct = self.accuse(
+                    self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
 
                 print(f"ACCUSATION is: {accusation_correct}")
                 self.suggestion = None
 
                 # TODO: Now that we have if the accusation is correct, do something
                 if accusation_correct:
-                    emit("game_win", broadcast=True)    # TODO: create this logic
+                    # TODO: create this logic
+                    emit("game_win", broadcast=True)
                     # game_won = True
 
                 else:
-                    emit("player_lost", broadcast=True) # TODO: create this logic 
-
+                    # TODO: create this logic
+                    emit("player_lost", broadcast=True)
 
             # Done with loop, move to next players turn
             self.action = None
-            self.last_action_taken = self.current_player.character.name + " chose to end their turn"
+            self.last_action_taken = self.current_player.character.name + \
+                " chose to end their turn"
             self.flow = "get_action"
             self.send_game_state()
             self.next_turn()

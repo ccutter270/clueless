@@ -63,15 +63,15 @@ Ongoing list of thing that still need to be done as we find them
 - Add error popup message when too many people in game (aka for emit('game_error', {'message': "Maximum players already reached."}))
 - Update "self.flow" so that frontend only shows things when needed. Here are some examples of what "flow" values can be:
 
-  | Self.flow         | Description                                        | UI Features enabled      |
-  | ----------------- | -------------------------------------------------- | ------------------------ |
-  | **not_started**   | Waiting for game to start                          | game board               |
-  | **get_action**    | Waiting for player to choose an action             | game board, player-input |
-  | **move**          | Player chose move, in move sequence                | game board, move-to box  |
-  | **suggest**       | Player chose suggest or placed in suggest sequence | game board, game-input   |
-  | **wait_disprove** | Wait for players to disprove                       | game board               |
-  | **ask_accuse**    | Ask player if accuse or next turn                   game board, accuse-prompt   |
-  | **accuse**        | Player chose to accuse                             | game board, game-input   |
+  | Self.flow         | Description                                                 | UI Features enabled      |
+  | ----------------- | ----------------------------------------------------------- | ------------------------ |
+  | **not_started**   | Waiting for game to start                                   | game board               |
+  | **get_action**    | Waiting for player to choose an action                      | game board, player-input |
+  | **move**          | Player chose move, in move sequence                         | game board, move-to box  |
+  | **suggest**       | Player chose suggest or placed in suggest sequence          | game board, game-input   |
+  | **wait_disprove** | Wait for players to disprove                                | game board               |
+  | **ask_accuse**    | Ask player if accuse or next turn game board, accuse-prompt |
+  | **accuse**        | Player chose to accuse                                      | game board, game-input   |
 
 - Display message when waiting for people to disprove (just for clarity of game flow)
 - Accusation logic

@@ -30,7 +30,17 @@ export class GameInputComponent implements OnInit {
   ]
   weapons = ['Candlestick', 'Dagger', 'Revolver', 'Lead Pipe', 'Wrench', 'Rope']
 
-  locations = ["Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall", "Kitchen", "Library", "Lounge", "Study"]
+  locations = [
+    'Ballroom',
+    'Billiard Room',
+    'Conservatory',
+    'Dining Room',
+    'Hall',
+    'Kitchen',
+    'Library',
+    'Lounge',
+    'Study',
+  ]
 
   constructor(private fb: FormBuilder) {}
 
@@ -39,23 +49,20 @@ export class GameInputComponent implements OnInit {
       character: ['', Validators.required],
       weapon: ['', Validators.required],
       location: [''],
-    });
+    })
   }
 
   gameState = this.gameStateService.gameState
-  
 
   onSubmit(): void {
     if (this.gameForm.valid) {
       const formData = this.gameForm.value
 
       // If suggest, show wheel
-      if (this.gameStateService.gameState().flow === 'suggest')
-      {
+      if (this.gameStateService.gameState().flow === 'suggest') {
         this.showSpinnerDialog.emit(true)
       }
       this.webSocketService.sendSuggestion(formData) // Send data to game
-
     } else {
       console.log('Form is invalid')
     }
