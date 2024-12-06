@@ -105,6 +105,12 @@ export class WebSocketService {
     this.socket.emit('disprove', disprove)
   }
 
+  // Send game over
+  sendGameOver() {
+    console.log('Sending Game Over')
+    this.socket.emit('game_over')
+  }
+
   // Method to close the socket connection
   close() {
     if (this.socket) {

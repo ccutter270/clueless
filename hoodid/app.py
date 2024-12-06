@@ -27,6 +27,7 @@ characters = [
     "Mrs. White"
 ]
 
+game_over_responses = 0
 num_players = 0
 num_disproves = 0
 disproves = []
@@ -91,10 +92,9 @@ def broadcast_game_state():
          'data': game_service.game.get_game_state()}, broadcast=True)
 
     if len(characters) <= 3:
-        # TODO: Enable start game button
+        # Enable Start Game Button
         emit('show_start_button', {
              'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
-        # start_game()
 
 
 # Get player action (move, suggest, accuse)
@@ -142,26 +142,6 @@ def handle_disprove(disprove: str):
         num_disproves = 0
         disproves = []
 
-# Function to handle the accusation
-
-
-@socketio.on('get_accusation')
-def get_accusation(data):
-    global game
-    accusation = data.get('accusation')
-
-    if accusation:
-        guessed_character = accusation.get('character')
-        guessed_weapon = accusation.get('weapon')
-        guessed_location = accusation.get('location')
-
-        # Verify the accusation against the solution
-        result = game.accuse(
-            game.current_player, guessed_character, guessed_weapon, guessed_location)
-
-        # Send the result back to the frontend
-        emit('accuse_result', result)
-
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -187,22 +167,34 @@ def on_disconnect():
         f"Client {request.sid} disconnected and released character {character}")
 
 
-@socketio.on('prompt_player_action')
-def prompt_action():
-    # Emit the prompt for the player's next action (Accuse, Move, Suggest)
-    action_prompt = game.prompt_player_action()
-    emit('player_action_prompt', action_prompt)  # Send options to frontend
+@socketio.on('game_over')
+def on_game_over():
+
+    global game_over_responses
+    global num_players
+
+    game_over_responses += 1
+    if game_over_responses == num_players:
+        # Reset game service
+        game_service.new_game()
+        game_over_responses = 0
+        emit('show_start_button', {
+             'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
 
 
-@app.route('/data')
-def get_data():
-    data = {
-        "message": "Hello, World!",
-        "status": "success",
-        "data": {"key1": "value1", "key2": "value2"}
-    }
-    return jsonify(data)
+# @socketio.on('prompt_player_action')
+# def prompt_action():
+#     # Emit the prompt for the player's next action (Accuse, Move, Suggest)
+#     action_prompt = game.prompt_player_action()
+#     emit('player_action_prompt', action_prompt)  # Send options to frontend
 
-
+# @app.route('/data')
+# def get_data():
+#     data = {
+#         "message": "Hello, World!",
+#         "status": "success",
+#         "data": {"key1": "value1", "key2": "value2"}
+#     }
+#     return jsonify(data)
 if __name__ == '__main__':
     socketio.run(app, debug=True)

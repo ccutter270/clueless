@@ -1,7 +1,7 @@
 import json
 import random
 import time
-from typing import List
+from typing import List, Any
 
 from flask_socketio import SocketIO, emit
 from models.card import CardDeck
@@ -68,12 +68,12 @@ class Game:
     def _create_game(self):
 
         # region Starting
-        scarlet_start = Location("Scarlet Start", "room")
-        plum_start = Location("Plum Start", "room")
-        mustard_start = Location("Mustard Start", "room")
-        peacock_start = Location("Peacock Start", "room")
-        green_start = Location("Green Start", "room")
-        white_start = Location("White Start", "room")
+        scarlet_start = Location("Scarlet Start", "start")
+        plum_start = Location("Plum Start", "start")
+        mustard_start = Location("Mustard Start", "start")
+        peacock_start = Location("Peacock Start", "start")
+        green_start = Location("Green Start", "start")
+        white_start = Location("White Start", "start")
 
         # endregion Starting
 
@@ -224,6 +224,7 @@ class Game:
 
     def assign_player(self):
         """Add a player to the game."""
+
         for player in self.players:
             player.character = next(
                 (obj for obj in self.characters if obj.name == player.character), None)
@@ -245,7 +246,6 @@ class Game:
             for room in self.rooms:
                 if not room.hasWeapon():
                     room.setWeapon(weapon)  # Place the weapon in this room
-                    print(f"{weapon.name} placed in {room.name}.")
                     break
 
     def next_turn(self):
@@ -353,11 +353,9 @@ class Game:
                 game_over = True
                 self.started = False
                 self.send_game_state()
-                print("Game should be lost")
                 break
                 # TODO: game_lost should message popup that all players lost, ask to start new game (refresh to beginning or keep current players?)
 
-            print("Shouldn't make it here")
             # Broadcast that its that Players Turn
             self.flow = "get_action"
             self.last_action_taken = self.current_player.character.name + \
@@ -379,15 +377,10 @@ class Game:
                 if self.current_player.character.location.locationType == "hallway":
                     for location in self.current_player.character.location.connectedLocations:
                         self.move_options.append(location.name)
-                    print(f"Hallway Options: {self.move_options}")
-
-                elif self.current_player.character.location.locationType == "room":
-                    self.move_options = self.get_room_options(
-                        self.current_player)
-                    print(f"Room Options: {self.move_options}")
 
                 else:
-                    print("Error: This should be a room or a hallway but it is neither")
+                    self.move_options = self.get_room_options(
+                        self.current_player)
 
                 # Broadcast move options for player
                 emit('move_options', self.move_options, broadcast=True)
@@ -494,7 +487,6 @@ class Game:
                 accusation_correct = self.accuse(
                     self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
 
-                print(f"ACCUSATION is: {accusation_correct}")
                 self.suggestion = None
 
                 # TODO: Now that we have if the accusation is correct, do something
@@ -510,9 +502,7 @@ class Game:
                     self.send_game_state()
 
                 else:
-                    # Player is out, set their
-                    print(
-                        "Wrong guess! You are out of the game now. You can still disprove suggestions but no longer move")
+                    # Player is out
                     self.current_player.lost = True
 
                     # If player is currently in hallway, move to one of connecting rooms:
@@ -530,8 +520,6 @@ class Game:
                     emit("player_lost", {'message': message}, broadcast=True)
                     self.send_game_state()
 
-                    # Update game state
-
             # Done with loop, move to next players turn
             self.action = None
             self.last_action_taken = self.current_player.character.name + \
@@ -539,9 +527,6 @@ class Game:
             self.flow = "get_action"
             self.send_game_state()
             self.next_turn()
-
-        # TODO: When game over, display message?
-        print("GAME OVER!")
 
     def __repr__(self):
         return f"Game(Players: {self.players}, Crime Envelope: {self.envelope})"

@@ -345,8 +345,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Show game over popup
         this.showMessage(message['message'])
+        this.webSocketService.sendGameOver()
 
-        // TODO: reset game all variables to play again?
+        console.log('NUM PLAYERS', this.num_players)
+        if (this.num_players >= 3) {
+          this.showStartButton = true
+          this.startButtonMessage = `${this.num_players} joined. Click to start the game.`
+        }
       },
       error => console.error('Game Over Error'),
     )

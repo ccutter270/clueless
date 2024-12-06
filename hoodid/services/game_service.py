@@ -1,4 +1,5 @@
 import json
+import copy
 from typing import List
 
 from flask_socketio import SocketIO, emit
@@ -63,7 +64,6 @@ class GameService:
         return player_cards
 
     def start_game(self):
-
         if len(self.players) < 3:
             return {"message": "Need at least 3 players to start the game!"}
 
@@ -89,3 +89,9 @@ class GameService:
         # Start game
         self.started = True
         return self.game.start_game()
+
+    def new_game(self):
+        self.game = Game()
+        self.started = False
+        self.players = [Player(player.playerID, player.character.name)
+                        for player in self.players]
