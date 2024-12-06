@@ -87,6 +87,8 @@ Ongoing list of thing that still need to be done as we find them
 
 - Accusation disproof function should only show close button if nothing to disprove (check rules if you have to disprove something)
 
+- Disable suggest button unless you were moved to a room by another player -
+
 ### Known Bugs
 
 - Figure out how to do the validation on the location part of the form for accuse logic

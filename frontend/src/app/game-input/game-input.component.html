@@ -1,5 +1,6 @@
 <div *ngIf="gameState().flow === 'suggest' || gameState().flow === 'accuse'" class="container">
-  <h3>Suggestion/Accusation Selections</h3>
+  <h3 *ngIf="gameState().flow === 'suggest'">Suggestion Selection</h3>
+  <h3 *ngIf="gameState().flow === 'accusation'">Accusation Selection</h3>
   <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="character">Character</label>

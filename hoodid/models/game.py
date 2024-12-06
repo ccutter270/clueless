@@ -264,7 +264,12 @@ class Game:
 
         return room_options
 
-    def move_player(self, character: Character, new_location: Location):
+    def move_player(self, character: Character, new_location: Location, moved: bool):
+
+        # If being moved by amother player, set moved true
+        if moved:
+            character.moved_to = True
+            # TODO: make sure to unset this variable as well, also make sure it works
 
         # If in hallway currently, make sure to "unoccupy it"
         if character.location.locationType == "hallway":
@@ -401,7 +406,6 @@ class Game:
 
                 # If there were no move options, continue to accusation prompt
                 if self.move_to == "Blocked":
-                    print("No move locations, moving to accusation")
                     self.ask_accuse()
 
                 # Move Player
@@ -411,7 +415,8 @@ class Game:
                     location = next(
                         (location for location in self.locations if location.name == self.move_to), None)
 
-                    self.move_player(self.current_player.character, location)
+                    self.move_player(
+                        self.current_player.character, location, False)
 
                     # Reset move options
                     self.last_action_taken = self.current_player.character.name + \
@@ -425,6 +430,7 @@ class Game:
                         self.flow = "suggest"
                     else:
                         # Ask if player want to accuse or move on to next turn
+                        self.current_player.character.moved_to = False
                         self.ask_accuse()
 
                     self.send_game_state()
@@ -432,6 +438,7 @@ class Game:
             if self.action == "suggest":
 
                 self.action = None
+                self.current_player.character.moved_to = False
                 self.flow = "suggest"
                 self.last_action_taken = self.current_player.character.name + " chose to suggest"
                 self.send_game_state()
@@ -443,8 +450,10 @@ class Game:
                 # Move the character of the suggestion to the room & display
                 character = next(
                     (character for character in self.characters if character.name == self.suggestion["character"]), None)
+
+                moved = (self.current_player.character.name != character.name)
                 self.move_player(
-                    character, self.current_player.character.location)
+                    character, self.current_player.character.location, moved)
                 self.last_action_taken = self.current_player.character.name + " suggested it was " + \
                     self.suggestion["character"] + " with the " + self.suggestion["weapon"] + \
                     " in the " + self.current_player.character.location.name
@@ -514,7 +523,7 @@ class Game:
                         move_location = self.current_player.character.location.connectedLocations[
                             0]
                         self.move_player(
-                            self.current_player.character, move_location)
+                            self.current_player.character, move_location, False)
 
                     # Popup message telling player they are out of the game
                     message = "Oh No! That is incorrect. You are out of the game. You may still disprove suggestions but you will no longer be able to win. The solution was: " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \

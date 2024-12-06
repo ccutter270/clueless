@@ -84,10 +84,16 @@
           >{{ gameStateService.getGameState().current_player.name }}'s Turn</h2
         >
         <p>Options will appear when it is your turn</p>
-        <playerInput (showSpinnerDialog)="openDialog()" [options]="options"></playerInput>
-        <moveTo [move_options]="move_options"></moveTo>
-        <gameInput (showSpinnerDialog)="openDialog()"></gameInput>
-        <AccusePrompt></AccusePrompt>
+        <div
+          *ngIf="
+            gameStateService.gameState().current_player.name === userService.assignedCharacter()
+          "
+        >
+          <playerInput (showSpinnerDialog)="openDialog()" [options]="options"></playerInput>
+          <moveTo [move_options]="move_options"></moveTo>
+          <gameInput (showSpinnerDialog)="openDialog()"></gameInput>
+          <AccusePrompt></AccusePrompt>
+        </div>
       </div>
       <div class="column">
         <h2>Your Game Tracker</h2>

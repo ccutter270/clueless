@@ -30,6 +30,7 @@ export class GameStateService {
         occupied: true,
         weapon: { name: '' },
       },
+      moved_to: false,
     },
     lastActionTaken: {
       type: '',

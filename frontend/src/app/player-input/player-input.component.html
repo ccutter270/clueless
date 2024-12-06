@@ -5,13 +5,16 @@
   "
   class="messageSender"
 >
-  <h3>Enter your move:</h3>
+  <h2>Enter your move:</h2>
 
   <div class="'button-list">
     <!-- Loop through the buttonLabels array and create a button for each -->
     <button (click)="sendMessage('move')"> move </button>
     <button
-      [disabled]="gameState().current_player.location.locationType !== 'room'"
+      [disabled]="
+        gameState().current_player.location.locationType !== 'room' ||
+        gameState().current_player.moved_to === false
+      "
       (click)="sendMessage('suggest')"
     >
       suggest

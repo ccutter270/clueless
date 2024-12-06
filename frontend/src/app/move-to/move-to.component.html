@@ -1,13 +1,3 @@
-<!-- <div *ngIf="gameState().flow === 'move'" class="messageSender">
-  <h3>Choose your movement:</h3>
-
-  <div class="'button-list">
-    <button *ngFor="let label of move_options" (click)="SendLocation(label)">
-      {{ label }}
-    </button>
-  </div>
-</div> -->
-
 <div *ngIf="gameState().flow === 'move'" class="messageSender">
   <div *ngIf="move_options.length > 0; else noMoveOptions">
     <h3>Choose your movement:</h3>
