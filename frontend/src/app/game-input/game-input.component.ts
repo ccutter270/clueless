@@ -67,4 +67,10 @@ export class GameInputComponent implements OnInit {
       console.log('Form is invalid')
     }
   }
+
+  goBack(): void {
+    // Logic to go back to the previous game state
+    console.log('Returning to the previous state...')
+    this.webSocketService.sendGoBack()
+  }
 }

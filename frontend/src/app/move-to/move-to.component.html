@@ -1,6 +1,6 @@
 <div *ngIf="gameState().flow === 'move'" class="messageSender">
   <div *ngIf="move_options.length > 0; else noMoveOptions">
-    <h3>Choose your movement:</h3>
+    <h2>Choose your movement:</h2>
     <div class="button-list">
       <!-- Loop through the move_options array and create a button for each -->
       <button *ngFor="let label of move_options" (click)="SendLocation(label)">

@@ -106,6 +106,12 @@ export class WebSocketService {
     this.socket.emit('player_suggestion', suggestion)
   }
 
+  // Send "Go Back" if player doesn't want to accuse
+  sendGoBack() {
+    console.log('sending go back')
+    this.socket.emit('go_back')
+  }
+
   sendDisprove(disprove: string) {
     console.log('sending disprove')
     this.socket.emit('disprove', disprove)

@@ -118,6 +118,15 @@ def handle_player_suggestion(suggestion: object):
     # Update current suggestion
     game_service.game.suggestion = suggestion
 
+# Go Back to Previous State
+
+
+@socketio.on('go_back')
+def handle_go_back():
+
+    # Update go back variable
+    game_service.game.go_back = True
+
 
 # Disprove Finished
 @socketio.on('disprove')

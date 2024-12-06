@@ -7,7 +7,7 @@
     >
 
     <div *ngIf="cardsToDisprove.length > 0">
-      <p>Select a card to disprove:</p>
+      <h3>Select a card to disprove:</h3>
 
       <!-- Card grid container -->
       <div class="card-grid">
@@ -22,9 +22,7 @@
 
     <div *ngIf="cardsToDisprove.length === 0">
       <p>You don't have any cards to disprove this suggestion.</p>
+      <button class="close" (click)="onDisprove('')">Close</button>
     </div>
-
-    <!-- Close button -->
-    <button class="close" (click)="onDisprove('')">Close</button>
   </div>
 </div>

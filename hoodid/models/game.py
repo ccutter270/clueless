@@ -59,6 +59,7 @@ class Game:
         self.suggestion = None          # Current suggestion
         self.disprove_finished = False  # Waiting for disproof
         self.disproves = []             # Disproved cards from players
+        self.go_back = False            # Boolean if player want to return from accusation form
 
         # Remove envelope cards from card deck
         self.cards.remove_card(self.envelope.suspect)
@@ -269,7 +270,6 @@ class Game:
         # If being moved by amother player, set moved true
         if moved:
             character.moved_to = True
-            # TODO: make sure to unset this variable as well, also make sure it works
 
         # If in hallway currently, make sure to "unoccupy it"
         if character.location.locationType == "hallway":
@@ -359,7 +359,7 @@ class Game:
                     player_set = True
                     break
 
-            # TODO: all players lost the game... emit game lost message
+            # All players lost, emit game over signal
             if not player_set:
                 self.last_action_taken = "Game Over - nobody won! The solution was " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
                     " in the " + self.envelope.room.name
@@ -369,7 +369,6 @@ class Game:
                 self.started = False
                 self.send_game_state()
                 break
-                # TODO: game_lost should message popup that all players lost, ask to start new game (refresh to beginning or keep current players?)
 
             # Broadcast that its that Players Turn
             self.flow = "get_action"
@@ -485,53 +484,63 @@ class Game:
                 # Ask if player want to accuse or move on to next turn
                 self.ask_accuse()
 
-            if self.action == "accuse":
+            if self.action == "accuse_start" or self.action == "accuse_end":
 
-                self.action = None
-                self.flow = "accuse"
+                # self.action = None
+                # self.flow = "accuse"
+                self.flow = self.action
                 self.last_action_taken = self.current_player.character.name + " chose to accuse"
                 self.send_game_state()
 
-                # Suggestion & accusation form is the same
-                while self.suggestion is None:
+                # NOTE: suggestion & accusation form is the same
+                # Either get a suggestion or go back signal
+                while self.suggestion is None and not self.go_back:
                     time.sleep(.5)
 
-                # Check the accusation
-                accusation_correct = self.accuse(
-                    self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
+                # If accusation was recieved, process it
+                if self.suggestion:
 
-                self.suggestion = None
+                    # Check the accusation
+                    accusation_correct = self.accuse(
+                        self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
 
-                # TODO: Now that we have if the accusation is correct, do something
-                if accusation_correct:
-                    # TODO: create this logic
-                    self.last_action_taken = "Game Over - " + self.current_player.character.name + " won! The solution was " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
-                        " in the " + self.envelope.room.name
+                    self.suggestion = None
 
-                    emit('game_over', {
-                         'message': self.last_action_taken}, broadcast=True)
-                    game_over = True
-                    self.started = False
-                    self.send_game_state()
+                    if accusation_correct:
+                        self.last_action_taken = "Game Over - " + self.current_player.character.name + " won! The solution was " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
+                            " in the " + self.envelope.room.name
 
+                        emit('game_over', {
+                            'message': self.last_action_taken}, broadcast=True)
+                        game_over = True
+                        self.started = False
+                        self.send_game_state()
+
+                    else:
+                        # Player is out
+                        self.current_player.lost = True
+
+                        # If player is currently in hallway, move to one of connecting rooms:
+                        if self.current_player.character.location.locationType == "hallway":
+                            move_location = self.current_player.character.location.connectedLocations[
+                                0]
+                            self.move_player(
+                                self.current_player.character, move_location, False)
+
+                        # Popup message telling player they are out of the game
+                        message = "Oh No! That is incorrect. You are out of the game. You may still disprove suggestions but you will no longer be able to win. The solution was: " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
+                            " in the " + self.envelope.room.name
+                        self.last_action_taken = self.current_player.character.name + \
+                            " made a wrong accusation. They are out of the game!"
+                        emit("player_lost", {
+                             'message': message}, broadcast=True)
+                        self.send_game_state()
+
+                # If go_back signal was received, handle it
                 else:
-                    # Player is out
-                    self.current_player.lost = True
-
-                    # If player is currently in hallway, move to one of connecting rooms:
-                    if self.current_player.character.location.locationType == "hallway":
-                        move_location = self.current_player.character.location.connectedLocations[
-                            0]
-                        self.move_player(
-                            self.current_player.character, move_location, False)
-
-                    # Popup message telling player they are out of the game
-                    message = "Oh No! That is incorrect. You are out of the game. You may still disprove suggestions but you will no longer be able to win. The solution was: " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
-                        " in the " + self.envelope.room.name
-                    self.last_action_taken = self.current_player.character.name + \
-                        " made a wrong accusation. They are out of the game!"
-                    emit("player_lost", {'message': message}, broadcast=True)
-                    self.send_game_state()
+                    # If player has not already chose to move or suggest
+                    if self.action == "accuse_end":
+                        self.go_back = False
 
             # Done with loop, move to next players turn
             self.action = None
@@ -539,7 +548,12 @@ class Game:
                 " chose to end their turn"
             self.flow = "get_action"
             self.send_game_state()
-            self.next_turn()
+
+            # If player didn't choose to go back:
+            if not self.go_back:
+                self.next_turn()
+
+            self.go_back = False
 
     def __repr__(self):
         return f"Game(Players: {self.players}, Crime Envelope: {self.envelope})"

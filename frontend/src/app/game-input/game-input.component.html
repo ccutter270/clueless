@@ -1,6 +1,15 @@
-<div *ngIf="gameState().flow === 'suggest' || gameState().flow === 'accuse'" class="container">
+<div
+  *ngIf="
+    gameState().flow === 'suggest' ||
+    gameState().flow === 'accuse_end' ||
+    gameState().flow === 'accuse_start'
+  "
+  class="container"
+>
   <h3 *ngIf="gameState().flow === 'suggest'">Suggestion Selection</h3>
-  <h3 *ngIf="gameState().flow === 'accusation'">Accusation Selection</h3>
+  <h3 *ngIf="gameState().flow === 'accuse_end' || gameState().flow === 'accuse_start'">
+    Accusation Selection
+  </h3>
   <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="character">Character</label>
@@ -22,16 +31,23 @@
       </select>
     </div>
 
-    <div *ngIf="gameState().flow === 'accuse'">
+    <div *ngIf="gameState().flow === 'accuse_end' || gameState().flow === 'accuse_start'">
       <label for="location">Location</label>
       <select id="location" formControlName="location">
-        <option value="" disabled>Select a Weapon</option>
+        <option value="" disabled>Select a Location</option>
         <option *ngFor="let location of locations" [value]="location">
           {{ location }}
         </option>
       </select>
     </div>
-
-    <button type="submit" [disabled]="gameForm.invalid">Submit</button>
+    <button class="button" type="submit" [disabled]="gameForm.invalid">Submit</button>
   </form>
+  <div class="button-container">
+    <button type="button" *ngIf="gameState().flow === 'accuse_start'" (click)="goBack()"
+      >Return</button
+    >
+    <button type="button" *ngIf="gameState().flow === 'accuse_end'" (click)="goBack()"
+      >End Turn</button
+    >
+  </div>
 </div>

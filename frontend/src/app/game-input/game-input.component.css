@@ -3,7 +3,7 @@
   max-width: 600px; /* Make the width responsive */
   width: 100%;
   padding: 20px;
-  border: 1px solid #ddd; /* Lighter border color */
+  border: 1px solid #333; /* Darker border color */
   border-radius: 10px;
   background-color: #fff;
   margin: 20px auto;
@@ -37,10 +37,18 @@ select:focus {
   outline: none;
 }
 
-/* Button styling */
+/* Button container styling with added padding and spacing between buttons */
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 15px; /* Space between buttons */
+  padding: 10px 0; /* Adjusted padding around the button container */
+}
+
+/* Button styling with added vertical padding */
 button {
   width: 100%;
-  padding: 12px;
+  padding: 15px 20px; /* Increased vertical padding (15px) and horizontal padding (20px) */
   background-color: #333;
   color: #fff;
   border: none;
@@ -68,6 +76,9 @@ h3 {
     margin: 10px;
   }
   button {
-    padding: 12px;
+    padding: 15px 20px; /* Retained vertical and horizontal padding for smaller screens */
+  }
+  .button-container {
+    padding: 15px; /* Adjusted padding for smaller screens */
   }
 }

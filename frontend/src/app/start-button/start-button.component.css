@@ -17,9 +17,9 @@
 
 /* Button styling */
 .start-button {
-  background-color: #e0e0e0; /* Light gray background for button */
-  color: #333; /* Dark gray text */
-  border: 2px solid #bbb; /* Subtle darker border */
+  background-color: #f0f0f0; /* Light grey background */
+  color: #000; /* Black text */
+  border: 2px solid #000; /* Black border for contrast */
   border-radius: 8px; /* Slightly rounded corners */
   padding: 20px 60px; /* Button size */
   font-size: 24px; /* Larger font for emphasis */
@@ -33,21 +33,23 @@
 
 /* Hover effects */
 .start-button:hover {
-  background-color: #d6d6d6; /* Slightly darker light gray */
-  border-color: #aaa; /* Darker border on hover */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Larger shadow */
+  background-color: #000; /* Black background on hover */
+  color: #fff; /* White text on hover */
+  border-color: #fff; /* White border on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Larger shadow */
   transform: translateY(-3px); /* Slight lift effect */
 }
 
 /* Active effects (when clicked) */
 .start-button:active {
-  background-color: #cccccc; /* Even darker light gray */
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  background-color: #333; /* Dark gray background */
+  color: #fff; /* White text remains */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Softer shadow */
   transform: translateY(2px); /* Pressed effect */
 }
 
 /* Focus effect (keyboard navigation) */
 .start-button:focus {
   outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 4px rgba(187, 187, 187, 0.5); /* Subtle focus ring */
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.3); /* Subtle black focus ring */
 }

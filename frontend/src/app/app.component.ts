@@ -7,7 +7,6 @@ import { RoomComponent } from './room/room.component'
 import { HallwayComponent } from './hallway/hallway.component'
 import { EmptyComponent } from './empty/empty.component'
 import { WebSocketService } from './websocket.service'
-import { WebsocketTesterComponent } from './websocket.tester/websocket.tester.component'
 import { GameStateComponent } from './game-state/game-state.component'
 import { GameInputComponent } from './game-input/game-input.component'
 import { TrackingCardComponent } from './tracking-card/tracking-card.component'
@@ -41,7 +40,6 @@ import { MaterialDialogComponent } from './material-dialog/material-dialog.compo
     HallwayComponent,
     EmptyComponent,
     CommonModule,
-    WebsocketTesterComponent,
     GameStateComponent,
     GameInputComponent,
     TrackingCardComponent,
