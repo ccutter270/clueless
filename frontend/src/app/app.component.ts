@@ -72,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private disproveSubscription!: Subscription
   private startButtonSubscription!: Subscription
   private gameOverSubscription!: Subscription
+  private gameErrorSubscription!: Subscription
   private playerLostSubscription!: Subscription
   showSpinnerDialog: boolean = false
 
@@ -347,11 +348,21 @@ export class AppComponent implements OnInit, OnDestroy {
         this.showMessage(message['message'])
         this.webSocketService.sendGameOver()
 
-        console.log('NUM PLAYERS', this.num_players)
         if (this.num_players >= 3) {
           this.showStartButton = true
           this.startButtonMessage = `${this.num_players} joined. Click to start the game.`
         }
+      },
+      error => console.error('Game Over Error'),
+    )
+
+    this.gameErrorSubscription = this.webSocketService.onError().subscribe(
+      (message: any) => {
+        console.log('Received Game Over Message', message)
+
+        // Show game over popup
+        this.showMessage(message['message'])
+        this.webSocketService.sendGameOver()
       },
       error => console.error('Game Over Error'),
     )

@@ -1,10 +1,27 @@
-<div *ngIf="gameState().flow === 'move'" class="messageSender">
+<!-- <div *ngIf="gameState().flow === 'move'" class="messageSender">
   <h3>Choose your movement:</h3>
 
   <div class="'button-list">
-    <!-- Loop through the buttonLabels array and create a button for each -->
     <button *ngFor="let label of move_options" (click)="SendLocation(label)">
       {{ label }}
     </button>
   </div>
+</div> -->
+
+<div *ngIf="gameState().flow === 'move'" class="messageSender">
+  <div *ngIf="move_options.length > 0; else noMoveOptions">
+    <h3>Choose your movement:</h3>
+    <div class="button-list">
+      <!-- Loop through the move_options array and create a button for each -->
+      <button *ngFor="let label of move_options" (click)="SendLocation(label)">
+        {{ label }}
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noMoveOptions>
+    <h2>No Move Options</h2>
+    <p>You are blocked! You can still accuse or end your turn.</p>
+    <button (click)="SendLocation('Blocked')">Continue</button>
+  </ng-template>
 </div>

@@ -32,6 +32,12 @@ export class WebSocketService {
     })
   }
 
+  onError(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('game_error', data => observer.next(data))
+    })
+  }
+
   onShowStartButton(): Observable<any> {
     return new Observable(observer => {
       this.socket.on('show_start_button', data => observer.next(data))

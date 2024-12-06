@@ -58,6 +58,7 @@ This should run on http://127.0.0.1:5000
 Ongoing list of thing that still need to be done as we find them
 
 - Make a "go back" button for move options? especially accuse so if player accidentally presses accuse they can go back and chose a different option
+- If a player drops out during the game - remove them & distribute their cards to others(stretch goal)
 - If there are no move options (all hallways are blocked), allow for accusation but not movement (can't make a suggestion)
 - Update game state more often / when actions are taken
   - just change "self.last_action_taken" in game class to desired string, then call self.send_game_state
@@ -81,7 +82,10 @@ Ongoing list of thing that still need to be done as we find them
   - if wrong, remove them as "player" so they can't have a turn, but allow them to disprove?
 
 - Once the game has started (i.e after start game button is pressed) don't allow new players to join
+
   - started implementing in @socketio.on('player_connected')... need to add popup to persons screen
+
+- Accusation disproof function should only show close button if nothing to disprove (check rules if you have to disprove something)
 
 ### Known Bugs
 

@@ -320,6 +320,16 @@ class Game:
     def send_game_state(self):
         emit('game_state', {'data': self.get_game_state()}, broadcast=True)
 
+    def ask_accuse(self):
+        # Ask if player want to accuse or move on to next turn
+        self.flow = "ask_accuse"
+        self.last_action_taken = "Asking for accusation or end turn"
+        self.send_game_state()
+
+        # Wait for response
+        while self.action == None:
+            time.sleep(.5)
+
     def start_game(self):
         """Start the game loop (this can be expanded with turns and gameplay mechanics)."""
 
@@ -389,35 +399,35 @@ class Game:
                 while self.move_to is None:
                     time.sleep(.5)
 
-                # Get location instance
-                location = next(
-                    (location for location in self.locations if location.name == self.move_to), None)
+                # If there were no move options, continue to accusation prompt
+                if self.move_to == "Blocked":
+                    print("No move locations, moving to accusation")
+                    self.ask_accuse()
 
-                self.move_player(self.current_player.character, location)
-
-                # Reset move options
-                self.last_action_taken = self.current_player.character.name + \
-                    " moved to " + self.current_player.character.location.name
-                self.move_to = None
-                self.move_options = []
-
-                # If move to room, make a suggestion
-                if self.current_player.character.location.locationType == "room":
-                    self.action = "suggest"
-                    self.flow = "suggest"
+                # Move Player
                 else:
-                    # Ask if player want to accuse or move on to next turn
-                    self.flow = "ask_accuse"
-                    self.last_action_taken = "Move finished, asking for accusation or end turn"
+
+                    # Get location instance
+                    location = next(
+                        (location for location in self.locations if location.name == self.move_to), None)
+
+                    self.move_player(self.current_player.character, location)
+
+                    # Reset move options
+                    self.last_action_taken = self.current_player.character.name + \
+                        " moved to " + self.current_player.character.location.name
+                    self.move_to = None
+                    self.move_options = []
+
+                    # If moved to room, make a suggestion
+                    if self.current_player.character.location.locationType == "room":
+                        self.action = "suggest"
+                        self.flow = "suggest"
+                    else:
+                        # Ask if player want to accuse or move on to next turn
+                        self.ask_accuse()
+
                     self.send_game_state()
-
-                    # Wait for response
-                    while self.action == None:
-                        time.sleep(.5)
-
-                self.send_game_state()
-
-                # TODO: Make function that logs something without the game state being changed. Look where the logging happens
 
             if self.action == "suggest":
 
@@ -464,13 +474,7 @@ class Game:
                 self.suggestion = None
 
                 # Ask if player want to accuse or move on to next turn
-                self.flow = "ask_accuse"
-                self.last_action_taken = "Suggestion finished, asking for accusation or end turn"
-                self.send_game_state()
-
-                # Wait for response
-                while self.action == None:
-                    time.sleep(.5)
+                self.ask_accuse()
 
             if self.action == "accuse":
 

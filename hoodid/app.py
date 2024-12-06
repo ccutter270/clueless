@@ -47,23 +47,18 @@ def start_game():
     emit('show_start_button', {'show': False, 'message': ""}, broadcast=True)
     game_service.start_game()
 
-    # return jsonify({"message": "Game started!"})
-
 
 @socketio.on('player_connected')
 def broadcast_game_state():
     print("Broadcasting Game state for initial player connection")
 
-    # TODO:
     if game_service.started:
-        print("Can't play, game already started! ")
-        # TODO: broadcast a message to display popup on users screen saying can't play
-        emit('game_error', {'message': "The game has already started."})
+        emit('game_error', {'message': "ERROR! The game has already started."})
         return
 
     if len(game_service.players) >= 6:
-        print("Can't play, too many players! ")
-        emit('game_error', {'message': "Maximum players already reached."})
+        emit('game_error', {
+             'message': "ERROR! Maximum players already reached."})
         return
 
     if len(characters) > 0:
@@ -110,7 +105,6 @@ def handle_player_action(action: Action):
 @socketio.on('player_move_location')
 def handle_player_move_location(location: str):
     print("Processing Move Location")
-    print(location)
 
     # Update players move locations
     game_service.game.move_to = location
