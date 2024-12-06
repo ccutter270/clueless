@@ -1,4 +1,4 @@
-<div *ngIf="gameState().flow === 'suggest'" class="container">
+<div *ngIf="gameState().flow === 'suggest' || gameState().flow === 'accuse'  " class="container">
   <h3>Suggestion/Accusation Selections</h3>
   <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
     <div>
@@ -17,6 +17,16 @@
         <option value="" disabled>Select a Weapon</option>
         <option *ngFor="let weapon of weapons" [value]="weapon">
           {{ weapon }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="gameState().flow === 'accuse'">
+      <label for="location">Location</label>
+      <select id="location" formControlName="location">
+        <option value="" disabled>Select a Weapon</option>
+        <option *ngFor="let location of locations" [value]="location">
+          {{ location }}
         </option>
       </select>
     </div>

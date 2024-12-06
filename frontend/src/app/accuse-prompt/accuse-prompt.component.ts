@@ -7,20 +7,20 @@ import { GameStateService } from '../game.state.service'
 import { UserService } from '../user.service'
 
 @Component({
-  selector: 'playerInput',
+  selector: 'AccusePrompt',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './player-input.component.html',
-  styleUrl: './player-input.component.css',
+  templateUrl: './accuse-prompt.component.html',
+  styleUrl: './accuse-prompt.component.css'
 })
-export class PlayerInputComponent {
+export class AccusePromptComponent {
   gameStateService = inject(GameStateService)
   webSocketService = inject(WebSocketService)
   userService = inject(UserService)
+  cdr = inject(ChangeDetectorRef)
 
   sending: boolean = false
   @Input() options: string[] = []
-  @Output() showSpinnerDialog = new EventEmitter<boolean>()
 
   gameState = this.gameStateService.gameState
 

@@ -1,0 +1,77 @@
+.messageSender {
+    font-family: 'Arial', sans-serif;
+    margin: 40px auto; /* Increased margin for more spacing */
+    padding: 30px; /* Increased padding for more breathing room */
+    width: 80%;
+    border: 3px solid #333; /* Dark border for black-and-white theme */
+    border-radius: 12px;
+    background: #fff; /* White background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition:
+      box-shadow 0.3s ease-in-out,
+      transform 0.3s ease-in-out;
+  }
+  
+  .messageSender:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+  }
+  
+  h3 {
+    text-align: center;
+    font-size: 20px; /* Slightly larger font for prominence */
+    font-weight: normal;
+    color: #333; /* Dark gray for the text */
+    margin-bottom: 20px; /* Increased space below the heading */
+  }
+  
+  .button-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Increased gap between buttons */
+    width: 100%;
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px; /* Larger padding for more spacious buttons */
+    font-size: 18px; /* Increased font size for clarity */
+    border: 2px solid #ccc; /* Light border for a modern look */
+    border-radius: 8px; /* Rounded corners for the button */
+    background-color: #333; /* Dark background for buttons */
+    color: white; /* White text for contrast */
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease,
+      border-color 0.3s ease;
+    margin: 0 10px; /* Added margin for space between buttons */
+  }
+  
+  button:hover {
+    background-color: #444; /* Slightly lighter background on hover */
+    transform: translateY(-2px); /* Lift effect */
+    border-color: #bbb; /* Light border color on hover */
+  }
+  
+  button[disabled] {
+    background-color: #ddd;
+    cursor: not-allowed;
+    color: #666;
+    border-color: #ccc; /* Light border for disabled buttons */
+  }
+  
+  button:active {
+    transform: translateY(1px); /* Slight press effect */
+  }
+  
+  input[type='checkbox'] {
+    margin-right: 20px; /* Increased margin for better spacing */
+    accent-color: #333; /* Black accent for checkboxes */
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  input[type='checkbox']:checked {
+    transform: scale(1.2); /* Slight enlargement on checked state */
+  }
+  

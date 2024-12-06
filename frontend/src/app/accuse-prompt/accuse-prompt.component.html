@@ -1,0 +1,14 @@
+<div
+  *ngIf="
+    gameState().current_player.name === userService.assignedCharacter() &&
+    gameState().flow === 'ask_accuse'
+  "
+  class="messageSender"
+>
+  <h3>Would you like to accuse or end your turn?</h3>
+
+  <div class="'button-list">
+    <button (click)="sendMessage('accuse')"> accuse </button>
+    <button (click)="sendMessage('end turn')"> end turn </button>
+  </div>
+</div>

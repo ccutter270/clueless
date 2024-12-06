@@ -19,6 +19,7 @@ import {
   Suggestion,
 } from './disprove-suggestion/disprove-suggestion.component'
 import { GeneralMessagePopupComponent } from './message-popup/message-popup.component'
+import { AccusePromptComponent } from './accuse-prompt/accuse-prompt.component'
 
 import { GameState } from '../models/game.state.model'
 import { Subscription } from 'rxjs'
@@ -50,6 +51,7 @@ import { MaterialDialogComponent } from './material-dialog/material-dialog.compo
     DisproveSuggestionComponent,
     GeneralMessagePopupComponent,
     StartButtonComponent,
+    AccusePromptComponent,
   ],
   providers: [WebSocketService],
   templateUrl: './app.component.html',
