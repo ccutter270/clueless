@@ -11,7 +11,7 @@ import { UserService } from '../user.service'
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './accuse-prompt.component.html',
-  styleUrl: './accuse-prompt.component.css'
+  styleUrl: './accuse-prompt.component.css',
 })
 export class AccusePromptComponent {
   gameStateService = inject(GameStateService)

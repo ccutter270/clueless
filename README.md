@@ -57,8 +57,10 @@ This should run on http://127.0.0.1:5000
 
 Ongoing list of thing that still need to be done as we find them
 
+- If there are no move options (all hallways are blocked), allow for accusation but not movement (can't make a suggestion)
 - Update game state more often / when actions are taken
   - just change "self.last_action_taken" in game class to desired string, then call self.send_game_state
+- Add error popup message when too many people in game (aka for emit('game_error', {'message': "Maximum players already reached."}))
 - Update "self.flow" so that frontend only shows things when needed. Here are some examples of what "flow" values can be:
 
   | Self.flow         | Description                                        | UI Features enabled      |
@@ -68,6 +70,7 @@ Ongoing list of thing that still need to be done as we find them
   | **move**          | Player chose move, in move sequence                | game board, move-to box  |
   | **suggest**       | Player chose suggest or placed in suggest sequence | game board, game-input   |
   | **wait_disprove** | Wait for players to disprove                       | game board               |
+  | **ask_accuse**    | Ask player if accuse or next turn                   game board, accuse-prompt   |
   | **accuse**        | Player chose to accuse                             | game board, game-input   |
 
 - Display message when waiting for people to disprove (just for clarity of game flow)
@@ -80,3 +83,5 @@ Ongoing list of thing that still need to be done as we find them
   - started implementing in @socketio.on('player_connected')... need to add popup to persons screen
 
 ### Known Bugs
+
+- Figure out how to do the validation on the location part of the form for accuse logic

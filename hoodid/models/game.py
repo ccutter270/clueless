@@ -254,18 +254,16 @@ class Game:
         character.location = new_location           # Move character to new location
         new_location.setOccupied(True)              # Set Room to Occupied
 
-    def accuse(self, player: Player, suspect: str, accused_weapon: str, accused_location: str):
+    def accuse(self, suspect: str, accused_weapon: str, accused_location: str):
 
         # Check if the accusation matches the solution
         if (suspect == self.envelope.suspect.name and
             accused_weapon == self.envelope.weapon.name and
-                accused_location == self.solution.location):
-            result = f"Player {player.character.name} wins! The solution was correct."
-            return {"result": result, "correct": True}
+                accused_location == self.envelope.room.name):
+
             return True
         else:
-            result = f"Player {player.character.name} lost! The solution was incorrect."
-            return {"result": result, "correct": False}
+            return False
 
     def get_game_state(self):
 
@@ -334,8 +332,7 @@ class Game:
                 self.action = None
                 self.flow = "move"
                 self.last_action_taken = self.current_player.character.name + " chose to move"
-                emit('game_state', {
-                     'data': self.get_game_state()}, broadcast=True)
+                self.send_game_state()
 
                 # Get options that the player can move to
                 if self.current_player.character.location.locationType == "hallway":
@@ -393,8 +390,6 @@ class Game:
                 # Move the character of the suggestion to the room & display
                 character = next(
                     (character for character in self.characters if character.name == self.suggestion["character"]), None)
-                print(self.current_player.character.location)
-                print(character)
                 self.move_player(
                     character, self.current_player.character.location)
                 self.last_action_taken = self.current_player.character.name + " suggested it was " + \
@@ -420,23 +415,55 @@ class Game:
                 emit('show_disproves', {
                      'data': self.disproves}, broadcast=True)
 
-                # Reset disprove variables
+                # Reset Suggestion variables
                 self.disproves = []
                 self.disprove_finished == False
+                self.suggestion = None
 
-                # TODO: Before switching turns, one last ask if wanting to accuse
-                print(f"End of Suggested")
+                # Ask if player want to accuse or move on to next turn
+                self.flow = "ask_accuse"
+                self.last_action_taken = "Suggestion finished, asking for accusation or end turn"
+                self.send_game_state()
+
+                # Wait for response
+                while self.action == None:
+                    time.sleep(.5)
+
+
+
+
 
             if self.action == "accuse":
 
-                print("accuse")
                 self.action = None
+                self.flow = "accuse"
+                self.last_action_taken = self.current_player.character.name + " chose to accuse"
+                self.send_game_state()
 
-                # TODO: Get accusation (similar to suggestion) & check envelope
-                # if accusation is correct set Game Won true, else figure out how to remove player
+                # Suggestion & accusation form is the same
+                while self.suggestion is None:
+                    time.sleep(.5)
 
-                # accuse(accusation)  # TODO: make this take the JSON in?
+                # Check the accusation
+                accusation_correct = self.accuse(self.suggestion["character"], self.suggestion["weapon"], self.suggestion["location"])
 
+                print(f"ACCUSATION is: {accusation_correct}")
+                self.suggestion = None
+
+                # TODO: Now that we have if the accusation is correct, do something
+                if accusation_correct:
+                    emit("game_win", broadcast=True)    # TODO: create this logic
+                    # game_won = True
+
+                else:
+                    emit("player_lost", broadcast=True) # TODO: create this logic 
+
+
+            # Done with loop, move to next players turn
+            self.action = None
+            self.last_action_taken = self.current_player.character.name + " chose to end their turn"
+            self.flow = "get_action"
+            self.send_game_state()
             self.next_turn()
 
     def __repr__(self):
