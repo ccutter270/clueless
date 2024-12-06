@@ -390,6 +390,15 @@ class Game:
                 if self.current_player.character.location.locationType == "room":
                     self.action = "suggest"
                     self.flow = "suggest"
+                else:
+                    # Ask if player want to accuse or move on to next turn
+                    self.flow = "ask_accuse"
+                    self.last_action_taken = "Move finished, asking for accusation or end turn"
+                    self.send_game_state()
+
+                    # Wait for response
+                    while self.action == None:
+                        time.sleep(.5)
 
                 self.send_game_state()
 
