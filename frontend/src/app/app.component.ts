@@ -81,31 +81,61 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Clue'
 
   Areas = [
+    { name: 'row1 1', type: 'empty' },
+    { name: 'row1 2', type: 'empty' },
+    { name: 'row1 3', type: 'empty' },
+    { name: 'row1 4', type: 'empty' },
+    { name: 'Scarlet Start', type: 'hall', photo: '' },
+    { name: 'row1 6', type: 'empty' },
+    { name: 'row1 7', type: 'empty' },
+
+    { name: 'Plum Start', type: 'hall', photo: '' },
     { name: 'Study', type: 'room', photo: 'study.jpg' },
     { name: 'Study to Hall', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Hall', type: 'room', photo: 'hall.jpg' },
     { name: 'Hall to Lounge', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Lounge', type: 'room', photo: 'lounge.jpg' },
+    { name: 'Mustard Start', type: 'hall', photo: '' },
+
+    { name: 'row3 1', type: 'empty' },
     { name: 'Study to Library', type: 'hall', photo: 'hallway.jpg' },
     { name: 'top left', type: 'empty' },
     { name: 'Hall to Billiard', type: 'hall', photo: 'hallway.jpg' },
     { name: 'top right', type: 'empty' },
     { name: 'Lounge to Dining', type: 'hall', photo: 'hallway.jpg' },
+    { name: 'row3 7', type: 'empty' },
+
+    { name: 'Peacock Start', type: 'hall', photo: '' },
     { name: 'Library', type: 'room', photo: 'library.jpg' },
     { name: 'Library to Billiard', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Billiard Room', type: 'room', photo: 'billiard.jpg' },
     { name: 'Billiard to Dining', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Dining Room', type: 'room', photo: 'dining.jpg' },
+    { name: 'row4 7', type: 'empty' },
+
+    { name: 'row5 1', type: 'empty' },
     { name: 'Library to Conservatory', type: 'hall', photo: 'hallway.jpg' },
     { name: 'bottom left', type: 'empty' },
     { name: 'Billiard to Ballroom', type: 'hall', photo: 'hallway.jpg' },
     { name: 'bottom right', type: 'empty' },
     { name: 'Dining to Kitchen', type: 'hall', photo: 'hallway.jpg' },
+    { name: 'row5 1', type: 'empty' },
+
+    { name: 'row6 1', type: 'empty' },
     { name: 'Conservatory', type: 'room', photo: 'conservatory.jpg' },
     { name: 'Conservatory to Ballroom', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Ballroom', type: 'room', photo: 'ball.jpg' },
     { name: 'Ballroom to Kitchen', type: 'hall', photo: 'hallway.jpg' },
     { name: 'Kitchen', type: 'room', photo: 'kitchen.jpg' },
+    { name: 'row6 7', type: 'empty' },
+
+    { name: 'row7 1', type: 'empty' },
+    { name: 'row7 2', type: 'empty' },
+    { name: 'Green Start', type: 'hall', photo: '' },
+    { name: 'row7 5', type: 'empty' },
+    { name: 'White Start', type: 'hall', photo: '' },
+    { name: 'row7 6', type: 'empty' },
+    { name: 'row7 7', type: 'empty' },
   ]
 
   // Get filtered characters for each area
