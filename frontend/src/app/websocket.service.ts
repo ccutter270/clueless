@@ -58,6 +58,20 @@ export class WebSocketService {
     })
   }
 
+  // Observable looking for signal of game over
+  onGameOver(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('game_over', data => observer.next(data))
+    })
+  }
+
+  // Observable looking for signal of player lost
+  onPlayerLost(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('player_lost', data => observer.next(data))
+    })
+  }
+
   // Observable looking for move options for user
   onMoveOptions(): Observable<any> {
     return new Observable(observer => {

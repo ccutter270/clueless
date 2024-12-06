@@ -71,6 +71,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private suggestionSubscription!: Subscription
   private disproveSubscription!: Subscription
   private startButtonSubscription!: Subscription
+  private gameOverSubscription!: Subscription
+  private playerLostSubscription!: Subscription
   showSpinnerDialog: boolean = false
 
   @HostListener('window:beforeunload', ['$event'])
@@ -335,6 +337,34 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       },
       error => console.error('Suggestion error'),
+    )
+
+    this.gameOverSubscription = this.webSocketService.onGameOver().subscribe(
+      (message: any) => {
+        console.log('Received Game Over Message', message)
+
+        // Show game over popup
+        this.showMessage(message['message'])
+
+        // TODO: reset game all variables to play again?
+      },
+      error => console.error('Game Over Error'),
+    )
+
+    this.playerLostSubscription = this.webSocketService.onPlayerLost().subscribe(
+      (message: any) => {
+        console.log('Player Lost', message)
+
+        if (
+          this.gameStateService.gameState().current_player.name ===
+          this.userService.assignedCharacter()
+        ) {
+          // Show message to current user
+          this.dialog.closeAll()
+          this.showMessage(message['message'])
+        }
+      },
+      error => console.error('Player Lost Error'),
     )
 
     // Subscribe to get move options when player chooses to move

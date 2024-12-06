@@ -13,7 +13,7 @@ $ npx prettier --write .
 
 # For backend
 $ pip install autopep8
-$ autopep8 --in-place --recursive clueless/hoodid
+$ autopep8 --in-place --recursive hoodid/
 ```
 
 ### Frontend
@@ -57,6 +57,7 @@ This should run on http://127.0.0.1:5000
 
 Ongoing list of thing that still need to be done as we find them
 
+- Make a "go back" button for move options? especially accuse so if player accidentally presses accuse they can go back and chose a different option
 - If there are no move options (all hallways are blocked), allow for accusation but not movement (can't make a suggestion)
 - Update game state more often / when actions are taken
   - just change "self.last_action_taken" in game class to desired string, then call self.send_game_state

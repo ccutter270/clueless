@@ -68,12 +68,12 @@ class Game:
     def _create_game(self):
 
         # region Starting
-        scarlet_start = Location("Scarlet Start", "hallway")
-        plum_start = Location("Plum Start", "hallway")
-        mustard_start = Location("Mustard Start", "hallway")
-        peacock_start = Location("Peacock Start", "hallway")
-        green_start = Location("Green Start", "hallway")
-        white_start = Location("White Start", "hallway")
+        scarlet_start = Location("Scarlet Start", "room")
+        plum_start = Location("Plum Start", "room")
+        mustard_start = Location("Mustard Start", "room")
+        peacock_start = Location("Peacock Start", "room")
+        green_start = Location("Green Start", "room")
+        white_start = Location("White Start", "room")
 
         # endregion Starting
 
@@ -108,9 +108,9 @@ class Game:
 
         # region Starting Connected Locations
         scarlet_start.connectedLocations = [hall_lounge]
-        plum_start.connectedLocations= [study_library]
-        mustard_start.connectedLocations= [lounge_dining]
-        peacock_start.connectedLocations= [library_conservatory]
+        plum_start.connectedLocations = [study_library]
+        mustard_start.connectedLocations = [lounge_dining]
+        peacock_start.connectedLocations = [library_conservatory]
         green_start.connectedLocations = [conservatory_ballroom]
         white_start.connectedLocations = [ballroom_kitchen]
         # endregionStarting
@@ -148,13 +148,13 @@ class Game:
         # endregion Rooms Connected Locations
 
         # Create List of all Locations:
-        locations = [scarlet_start, plum_start,mustard_start, peacock_start, green_start, white_start,
-            ballroom_kitchen, billiard_ballroom, billiard_dining,
-            conservatory_ballroom, dining_kitchen, hall_billiard,
-            hall_lounge, library_billiard, library_conservatory,
-            lounge_dining, study_hall, study_library,
-            ballroom, billiard_room, conservatory, dining_room,
-            hall, kitchen, library, lounge, study]
+        locations = [scarlet_start, plum_start, mustard_start, peacock_start, green_start, white_start,
+                     ballroom_kitchen, billiard_ballroom, billiard_dining,
+                     conservatory_ballroom, dining_kitchen, hall_billiard,
+                     hall_lounge, library_billiard, library_conservatory,
+                     lounge_dining, study_hall, study_library,
+                     ballroom, billiard_room, conservatory, dining_room,
+                     hall, kitchen, library, lounge, study]
 
         # Create List of just rooms:
         rooms = [
@@ -330,17 +330,39 @@ class Game:
         print(f"The solution to the crime is: {self.envelope}")
         print(f"Players {self.players}")
 
-        game_won = False
-        while not game_won:
+        game_over = False
+        while not game_over:
 
-            # Set Current Player
-            self.current_player = self.players[self.currentTurn]
+            # Set Current Player - get next player whose still in game
 
+            player_set = False
+            for player in self.players:
+                self.current_player = self.players[self.currentTurn]
+                if self.current_player.lost:
+                    self.next_turn()
+                else:
+                    player_set = True
+                    break
+
+            # TODO: all players lost the game... emit game lost message
+            if not player_set:
+                self.last_action_taken = "Game Over - nobody won! The solution was " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
+                    " in the " + self.envelope.room.name
+                emit('game_over', {
+                     'message': self.last_action_taken}, broadcast=True)
+                game_over = True
+                self.started = False
+                self.send_game_state()
+                print("Game should be lost")
+                break
+                # TODO: game_lost should message popup that all players lost, ask to start new game (refresh to beginning or keep current players?)
+
+            print("Shouldn't make it here")
             # Broadcast that its that Players Turn
             self.flow = "get_action"
             self.last_action_taken = self.current_player.character.name + \
                 "'s turn, choose your action"
-            emit('game_state', {'data': self.get_game_state()}, broadcast=True)
+            self.send_game_state()
 
             # Wait for player to choose action
             while self.action is None:
@@ -478,12 +500,37 @@ class Game:
                 # TODO: Now that we have if the accusation is correct, do something
                 if accusation_correct:
                     # TODO: create this logic
-                    emit("game_win", broadcast=True)
-                    # game_won = True
+                    self.last_action_taken = "Game Over - " + self.current_player.character.name + " won! The solution was " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
+                        " in the " + self.envelope.room.name
+
+                    emit('game_over', {
+                         'message': self.last_action_taken}, broadcast=True)
+                    game_over = True
+                    self.started = False
+                    self.send_game_state()
 
                 else:
-                    # TODO: create this logic
-                    emit("player_lost", broadcast=True)
+                    # Player is out, set their
+                    print(
+                        "Wrong guess! You are out of the game now. You can still disprove suggestions but no longer move")
+                    self.current_player.lost = True
+
+                    # If player is currently in hallway, move to one of connecting rooms:
+                    if self.current_player.character.location.locationType == "hallway":
+                        move_location = self.current_player.character.location.connectedLocations[
+                            0]
+                        self.move_player(
+                            self.current_player.character, move_location)
+
+                    # Popup message telling player they are out of the game
+                    message = "Oh No! That is incorrect. You are out of the game. You may still disprove suggestions but you will no longer be able to win. The solution was: " + self.envelope.suspect.name + " did it with the " + self.envelope.weapon.name + \
+                        " in the " + self.envelope.room.name
+                    self.last_action_taken = self.current_player.character.name + \
+                        " made a wrong accusation. They are out of the game!"
+                    emit("player_lost", {'message': message}, broadcast=True)
+                    self.send_game_state()
+
+                    # Update game state
 
             # Done with loop, move to next players turn
             self.action = None
@@ -492,6 +539,9 @@ class Game:
             self.flow = "get_action"
             self.send_game_state()
             self.next_turn()
+
+        # TODO: When game over, display message?
+        print("GAME OVER!")
 
     def __repr__(self):
         return f"Game(Players: {self.players}, Crime Envelope: {self.envelope})"

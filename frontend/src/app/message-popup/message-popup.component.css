@@ -9,29 +9,43 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  font-family: 'Arial', sans-serif; /* Modern font */
 }
 
 .modal-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
+  padding: 40px; /* Larger padding */
+  border-radius: 12px;
+  width: 600px; /* Wider popup */
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+
+.modal-content p {
+  font-size: 24px; /* Larger, modern font */
+  font-weight: 300; /* Light font-weight for a sleek look */
+  margin-bottom: 30px; /* More spacing below the text */
+  color: #333; /* Subtle dark gray for readability */
 }
 
 .close-button {
   margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 12px 30px; /* Larger button */
+  background-color: #000; /* Black button */
+  color: #fff; /* White text */
+  border: 2px solid #fff; /* White border for a clean contrast */
+  border-radius: 8px; /* Rounded corners for modern look */
+  font-size: 18px; /* Larger font for the button */
+  font-weight: 500; /* Slightly bold for emphasis */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease; /* Add smooth effects */
 }
 
 .close-button:hover {
-  background-color: #555;
+  background-color: #fff; /* White button on hover */
+  color: #000; /* Black text on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+  border-color: #000; /* Black border on hover */
 }
