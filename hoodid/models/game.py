@@ -67,6 +67,16 @@ class Game:
 
     def _create_game(self):
 
+        # region Starting
+        scarlet_start = Location("Scarlet Start", "hallway")
+        plum_start = Location("Plum Start", "hallway")
+        mustard_start = Location("Mustard Start", "hallway")
+        peacock_start = Location("Peacock Start", "hallway")
+        green_start = Location("Green Start", "hallway")
+        white_start = Location("White Start", "hallway")
+
+        # endregion Starting
+
         # region Hallways
         ballroom_kitchen = Location("Ballroom to Kitchen", "hallway")
         billiard_ballroom = Location("Billiard to Ballroom", "hallway")
@@ -95,6 +105,15 @@ class Game:
         # endregion Rooms
 
         # Add connections to locations:
+
+        # region Starting Connected Locations
+        scarlet_start.connectedLocations = [hall_lounge]
+        plum_start.connectedLocations= [study_library]
+        mustard_start.connectedLocations= [lounge_dining]
+        peacock_start.connectedLocations= [library_conservatory]
+        green_start.connectedLocations = [conservatory_ballroom]
+        white_start.connectedLocations = [ballroom_kitchen]
+        # endregionStarting
 
         # region Hallways Connected Locations
         ballroom_kitchen.connectedLocations = [ballroom, kitchen]
@@ -129,7 +148,7 @@ class Game:
         # endregion Rooms Connected Locations
 
         # Create List of all Locations:
-        locations = [
+        locations = [scarlet_start, plum_start,mustard_start, peacock_start, green_start, white_start,
             ballroom_kitchen, billiard_ballroom, billiard_dining,
             conservatory_ballroom, dining_kitchen, hall_billiard,
             hall_lounge, library_billiard, library_conservatory,
@@ -150,20 +169,20 @@ class Game:
             study]
 
         # region Characters
-        scarlet = Character("Miss Scarlet", hall_lounge, hall_lounge)
-        hall_lounge.setOccupied(True)
-        mustard = Character("Colonel Mustard", lounge_dining, lounge_dining)
-        lounge_dining.setOccupied(True)
-        white = Character("Mrs. White", ballroom_kitchen, ballroom_kitchen)
-        ballroom_kitchen.setOccupied(True)
-        green = Character("Mr. Green", conservatory_ballroom,
-                          conservatory_ballroom)
-        conservatory_ballroom.setOccupied(True)
+        scarlet = Character("Miss Scarlet", scarlet_start, scarlet_start)
+        scarlet_start.setOccupied(True)
+        mustard = Character("Colonel Mustard", mustard_start, mustard_start)
+        mustard_start.setOccupied(True)
+        white = Character("Mrs. White", white_start, white_start)
+        white_start.setOccupied(True)
+        green = Character("Mr. Green", green_start,
+                          green_start)
+        green_start.setOccupied(True)
         peacock = Character(
-            "Mrs. Peacock", library_conservatory, library_conservatory)
-        library_conservatory.setOccupied(True)
-        plum = Character("Professor Plum", study_library, study_library)
-        study_library.setOccupied(True)
+            "Mrs. Peacock", peacock_start, peacock_start)
+        peacock_start.setOccupied(True)
+        plum = Character("Professor Plum", plum_start, plum_start)
+        plum_start.setOccupied(True)
         # endregion Characters
 
         # Create List of all characters:
