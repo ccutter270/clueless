@@ -66,3 +66,7 @@ Ongoing list of thing that still need to be done as we find them
 ### Known Bugs
 
 - Figure out how to do the validation on the location part of the form for accuse logic
+
+
+- Deployment of front end isn't working
+npx http-server ./dist/clue
