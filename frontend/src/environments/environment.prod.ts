@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://clueless-production.up.railway.app', // TODO: monitor link?
-}
+  apiUrl: 'https://clueless-production.up.railway.app'
+};
