@@ -11,6 +11,7 @@ from models.player import Player
 from services.game_service import GameService
 
 app = Flask(__name__)
+# app = Flask(__name__, static_folder='../frontend/dist/frontend')
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 app.config['SECRET_KEY'] = 'my_secret_key'
 

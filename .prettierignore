@@ -1,7 +1,7 @@
 # Environment and config files
 .env
 *.config.js
-hoodid/templates/index.html
+backend/templates/index.html
 
 # Specific generated files
 package-lock.json
