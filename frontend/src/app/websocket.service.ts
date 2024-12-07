@@ -12,7 +12,9 @@ export class WebSocketService {
   constructor() {
     // Replace with your server's URL
     // this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
-    this.socket = io('https://clueless-production.up.railway.app/')
+    this.socket = io('https://clueless-production.up.railway.app/',  {
+      transports: ['websocket']
+    });
   }
   
 
@@ -128,6 +130,7 @@ export class WebSocketService {
   // Method to close the socket connection
   close() {
     if (this.socket) {
+      console.log("CLOSING")
       this.socket.disconnect()
     }
   }
