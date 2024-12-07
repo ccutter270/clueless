@@ -12,8 +12,8 @@ from services.game_service import GameService
 
 app = Flask(__name__)
 # app = Flask(__name__, static_folder='../frontend/dist/frontend')
-# CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
-CORS(app, origins=["https://clueless-ivory.vercel.app"])
+CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
+# CORS(app, origins=["https://clueless-ivory.vercel.app"])
 app.config['SECRET_KEY'] = 'my_secret_key'
 
 
@@ -203,4 +203,4 @@ def on_game_over():
 #     }
 #     return jsonify(data)
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", port=5000, debug=True, allow_unsafe_werkzeug=True)
