@@ -11,8 +11,10 @@ export class WebSocketService {
 
   constructor() {
     // Replace with your server's URL
-    this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
+    // this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
+    this.socket = io('https://clueless-production.up.railway.app')
   }
+  
 
   // Method to emit a ping event to the server
   pingForBroadcast() {
