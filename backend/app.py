@@ -14,7 +14,7 @@ app = Flask(__name__)
 # app = Flask(__name__, static_folder='../frontend/dist/frontend')
 # CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 # CORS(app, origins=["https://clueless-ivory.vercel.app"])
-socketio = SocketIO(app, cors_allowed_origins='*')
+CORS(app)
 app.config['SECRET_KEY'] = 'my_secret_key'
 
 
