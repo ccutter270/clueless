@@ -10,12 +10,12 @@ export class WebSocketService {
   private socket: Socket
 
   constructor() {
-    // this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
+    this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
 
     // TODO: uncomment for deploymnet
-    this.socket = io('https://clueless-production.up.railway.app/', {
-      transports: ['websocket'],
-    })
+    // this.socket = io('https://clueless-production.up.railway.app/', {
+    //   transports: ['websocket'],
+    // })
   }
 
   // Method to emit a ping event to the server
