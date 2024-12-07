@@ -17,7 +17,6 @@ CORS(app, origins=["https://clueless-ivory.vercel.app"])
 app.config['SECRET_KEY'] = 'my_secret_key'
 
 
-
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 game_service = GameService()
@@ -204,4 +203,4 @@ def on_game_over():
 #     }
 #     return jsonify(data)
 if __name__ == '__main__':
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", debug=True, allow_unsafe_werkzeug=True)

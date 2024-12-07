@@ -13,7 +13,7 @@ $ npx prettier --write .
 
 # For backend
 $ pip install autopep8
-$ autopep8 --in-place --recursive hoodid/
+$ autopep8 --in-place --recursive backend/
 ```
 
 ### Frontend
@@ -42,20 +42,20 @@ $ source venv/bin/activate
 Install requirements:
 
 ```sh
-$ pip install -r hoodid/requirements.txt
+$ pip install -r backend/requirements.txt
 ```
 
 Run:
 
 ```sh
-$ python3 <directory>/clueless/hoodid/app.py
+$ python3 <directory>/clueless/backend/app.py
 ```
 
 This should run on http://127.0.0.1:5000
 
 ## TODO List
 
-Ongoing list of thing that still need to be done as we find them 
+Ongoing list of thing that still need to be done as we find them
 
 - Deploy the application on a website? [Link](https://v17.angular.io/guide/deployment#automatic-deployment-with-the-cli) ... This way we can have multiple games (add game code to join?)
 - Update the game state when necessary
