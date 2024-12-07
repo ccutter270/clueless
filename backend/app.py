@@ -12,8 +12,11 @@ from services.game_service import GameService
 
 app = Flask(__name__)
 # app = Flask(__name__, static_folder='../frontend/dist/frontend')
-CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
+# CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
+CORS(app, origins=["https://clueless-ivory.vercel.app"])
 app.config['SECRET_KEY'] = 'my_secret_key'
+
+
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -37,7 +40,7 @@ disproves = []
 assigned_characters = {}
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     # HTML page with the client-side WebSocket code
     return render_template('index.html')
