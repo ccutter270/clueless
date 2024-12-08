@@ -11,11 +11,6 @@ export class WebSocketService {
 
   constructor() {
     this.socket = io('http://localhost:5000') // Update to match your Flask server URL and port
-
-    // TODO: uncomment for deploymnet
-    // this.socket = io('https://clueless-production.up.railway.app/', {
-    //   transports: ['websocket'],
-    // })
   }
 
   // Method to emit a ping event to the server
@@ -122,15 +117,14 @@ export class WebSocketService {
   }
 
   // Send game over
-  sendGameOver() {
+  sendGameOver(message: string) {
     console.log('Sending Game Over')
-    this.socket.emit('game_over')
+    this.socket.emit('game_over', message)
   }
 
   // Method to close the socket connection
   close() {
     if (this.socket) {
-      console.log('CLOSING')
       this.socket.disconnect()
     }
   }

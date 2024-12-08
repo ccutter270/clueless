@@ -57,11 +57,8 @@ This should run on http://127.0.0.1:5000
 
 Ongoing list of thing that still need to be done as we find them
 
-- Deploy the application on a website? [Link](https://v17.angular.io/guide/deployment#automatic-deployment-with-the-cli) ... This way we can have multiple games (add game code to join?)
 - Update the game state when necessary
   - just change "self.last_action_taken" in game class to desired string, then call self.send_game_state
-- Styling: maybe make all font the same?
-- If a player drops out during the game - remove them & distribute their cards to others(stretch goal)
 
 ### Known Bugs
 

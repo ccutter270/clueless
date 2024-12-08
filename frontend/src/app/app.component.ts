@@ -299,8 +299,7 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log('Received Suggestion', suggestion)
         this.currentSuggestion = suggestion.data
 
-        // If it is not your turn, show Modal popup  // TODO: what if player whos turn it wasn't made suggestion (i.e character moved there?) (Response below)
-        // I don't think players are able to make suggestions outside of their turns right?
+        // If it is not your turn, show Modal popup
         if (
           this.gameStateService.gameState().current_player.name !==
           this.userService.assignedCharacter()
@@ -326,7 +325,7 @@ export class AppComponent implements OnInit, OnDestroy {
         ) {
           if (disproves.data.length > 0) {
             this.dialog.closeAll()
-            const message = 'The following items were disproved: \n' + disproves.data.join('\n')
+            const message = 'The following item was disproved: \n' + disproves.data.join('\n')
             this.showMessage(message)
           } else {
             this.dialog.closeAll()
@@ -343,8 +342,11 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log('Received Game Over Message', message)
 
         // Show game over popup
-        this.showMessage(message['message'])
-        this.webSocketService.sendGameOver()
+        if (message['message'] !== 'Disconnected') {
+          this.showMessage(message['message'])
+        }
+
+        this.webSocketService.sendGameOver(message['message'])
 
         if (this.num_players >= 3) {
           this.showStartButton = true
@@ -360,7 +362,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Show game over popup
         this.showMessage(message['message'])
-        this.webSocketService.sendGameOver()
+        this.webSocketService.sendGameOver(message['message'])
       },
       error => console.error('Game Over Error'),
     )

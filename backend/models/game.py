@@ -317,9 +317,6 @@ class Game:
                 }
             }
 
-        # TODO: delete for debug
-        # print(f"Game State: {json.dumps(game_state, indent=4)}")
-
         return game_state
 
     def send_game_state(self):
@@ -472,9 +469,15 @@ class Game:
                 while self.disprove_finished == False:
                     time.sleep(.5)
 
+                self.disproves = [
+                    item for item in self.disproves if item.strip()]
+                one_disprove = []
+                if len(self.disproves) > 0:
+                    one_disprove.append(self.disproves[0])
+
                 # Emit Disproves to display ONLY to user whose turn it is
                 emit('show_disproves', {
-                     'data': self.disproves}, broadcast=True)
+                     'data': one_disprove}, broadcast=True)
 
                 # Reset Suggestion variables
                 self.disproves = []

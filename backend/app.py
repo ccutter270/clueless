@@ -174,35 +174,45 @@ def on_disconnect():
         f"Client {request.sid} disconnected and released character {character}")
 
 
+# @socketio.on('game_over')
+# def on_game_over():
+
+#     global game_over_responses
+#     global num_players
+
+#     game_over_responses += 1
+#     if game_over_responses == num_players:
+#         # Reset game service
+#         game_service.new_game()
+#         game_over_responses = 0
+#         emit('show_start_button', {
+#              'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
+
+
 @socketio.on('game_over')
-def on_game_over():
+def on_game_over(message: str):
 
     global game_over_responses
     global num_players
 
-    game_over_responses += 1
-    if game_over_responses == num_players:
-        # Reset game service
+    print("MADE IT TO GAME OVER")
+    print(message)
+
+    # Players disconnected
+    if message == "Disconnected":
+        print("Should show disconnected")
         game_service.new_game()
-        game_over_responses = 0
-        emit('show_start_button', {
-             'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
+
+    else:
+        game_over_responses += 1
+        if game_over_responses == num_players:
+            # Reset game service
+            game_service.new_game()
+            game_over_responses = 0
+            emit('show_start_button', {
+                'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
 
 
-# @socketio.on('prompt_player_action')
-# def prompt_action():
-#     # Emit the prompt for the player's next action (Accuse, Move, Suggest)
-#     action_prompt = game.prompt_player_action()
-#     emit('player_action_prompt', action_prompt)  # Send options to frontend
-
-# @app.route('/data')
-# def get_data():
-#     data = {
-#         "message": "Hello, World!",
-#         "status": "success",
-#         "data": {"key1": "value1", "key2": "value2"}
-#     }
-#     return jsonify(data)
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000,
                  debug=True, allow_unsafe_werkzeug=True)
