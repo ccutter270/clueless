@@ -337,11 +337,6 @@ class Game:
 
         self.started = True
 
-        # TODO: delete, for testing
-        print("Welcome to the Clue game!")
-        print(f"The solution to the crime is: {self.envelope}")
-        print(f"Players {self.players}")
-
         game_over = False
         while not game_over:
 

@@ -47,10 +47,8 @@ class GameService:
                     p for p in self.players if p.character.name != character]
                 self.game.remove_player(character)
 
-                print("Player disconnectd")
                 # If not players left, end game
                 if len(self.game.players) == 0:
-                    print("Should be ending game now")
                     emit('game_over', {
                         'message': "Disconnected"}, broadcast=True)
 
@@ -98,7 +96,6 @@ class GameService:
         return self.game.start_game()
 
     def new_game(self):
-        print("Should be starting new game")
         self.game = Game()
         self.started = False
         self.players = [Player(player.playerID, player.character.name)

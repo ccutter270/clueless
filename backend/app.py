@@ -11,9 +11,6 @@ from models.player import Player
 from services.game_service import GameService
 
 app = Flask(__name__)
-# app = Flask(__name__, static_folder='../frontend/dist/frontend')
-# CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
-# CORS(app, origins=["https://clueless-ivory.vercel.app"])
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'my_secret_key'
 
@@ -54,7 +51,6 @@ def start_game():
 
 @socketio.on('player_connected')
 def broadcast_game_state():
-    print("Broadcasting Game state for initial player connection")
 
     if game_service.started:
         emit('game_error', {'message': "ERROR! The game has already started."})
@@ -99,8 +95,6 @@ def broadcast_game_state():
 # Get player action (move, suggest, accuse)
 @socketio.on('player_action')
 def handle_player_action(action: Action):
-    print("Processing player action")
-    print(action)
 
     game_service.game.action = action["message"]
 
@@ -108,7 +102,6 @@ def handle_player_action(action: Action):
 # Get player move location (to connecting location)
 @socketio.on('player_move_location')
 def handle_player_move_location(location: str):
-    print("Processing Move Location")
 
     # Update players move locations
     game_service.game.move_to = location
@@ -117,7 +110,6 @@ def handle_player_move_location(location: str):
 # Get player suggestion
 @socketio.on('player_suggestion')
 def handle_player_suggestion(suggestion: object):
-    print("Processing Player Suggestion")
 
     # Update current suggestion
     game_service.game.suggestion = suggestion
@@ -174,33 +166,14 @@ def on_disconnect():
         f"Client {request.sid} disconnected and released character {character}")
 
 
-# @socketio.on('game_over')
-# def on_game_over():
-
-#     global game_over_responses
-#     global num_players
-
-#     game_over_responses += 1
-#     if game_over_responses == num_players:
-#         # Reset game service
-#         game_service.new_game()
-#         game_over_responses = 0
-#         emit('show_start_button', {
-#              'show': True, 'message': f"{num_players} players joined. Click to start the game!"}, broadcast=True)
-
-
 @socketio.on('game_over')
 def on_game_over(message: str):
 
     global game_over_responses
     global num_players
 
-    print("MADE IT TO GAME OVER")
-    print(message)
-
     # Players disconnected
     if message == "Disconnected":
-        print("Should show disconnected")
         game_service.new_game()
 
     else:

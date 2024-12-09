@@ -20,19 +20,6 @@ class Character:
     def __repr__(self):
         return f"Character({self.name})"
 
-    def set_location(self, location):
-        """Sets the character's current location."""
-        self.location = location
-
-    def move_to(self, new_location: Location):
-        """ Move the player to a new location """
-        if new_location in self.location.connectedLocations:
-            self.set_location(new_location)
-            print(f"{self.name} moved to {new_location.name}")
-        else:
-            print(
-                f"{new_location.name} is not connected to {self.location.name}. Cannot move.")
-
     def jsonify(self):
         """
         Convert the Character object to a dictionary that can be serialized into JSON.
