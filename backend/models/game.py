@@ -325,7 +325,7 @@ class Game:
     def ask_accuse(self):
         # Ask if player want to accuse or move on to next turn
         self.flow = "ask_accuse"
-        self.last_action_taken = "Asking for accusation or end turn"
+        self.last_action_taken = "Asking " + self.current_player.character.name + " for accusation or to end turn"
         self.send_game_state()
 
         # Wait for response
@@ -415,6 +415,8 @@ class Game:
                     self.move_to = None
                     self.move_options = []
 
+                    self.send_game_state()
+
                     # If moved to room, make a suggestion
                     if self.current_player.character.location.locationType == "room":
                         self.action = "suggest"
@@ -424,14 +426,12 @@ class Game:
                         self.current_player.character.moved_to = False
                         self.ask_accuse()
 
-                    self.send_game_state()
-
             if self.action == "suggest":
 
                 self.action = None
                 self.current_player.character.moved_to = False
                 self.flow = "suggest"
-                self.last_action_taken = self.current_player.character.name + " chose to suggest"
+                self.last_action_taken = self.current_player.character.name + " is suggesting"
                 self.send_game_state()
 
                 # Wait for Suggestion
@@ -469,7 +469,12 @@ class Game:
                 one_disprove = []
                 if len(self.disproves) > 0:
                     one_disprove.append(self.disproves[0])
-
+                    self.last_action_taken = self.current_player.character.name + "'s suggestion was disproved"
+                    self.send_game_state()
+                else:
+                    self.last_action_taken = self.current_player.character.name + "'s suggestion was not disproved"
+                    self.send_game_state()
+                    
                 # Emit Disproves to display ONLY to user whose turn it is
                 emit('show_disproves', {
                      'data': one_disprove}, broadcast=True)
